@@ -7,6 +7,12 @@ Repository for IIS project. Library information system.
 Assignment for project can be found under subfolder `zadani`. Abstract is regular assignment. Knihovna is concrete
 assignment with details about our system.
 
+## Dependencies
+* docker
+* docker-compose
+* java-11 (openjdk preferred)
+* maven 3.6 minimal
+
 ## Application deployment
 Application can be deployed via script
 ```
