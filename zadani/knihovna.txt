@@ -1,0 +1,46 @@
+Popis:
+Úkolem zadání je vytvořit informační systém pro vyhledávání, rezervaci, výpůjčky knižních titulů ve spravovaných knihovnách. Každá knihovna má nějaké označení, pomocí kterého ji její zákazníci budou moci vhodně odlišit a další atributy (např. adresa, otevírací hodiny, popis, apod.). Každý knižní titul je identifikován názvem, seznamem autorů a dalšími vhodně zvolenými atributy (např. datum, ISBN, vydavatel, žánr - tagy, hodnocení, apod.). Tento knižní titul může být dostupný v libovolném počtu v každé ze spravovaných knihoven, případně může být pouze nabízený vydavatelem a čtenáři mohou hlasovat o jeho zakoupení do příslušných knihoven. Čtenář má dále prostřednictvím systému možnost vyhledávat dostupnost knižních titulů v jednotlivých knihovnách, provádět jejich rezervace a sledovat stav svých výpůjček (čas do vrácení, možnost prodloužení, pokuty za nevrácení apod.). Uživatelé budou moci dále informační systém použít konkrétně následujícím způsobem:
+
+    administrátor
+
+        spravuje uživatele
+
+        vytváří, spravuje a maže knihovny
+
+        má rovněž práva všech následujících rolí
+
+    knihovník
+
+        zadává nové knižní tituly
+
+        spravuje knihovnu, přidává knižní tituly ke spravované knihovně
+
+        spravuje rezervace čtenářů, zadává a vyřizuje výpůjčky knih
+
+        vystavuje objednávky knih u distributora knih
+
+    distributor knih
+
+        zadává nové knižní tituly
+
+        vyřizuje objednávky knih od knihovníků (po vyřízení objednávky se tyto knihy automaticky přidají do knihovny)
+
+        má rovněž práva (a) neregistrovaného uživatele
+
+    čtenář
+
+        rezervuje knižní tituly (rezervaci je možné provést i v případě nedostupnosti knih, kdy je uživatel zařazen do fronty čekatelů)
+
+        hlasuje za dokoupení knih do dané knihovny (každému titulu v dané knihovně může udělit pouze jeden hlas)
+
+        má rovněž práva (a) neregistrovaného uživatele
+
+    neregistrovaný uživatel
+
+        (a) vyhledává knižní tituly (uživatelsky přívětivé vyhledávání dle různých atributů a tagů), prohlíží jejich dostupnost v knihovnách
+
+        může provést rezervaci 1 až N knížek bez registrace: vyžadujte vhodné údaje (má možnost dokončit registraci a stát se čtenářem)
+
+Náměty na rozšíření:
+
+    ztráty a poničení knih - vkládání protokolu o ztrátě/poničení knihy
