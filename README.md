@@ -18,7 +18,7 @@ Application can be deployed via script
 ```
 ./docker/start_docker.sh -d
 ```
-`-d` option is for detached run, if you want deploy application otherwise checkout `-h` of the script.
+`-d` option is for detached run, if you want deploy application otherwise check `-h` of the script.
 
 ## Decommissioning
 ```
