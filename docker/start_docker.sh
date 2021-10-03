@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Docker stack for library iis project
-LIBRARY_FILE=library.jar
+LIBRARY_FILE=app/library.jar
 function build_app() {
     echo "Building the application"
     ./mvnw clean package -DskipTests
@@ -26,6 +26,7 @@ while getopts ":adkh" option; do
         pushd docker
         docker-compose down
         docker rmi library-iis:latest
+        docker rmi db-iis:latest
         rm -rf $LIBRARY_FILE
         ;;
       h | *)
