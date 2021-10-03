@@ -3,6 +3,8 @@ version: '2'
 services:
   app:
     image: 'library-iis:latest'
+    networks:
+      - app_net
     build:
       context: ./app
     container_name: app
@@ -15,12 +17,21 @@ services:
       - SPRING_DATASOURCE_USERNAME=compose-postgres
       - SPRING_DATASOURCE_PASSWORD=compose-postgres
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-
   db:
     image: 'db-iis:latest'
+    networks:
+      - app_net
     build:
       context: ./db
     container_name: db
     environment:
       - POSTGRES_USER=compose-postgres
       - POSTGRES_PASSWORD=compose-postgres
+networks:
+  app_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.238.0/24
+          gateway: 172.16.238.1
