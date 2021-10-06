@@ -3,13 +3,60 @@
 <head>
     <title>Getting Started: Serving Web Content</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css" id="bootstrap-css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css" id="bootstrap-data">
 </head>
 <body>
-<div class="input-group">
-    <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
-    <button type="button" class="btn btn-outline-primary">search</button>
-</div>
-<p th:text="${bookName}"></p>
+<form th:action="@{/}">
+    <!--<div class="form-row">
+        <div class="col">
+            <input type="text" class="form-control" th:name="book_name"/>
+        </div>
+        <div class="col">
+            <input class="form-control" type="submit"/>
+        </div>
+    </div>-->
+    <div class="row">
+        <div class="col-sm-7">
+            <input type="text" class="form-control" placeholder="Jmeno knihy" th:name="book_name"/>
+        </div>
+        <div class="col">
+            <input class="form-control" type="submit"/>
+        </div>
+    </div>
+</form>
+
+<table id="bookListing" class="table table-hover">
+    <thead>
+    <tr>
+        <th>Jmeno</th>
+        <th>Datum vydani</th>
+        <th>Zanr</th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr th:each="book : ${books}">
+            <td th:text="${book.name}">Onions</td>
+            <td th:text="${book.release}">2.41</td>
+            <td th:text="${book.genre}">yes</td>
+        </tr>
+    </tbody>
+    <tfoot>
+    <tr>
+        <th>Jmeno</th>
+        <th>Datum vydani</th>
+        <th>Zanr</th>
+    </tr>
+    </tfoot>
+</table>
+<!-- <p th:text="${bookName}"></p> -->
 </body>
+<script>
+    $(document).ready(function() {
+        $('#bookListing').DataTable({searching: false});
+    });
+</script>
 </html>
