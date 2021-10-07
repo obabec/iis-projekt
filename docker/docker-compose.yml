@@ -23,6 +23,8 @@ services:
       - app_net
     build:
       context: ./db
+    ports:
+      - "5432:5432"
     container_name: db
     environment:
       - POSTGRES_USER=compose-postgres
