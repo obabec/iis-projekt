@@ -23,9 +23,9 @@ public class Book {
     private String isbn;
     private String publisher;
     private String genre;
-    private short rate;
+    private Short rate;
 
-    public Book(String name, Date release, String isbn, String publisher, String genre, short rate) {
+    public Book(String name, Date release, String isbn, String publisher, String genre, Short rate) {
         this.name = name;
         this.release = release;
         this.isbn = isbn;

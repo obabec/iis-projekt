@@ -19,9 +19,42 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public Iterable<Book> findByName(String name) {
-        return bookRepository.findBookByName(name);
+    public Iterable<Book> findByName(String name, String libraryName) {
+        return bookRepository.findBookByName(name, libraryName);
     }
 
+    @Override
+    public Iterable<Book> findAvailableByName(String name, String libraryName) {
+        return bookRepository.findAvailableBookByName(name, libraryName);
+    }
 
+    @Override
+    public Iterable<Book> findByAuthorName(String authorName, String libraryName) {
+        return bookRepository.findByAuthorName(authorName, libraryName);
+    }
+
+    @Override
+    public Iterable<Book> findAvailableBooks(String libraryName) {
+        return bookRepository.findAvailableBooks(libraryName);
+    }
+
+    @Override
+    public Iterable<Book> findByGenre(String genre, String libraryName) {
+        return bookRepository.findByGenre(genre, libraryName);
+    }
+
+    @Override
+    public Iterable<Book> findAvailableByGenre(String genre, String libraryName) {
+       return  bookRepository.findAvailableByGenre(genre, libraryName);
+    }
+
+    @Override
+    public Iterable<Book> findAllInLibrary(String libraryName) {
+        return bookRepository.findAllInLibrary(libraryName);
+    }
+
+    @Override
+    public Iterable<Book> findAvailableByAuthorName(String authorName, String libraryName) {
+        return bookRepository.findAvailableByAuthorName(authorName, libraryName);
+    }
 }
