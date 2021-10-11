@@ -25,7 +25,9 @@ SET default_table_access_method = heap;
 --
 
 CREATE TABLE public.authorship (
-    id integer NOT NULL
+    id integer NOT NULL,
+    book_id integer NOT NULL,
+    person_id integer NOT NULL
 );
 
 
@@ -37,11 +39,13 @@ ALTER TABLE public.authorship OWNER TO "compose-postgres";
 
 CREATE TABLE public.blocking (
     id integer NOT NULL,
+    book_id integer NOT NULL,
+    library_id integer NOT NULL,
+    person_id integer NOT NULL,
     date_from date,
     date_to date,
     is_borrowed boolean
 );
-
 
 ALTER TABLE public.blocking OWNER TO "compose-postgres";
 
@@ -51,6 +55,7 @@ ALTER TABLE public.blocking OWNER TO "compose-postgres";
 
 CREATE TABLE public.book (
     id integer NOT NULL,
+    library_id integer NOT NULL,
     name character varying(50),
     release date,
     isbn character(13),
@@ -68,6 +73,7 @@ ALTER TABLE public.book OWNER TO "compose-postgres";
 
 CREATE TABLE public.library (
     id integer NOT NULL,
+    name character varying(50),
     tag character(5),
     street character varying(255),
     city character varying(50),
@@ -98,66 +104,6 @@ CREATE TABLE public.person (
 ALTER TABLE public.person OWNER TO "compose-postgres";
 
 --
--- Name: vlastnictvi; Type: TABLE; Schema: public; Owner: compose-postgres
---
-
-CREATE TABLE public.ownership (
-    id integer NOT NULL,
-    book_count integer
-);
-
-
-ALTER TABLE public.ownership OWNER TO "compose-postgres";
-
---
--- Data for Name: autorstvi; Type: TABLE DATA; Schema: public; Owner: compose-postgres
---
-
-COPY public.ownership (id) FROM stdin;
-\.
-
-
---
--- Data for Name: blokace; Type: TABLE DATA; Schema: public; Owner: compose-postgres
---
-
-COPY public.blocking (id, date_from, date_to, is_borrowed) FROM stdin;
-\.
-
-
---
--- Data for Name: kniha; Type: TABLE DATA; Schema: public; Owner: compose-postgres
---
-
-COPY public.book (id, name, release, isbn, publisher, genre, rate) FROM stdin;
-\.
-
-
---
--- Data for Name: knihovna; Type: TABLE DATA; Schema: public; Owner: compose-postgres
---
-
-COPY public.library (id, tag, street, city, street_number, from_time, to_time, description) FROM stdin;
-\.
-
-
---
--- Data for Name: osoba; Type: TABLE DATA; Schema: public; Owner: compose-postgres
---
-
-COPY public.person (id, name, surname, birth_date, role, username, password) FROM stdin;
-\.
-
-
---
--- Data for Name: vlastnictvi; Type: TABLE DATA; Schema: public; Owner: compose-postgres
---
-
-COPY public.ownership (id, book_count) FROM stdin;
-\.
-
-
---
 -- Name: autorstvi autorstvi_pkey; Type: CONSTRAINT; Schema: public; Owner: compose-postgres
 --
 
@@ -180,7 +126,6 @@ ALTER TABLE ONLY public.blocking
 ALTER TABLE ONLY public.book
     ADD CONSTRAINT book_pkey PRIMARY KEY (id);
 
-
 --
 -- Name: knihovna knihovna_pkey; Type: CONSTRAINT; Schema: public; Owner: compose-postgres
 --
@@ -196,21 +141,12 @@ ALTER TABLE ONLY public.library
 ALTER TABLE ONLY public.person
     ADD CONSTRAINT person_pkey PRIMARY KEY (id);
 
-
---
--- Name: vlastnictvi vlastnictvi_pkey; Type: CONSTRAINT; Schema: public; Owner: compose-postgres
---
-
-ALTER TABLE ONLY public.ownership
-    ADD CONSTRAINT ownership_pkey PRIMARY KEY (id);
-
-
 --
 -- Name: blokace kniha; Type: FK CONSTRAINT; Schema: public; Owner: compose-postgres
 --
 
 ALTER TABLE ONLY public.blocking
-    ADD CONSTRAINT book FOREIGN KEY (id) REFERENCES public.book(id);
+    ADD CONSTRAINT book FOREIGN KEY (book_id) REFERENCES public.book(id);
 
 
 --
@@ -218,39 +154,21 @@ ALTER TABLE ONLY public.blocking
 --
 
 ALTER TABLE ONLY public.authorship
-    ADD CONSTRAINT book FOREIGN KEY (id) REFERENCES public.book(id);
-
-
---
--- Name: vlastnictvi kniha; Type: FK CONSTRAINT; Schema: public; Owner: compose-postgres
---
-
-ALTER TABLE ONLY public.ownership
-    ADD CONSTRAINT book FOREIGN KEY (id) REFERENCES public.book(id);
-
+    ADD CONSTRAINT book FOREIGN KEY (book_id) REFERENCES public.book(id);
 
 --
 -- Name: blokace knihovna; Type: FK CONSTRAINT; Schema: public; Owner: compose-postgres
 --
 
 ALTER TABLE ONLY public.blocking
-    ADD CONSTRAINT library FOREIGN KEY (id) REFERENCES public.library(id);
-
-
---
--- Name: vlastnictvi knihovna; Type: FK CONSTRAINT; Schema: public; Owner: compose-postgres
---
-
-ALTER TABLE ONLY public.ownership
-    ADD CONSTRAINT library FOREIGN KEY (id) REFERENCES public.library(id);
-
+    ADD CONSTRAINT library FOREIGN KEY (library_id) REFERENCES public.library(id);
 
 --
 -- Name: blokace osoba; Type: FK CONSTRAINT; Schema: public; Owner: compose-postgres
 --
 
 ALTER TABLE ONLY public.blocking
-    ADD CONSTRAINT person FOREIGN KEY (id) REFERENCES public.person(id);
+    ADD CONSTRAINT person FOREIGN KEY (person_id) REFERENCES public.person(id);
 
 
 --
@@ -258,9 +176,11 @@ ALTER TABLE ONLY public.blocking
 --
 
 ALTER TABLE ONLY public.authorship
-    ADD CONSTRAINT person FOREIGN KEY (id) REFERENCES public.person(id);
+    ADD CONSTRAINT person FOREIGN KEY (person_id) REFERENCES public.person(id);
 
 
+ALTER TABLE ONLY public.book
+    ADD CONSTRAINT library FOREIGN KEY (library_id) REFERENCES public.library(id);
 --
 -- PostgreSQL database dump complete
 --
