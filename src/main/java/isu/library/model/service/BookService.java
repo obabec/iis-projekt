@@ -12,5 +12,5 @@ public interface BookService {
     Iterable<Book> findAvailableByGenre(String genre, String libraryName);
     Iterable<Book> findAllInLibrary(String libraryName);
     Iterable<Book> findAvailableByAuthorName(String authorName, String libraryName);
-
+    Iterable<String> findAllGenres();
 }

@@ -9,6 +9,10 @@ import org.springframework.stereotype.Repository;
 @Repository("bookRepository")
 public interface BookRepository extends CrudRepository<Book, Integer> {
 
+
+    @Query(value = "SELECT DISTINCT b.genre FROM Book b")
+    Iterable<String> findAllGenres();
+
     // Hledani knihy dle jmena - working
     @Query(value = "SELECT * FROM book b WHERE b.name LIKE CONCAT('%', :bookName, '%') AND library_id IN (select id from library where name like CONCAT('%', :libraryName, '%'))", nativeQuery = true)
     Iterable<Book> findBookByName(@Param("bookName") String bookName, @Param("libraryName") String libraryName);
@@ -48,4 +52,5 @@ public interface BookRepository extends CrudRepository<Book, Integer> {
     //Nalezeni vsech knih v dane knihovne - Working
     @Query(value = "SELECT * FROM book b WHERE library_id IN (select id from library where name like CONCAT('%', :libraryName, '%'))", nativeQuery = true)
     Iterable<Book> findAllInLibrary(@Param("libraryName") String libraryName);
+
 }
