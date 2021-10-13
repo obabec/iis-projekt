@@ -1,58 +1,163 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
-    <title>Getting Started: Serving Web Content</title>
+    <title>IIS knihovna</title>
+    <link rel="shortcut icon" href="icons/favicon.ico" type="image/x-icon">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://kit.fontawesome.com/f37df46030.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css" id="bootstrap-css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css" id="bootstrap-data">
 </head>
 <body>
-<form th:action="@{/}">
-    <!--<div class="form-row">
-        <div class="col">
-            <input type="text" class="form-control" th:name="book_name"/>
-        </div>
-        <div class="col">
-            <input class="form-control" type="submit"/>
-        </div>
-    </div>-->
-    <div class="row">
-        <div class="col-sm-7">
-            <input type="text" class="form-control" placeholder="Jmeno knihy" th:name="book_name"/>
-        </div>
-        <div class="col">
-            <input class="form-control" type="submit"/>
+<div class="wrapper">
+    <div class="container-fluid overflow-hidden">
+        <div class="row vh-100 overflow-auto">
+            <div class="col d-flex flex-column h-100">
+                <div class="content">
+                    <form th:action="@{/}">
+                        <div class="row row-cols-3">
+                            <div class="col">
+                                Jméno autora
+                                <input type="text" class="form-control" placeholder="George Orwell"/>
+                            </div>
+                            <div class="col">
+                                Název knihy
+                                <input type="text" class="form-control" placeholder="1984" th:name="book_name"/>
+                            </div>
+                            <div class="col align-self-center">
+                                Výběr knihovny
+                                <select class="form-select">
+                                    <option value="0" selected>Neomezeno</option>
+                                    <option value="1">Knihovna 1</option>
+                                    <option value="2">Knihovna 2</option>
+                                    <option value="3">Knihovna 3</option>
+                                </select>
+                            </div>
+                            <div class="col align-self-center">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    Vybrat Pouze z dostupných titulů
+                                </label>
+                            </div>
+                            <div class="col align-self-center">
+                                Výběr žánru
+                                <select class="form-select">
+                                    <option value="0" selected>Neomezeno</option>
+                                    <option value="1">Fantasy</option>
+                                    <option value="2">Sci-fi</option>
+                                    <option value="3">Erotika</option>
+                                </select>
+                            </div>
+                            <div class="col align-self-center" >
+                                <input class="form-control btn btn-secondary" type="submit" value="Odeslat"/>
+                            </div>
+                        </div>
+                    </form>
+
+                    <table id="bookListing" class="table table-hover table-striped">
+                        <thead>
+                        <tr>
+                            <th>Jméno</th>
+                            <th>Autor</th>
+                            <th>Žánr</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="book : ${books}">
+                            <td th:text="${book.name}">Onions</td>
+                            <td th:text="${book.release}">2.41</td>
+                            <td th:text="${book.genre}">yes</td>
+                            <td>
+                                <a th:href="@{/books(id=${book.name})}"
+                                   class="btn btn-info btn-primary" role="button">rezervace</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Onions</td>
+                            <td>2.41</td>
+                            <td>2.41</td>
+                            <td>yes</td>
+                        </tr>
+                        <tr>
+                            <td>Anions</td>
+                            <td>3.51</td>
+                            <td>2.41</td>
+                            <td>yes</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-12 col-sm-3 col-xl-2 px-sm-2 px-0 bg-dark d-flex sticky-top">
+                <div class="d-flex flex-sm-column flex-row flex-grow-1 align-items-center align-items-sm-start px-3 pt-2 text-white">
+                    <a href="#" class="d-flex align-items-center pb-sm-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                        <span class="fs-5">IIS<span class="d-none d-sm-inline"> knihovna</span></span>
+                    </a>
+                    <div class="py-sm-4 ms-sm-0 flex-shrink-1">
+                        <i class="fa-solid fa-circle-user rounded-circle  fa-lg"></i>
+                        <span class="d-none d-sm-inline mx-1">Joe mama</span>
+                    </div>
+                    <ul class="nav nav-pills flex-sm-column flex-row flex-nowrap flex-shrink-1 flex-sm-grow-0 flex-grow-1 mb-0 justify-content-center align-items-center align-items-sm-start" id="menu">
+                        <li class="nav-item .active">
+                            <a href="#" class="nav-link px-sm-0 px-2">
+                                <i class="fs-5 fas fa-user"></i><span class="ms-1 d-none d-sm-inline">Vyhledat knihu</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link px-sm-0 px-2">
+                                <i class="fs-5 fas fa-user"></i><span class="ms-1 d-none d-sm-inline">Profil</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link px-sm-0 px-2">
+                                <i class="fs-5 fas fa-user"></i><span class="ms-1 d-none d-sm-inline">Dokončit registrace</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link px-sm-0 px-2">
+                                <i class="fs-5 fas fa-user"></i><span class="ms-1 d-none d-sm-inline">Správa knih</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link px-sm-0 px-2">
+                                <i class="fs-5 fas fa-user"></i><span class="ms-1 d-none d-sm-inline">Objednat knihy</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link px-sm-0 px-2">
+                                <i class="fs-5 fas fa-user"></i><span class="ms-1 d-none d-sm-inline">Správa uživatelů</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link px-sm-0 px-2">
+                                <i class="fs-5 fas fa-user"></i><span class="ms-1 d-none d-sm-inline">správa knihoven</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link px-sm-0 px-2">
+                                <i class="fs-5 fas fa-user"></i><span class="ms-1 d-none d-sm-inline">Správa distribucí</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link px-sm-0 px-2">
+                                <i class="fs-5 fas fa-user"></i><span class="ms-1 d-none d-sm-inline">Správa objednavek</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link px-sm-0 px-2">
+                                <i class="fs-5 fas fa-user"></i><span class="ms-1 d-none d-sm-inline">Odhlásit</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
-</form>
-
-<table id="bookListing" class="table table-hover">
-    <thead>
-    <tr>
-        <th>Jmeno</th>
-        <th>Datum vydani</th>
-        <th>Zanr</th>
-    </tr>
-    </thead>
-    <tbody>
-        <tr th:each="book : ${books}">
-            <td th:text="${book.name}">Onions</td>
-            <td th:text="${book.release}">2.41</td>
-            <td th:text="${book.genre}">yes</td>
-        </tr>
-    </tbody>
-    <tfoot>
-    <tr>
-        <th>Jmeno</th>
-        <th>Datum vydani</th>
-        <th>Zanr</th>
-    </tr>
-    </tfoot>
-</table>
-<!-- <p th:text="${bookName}"></p> -->
+</div>
 </body>
 <script>
     $(document).ready(function() {
