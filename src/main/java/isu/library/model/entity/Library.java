@@ -9,8 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.time.LocalTime;
-import java.util.Date;
+import java.sql.Time;
 
 @Entity
 @Table(name = "library")
@@ -26,10 +25,21 @@ public class Library {
     private String street;
     private String city;
     @Column(name = "street_number")
-    private Integer streetNumber;
+    private String streetNumber;
     @Column(name = "from_time")
-    private LocalTime openFrom;
+    private Time openFrom;
     @Column(name = "to_time")
-    private LocalTime openTo;
+    private Time openTo;
     private String description;
+
+    public Library(String name, String tag, String street, String city, String streetNumber, Time openFrom, Time openTo, String description) {
+        this.name = name;
+        this.tag = tag;
+        this.street = street;
+        this.city = city;
+        this.streetNumber = streetNumber;
+        this.openFrom = openFrom;
+        this.openTo = openTo;
+        this.description = description;
+    }
 }

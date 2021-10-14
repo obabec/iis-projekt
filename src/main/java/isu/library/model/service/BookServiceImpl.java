@@ -10,13 +10,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.sql.Date;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
+
 
 @Transactional
 @Service("bookService")
-public class BookServiceImpl implements BookService{
+public class BookServiceImpl implements BookService {
 
     @PersistenceContext
     EntityManager entityManager;
@@ -80,5 +80,11 @@ public class BookServiceImpl implements BookService{
     @Override
     public Iterable<String> findAllGenres() {
         return bookRepository.findAllGenres();
+    }
+
+    @Override
+    public void addNewBook(Integer libraryId, String name, Date release, String isbn, String publisher, String genre, Short rate) {
+        Book b = new Book(libraryId, name, release, isbn, publisher, genre, rate);
+        bookRepository.save(b);
     }
 }

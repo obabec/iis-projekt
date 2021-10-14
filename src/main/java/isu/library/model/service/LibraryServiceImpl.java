@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Time;
+
 @Transactional
 @Service("libraryService")
 public class LibraryServiceImpl implements LibraryService{
@@ -16,4 +18,16 @@ public class LibraryServiceImpl implements LibraryService{
     public Iterable<Library> findAll() {
         return libraryRepository.findAll();
     }
+
+    @Override
+    public void addNewLibrary(String name, String tag, String street, String city, String streetNumber, Time fromTime, Time toTime, String description) {
+        Library l = new Library(name, tag, street, city, streetNumber, fromTime, toTime, description);
+        libraryRepository.save(l);
+    }
+
+    @Override
+    public void deleteLibraryByName(String name) {
+        libraryRepository.deleteLibraryByName(name);
+    }
+
 }
