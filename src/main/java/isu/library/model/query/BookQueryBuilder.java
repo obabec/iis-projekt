@@ -22,7 +22,7 @@ public class BookQueryBuilder {
     }
 
     public BookQueryBuilder() {
-        this.guery = "SELECT b.id, b.name, b.release, b.isbn, b.publisher, b.genre, b.rate FROM book b";
+        this.guery = "SELECT b.id, b.library_id, b.name, b.release, b.isbn, b.publisher, b.genre, b.rate FROM book b";
     }
 
     public BookQueryBuilder filterByAuthor(String authorName) {

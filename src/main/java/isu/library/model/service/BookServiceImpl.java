@@ -83,6 +83,11 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public Iterable<Book> executeQuery(String query) {
+        return ((List<Book>) entityManager.createNativeQuery(query, Book.class).getResultList());
+    }
+
+    @Override
     public void addNewBook(Integer libraryId, String name, Date release, String isbn, String publisher, String genre, Short rate) {
         Book b = new Book(libraryId, name, release, isbn, publisher, genre, rate);
         bookRepository.save(b);

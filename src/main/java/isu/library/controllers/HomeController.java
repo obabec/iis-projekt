@@ -1,6 +1,7 @@
 package isu.library.controllers;
 
 import isu.library.model.entity.Book;
+import isu.library.model.query.BookQueryBuilder;
 import isu.library.model.service.BookService;
 import isu.library.model.service.LibraryService;
 import isu.library.model.service.PersonService;
@@ -29,11 +30,27 @@ public class HomeController {
                        @RequestParam(name="reserved", required = false, defaultValue = "false") String reserved,
                        @RequestParam(name="book_genre", required = false, defaultValue = "") String bookGenre,
                        @RequestParam(name="author_name", required = false, defaultValue = "") String authorName,
-                       @RequestParam(name="filter_option", required = false, defaultValue = "") String filterOption,
                        ModelMap modelMap) {
-        Iterable<Book> books = bookService.findAll();
+        BookQueryBuilder builder = new BookQueryBuilder();
+        if (!authorName.isEmpty()) {
+            builder = builder.filterByAuthor(authorName);
+        }
+        if (!bookName.isEmpty()) {
+            builder = builder.filterByName(bookName);
+        }
+        if (!libraryName.isEmpty()) {
+            builder = builder.filterByLibrary(libraryName);
+        }
+        if (reserved.equals("true")) {
+            builder = builder.filterByAvailability();
+        }
+        if (!bookGenre.isEmpty()) {
+            builder = builder.filterByGenre(bookGenre);
+        }
+
+        Iterable<Book> books = bookService.executeQuery(builder.getQuery());
         books = personService.findAuthorsForBooks(books);
-       modelMap.put("books", books);
-       return "home";
+        modelMap.put("books", books);
+        return "home";
     }
 }

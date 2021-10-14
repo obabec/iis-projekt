@@ -3,7 +3,7 @@
 --
 
 -- Dumped from database version 13.1
--- Dumped by pg_dump version 13.1
+-- Dumped by pg_dump version 14.0
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -15,6 +15,22 @@ SET check_function_bodies = false;
 SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
+
+--
+-- Name: public; Type: SCHEMA; Schema: -; Owner: compose-postgres
+--
+
+CREATE SCHEMA public;
+
+
+ALTER SCHEMA public OWNER TO "compose-postgres";
+
+--
+-- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: compose-postgres
+--
+
+COMMENT ON SCHEMA public IS 'standard public schema';
+
 
 SET default_tablespace = '';
 
@@ -40,6 +56,7 @@ ALTER TABLE public.authorship OWNER TO "compose-postgres";
 CREATE TABLE public.blocking (
     id integer NOT NULL,
     book_id integer NOT NULL,
+    library_id integer NOT NULL,
     person_id integer NOT NULL,
     date_from date,
     date_to date,
@@ -66,20 +83,6 @@ CREATE TABLE public.book (
 
 
 ALTER TABLE public.book OWNER TO "compose-postgres";
-
---
--- Name: hibernate_sequence; Type: SEQUENCE; Schema: public; Owner: compose-postgres
---
-
-CREATE SEQUENCE public.hibernate_sequence
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.hibernate_sequence OWNER TO "compose-postgres";
 
 --
 -- Name: library; Type: TABLE; Schema: public; Owner: compose-postgres
@@ -122,6 +125,10 @@ ALTER TABLE public.person OWNER TO "compose-postgres";
 --
 
 COPY public.authorship (id, book_id, person_id) FROM stdin;
+1	1	1
+2	2	1
+3	3	2
+4	1	2
 \.
 
 
@@ -129,7 +136,10 @@ COPY public.authorship (id, book_id, person_id) FROM stdin;
 -- Data for Name: blocking; Type: TABLE DATA; Schema: public; Owner: compose-postgres
 --
 
-COPY public.blocking (id, book_id, person_id, date_from, date_to, is_borrowed) FROM stdin;
+COPY public.blocking (id, book_id, library_id, person_id, date_from, date_to, is_borrowed) FROM stdin;
+1	1	1	1	2021-10-07	2021-10-13	t
+2	2	2	2	2021-10-07	2021-10-08	t
+3	3	1	2	2021-10-10	2021-10-12	f
 \.
 
 
@@ -138,7 +148,9 @@ COPY public.blocking (id, book_id, person_id, date_from, date_to, is_borrowed) F
 --
 
 COPY public.book (id, library_id, name, release, isbn, publisher, genre, rate) FROM stdin;
-1	1	Mikirova uzasna pout	2017-03-14	ABC15        	Korbi	vesmirna komedie	5
+1	1	AHoj	\N	\N	NY	KOKOT	\N
+2	1	Svete	\N	\N	ASD	PICOVINA	\N
+3	2	Dneska	\N	\N	DSS	HOROR	\N
 \.
 
 
@@ -147,7 +159,8 @@ COPY public.book (id, library_id, name, release, isbn, publisher, genre, rate) F
 --
 
 COPY public.library (id, name, tag, street, city, street_number, from_time, to_time, description) FROM stdin;
-1	knihovnos	k1   	Plumlovska	Prostejov	127	08:00:00	18:00:00	perfektni knihovna kamo
+1	MZK	MZK  	\N	\N	\N	\N	\N	\N
+2	BKN	BKN  	\N	\N	\N	\N	\N	\N
 \.
 
 
@@ -156,14 +169,9 @@ COPY public.library (id, name, tag, street, city, street_number, from_time, to_t
 --
 
 COPY public.person (id, name, surname, birth_date, role, username, password) FROM stdin;
+1	Petr	Kokot	\N	\N	\N	\N
+2	Honza	Picas	\N	\N	\N	\N
 \.
-
-
---
--- Name: hibernate_sequence; Type: SEQUENCE SET; Schema: public; Owner: compose-postgres
---
-
-SELECT pg_catalog.setval('public.hibernate_sequence', 1, false);
 
 
 --
@@ -220,6 +228,14 @@ ALTER TABLE ONLY public.blocking
 
 ALTER TABLE ONLY public.authorship
     ADD CONSTRAINT book FOREIGN KEY (book_id) REFERENCES public.book(id);
+
+
+--
+-- Name: blocking library; Type: FK CONSTRAINT; Schema: public; Owner: compose-postgres
+--
+
+ALTER TABLE ONLY public.blocking
+    ADD CONSTRAINT library FOREIGN KEY (library_id) REFERENCES public.library(id);
 
 
 --
