@@ -11,22 +11,32 @@
 </head>
 <body>
 <form th:action="@{/}">
-    <!--<div class="form-row">
-        <div class="col">
-            <input type="text" class="form-control" th:name="book_name"/>
-        </div>
-        <div class="col">
-            <input class="form-control" type="submit"/>
-        </div>
-    </div>-->
     <div class="row">
-        <div class="col-sm-7">
+        <div class="col-sm-4">
             <input type="text" class="form-control" placeholder="Jmeno knihy" th:name="book_name"/>
         </div>
-        <div class="col">
-            <input class="form-control" type="submit"/>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" placeholder="Jmeno knihovny" th:name="library_name"/>
+        </div>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" placeholder="Žánr" th:name="book_genre"/>
         </div>
     </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <input type="text" class="form-control" placeholder="Autor" th:name="author_name"/>
+        </div>
+        <div class="col-sm-1">
+            <input type="checkbox" class="form-check-input" id="reserved_checkbox" th:checked="reserved"/>
+            <label class="form-check-label" for="reserved_checkbox">
+                rezervovano
+            </label>
+        </div>
+    </div>
+    <div class="col">
+        <input class="form-control" type="submit"/>
+    </div>
+
 </form>
 
 <table id="bookListing" class="table table-hover">
