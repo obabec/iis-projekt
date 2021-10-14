@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.sql.Date;
 
 @Entity
@@ -27,6 +28,8 @@ public class Book {
     private String publisher;
     private String genre;
     private Short rate;
+    @Transient
+    private String authors;
 
     public Book(Integer libraryId, String name, Date release, String isbn, String publisher, String genre, Short rate) {
         this.libraryId = libraryId;
