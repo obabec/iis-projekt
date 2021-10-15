@@ -4,11 +4,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.Date;
+import javax.persistence.Transient;
+import java.sql.Date;
 
 @Entity
 @Table(name = "book")
@@ -18,14 +20,19 @@ import java.util.Date;
 public class Book {
 
     private @Id @GeneratedValue int id;
+    @Column(name = "library_id")
+    private Integer libraryId;
     private String name;
     private Date release;
     private String isbn;
     private String publisher;
     private String genre;
-    private short rate;
+    private Short rate;
+    @Transient
+    private String authors;
 
-    public Book(String name, Date release, String isbn, String publisher, String genre, short rate) {
+    public Book(Integer libraryId, String name, Date release, String isbn, String publisher, String genre, Short rate) {
+        this.libraryId = libraryId;
         this.name = name;
         this.release = release;
         this.isbn = isbn;

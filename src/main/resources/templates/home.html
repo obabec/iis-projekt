@@ -11,22 +11,55 @@
 </head>
 <body>
 <form th:action="@{/}">
-    <!--<div class="form-row">
-        <div class="col">
-            <input type="text" class="form-control" th:name="book_name"/>
-        </div>
-        <div class="col">
-            <input class="form-control" type="submit"/>
-        </div>
-    </div>-->
     <div class="row">
-        <div class="col-sm-7">
-            <input type="text" class="form-control" placeholder="Jmeno knihy" th:name="book_name"/>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" placeholder="Jmeno knihy" th:name="book_name" th:value="${book_name}"/>
         </div>
-        <div class="col">
-            <input class="form-control" type="submit"/>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" placeholder="Jmeno knihovny" th:name="library_name" th:value="${library_name}"/>
+        </div>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" placeholder="Žánr" th:name="book_genre" th:value="${book_genre}"/>
         </div>
     </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <input type="text" class="form-control" placeholder="Autor" th:name="author_name" th:value="${author_name}"/>
+        </div>
+        <div class="col-sm-1">
+            <input type="checkbox" class="form-check-input" id="reserved_checkbox" th:name="available" th:checked="${available}"/>
+            <label class="form-check-label" for="reserved_checkbox">
+                dostupne
+            </label>
+        </div>
+        <div class="col-sm-3">
+            <input type="number" min="1" max="2021" class="form-control" th:name="release_date" th:value="${release_date}"/>
+        </div>
+        <div class="col-sm-1">
+            <input type="checkbox" class="form-check-input" id="before_checkbox" th:name="before" th:checked="${before}" />
+            <label class="form-check-label" for="before_checkbox">
+                před?
+            </label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+            <input type="text" class="form-control" placeholder="ISBN" th:name="isbn" th:value="${isbn}"/>
+        </div>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" placeholder="vydavatel" th:name="publisher" th:value="${publisher}"/>
+        </div>
+        <div class="col-sm-2">
+            <input type="number" id="rating_input" min="1" max="10" th:name="genre" th:value="${genre}"/>
+            <label class="form-check-label" for="rating_input">
+                Minimalni rating
+            </label>
+        </div>
+    </div>
+    <div class="col">
+        <input class="form-control" type="submit"/>
+    </div>
+
 </form>
 
 <table id="bookListing" class="table table-hover">
@@ -35,20 +68,32 @@
         <th>Jmeno</th>
         <th>Datum vydani</th>
         <th>Zanr</th>
+        <th>Autori</th>
+        <th>ISBN</th>
+        <th>Vydavatel</th>
+        <th>Hodnoceni</th>
     </tr>
     </thead>
     <tbody>
-        <tr th:each="book : ${books}">
-            <td th:text="${book.name}">Onions</td>
-            <td th:text="${book.release}">2.41</td>
-            <td th:text="${book.genre}">yes</td>
-        </tr>
+    <tr th:each="book : ${books}">
+        <td th:text="${book.name}">Onions</td>
+        <td th:text="${book.release}">2.41</td>
+        <td th:text="${book.genre}">yes</td>
+        <td th:text="${book.authors}">Henrich</td>
+        <td th:text="${book.isbn}"> AC12</td>
+        <td th:text="${book.publisher}">Franz Josef</td>
+        <td th:text="${book.rate}">Franz Josef</td>
+    </tr>
     </tbody>
     <tfoot>
     <tr>
         <th>Jmeno</th>
         <th>Datum vydani</th>
         <th>Zanr</th>
+        <th>Autori</th>
+        <th>ISBN</th>
+        <th>Vydavatel</th>
+        <th>Hodnoceni</th>
     </tr>
     </tfoot>
 </table>
