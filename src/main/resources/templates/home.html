@@ -32,6 +32,30 @@
                 rezervovano
             </label>
         </div>
+        <div class="col-sm-3">
+            <input type="date" class="form-control" th:value="release_date"/>
+        </div>
+        <div class="col-sm-1">
+            <input type="checkbox" class="form-check-input" id="before_checkbox" th:checked="before"/>
+            <label class="form-check-label" for="before_checkbox">
+                před?
+            </label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+            <input type="text" class="form-control" placeholder="ISBN" th:name="isbn"/>
+        </div>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" placeholder="vydavatel" th:name="publisher"/>
+        </div>
+        <div class="col-sm-2">
+            <input type="number"th:value="genre" id="rating_input" min="1" max="10"/>
+            <label class="form-check-label" for="rating_input">
+                Minimalni rating
+            </label>
+        </div>
+
     </div>
     <div class="col">
         <input class="form-control" type="submit"/>
