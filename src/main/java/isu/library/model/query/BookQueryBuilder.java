@@ -8,9 +8,6 @@ import java.time.Year;
 public class BookQueryBuilder {
     private String guery;
     private boolean whereComplete = false;
-    public BookQueryBuilder(String guery) {
-        this.guery = guery;
-    }
 
     private void addWhereOrAnd() {
         if (whereComplete) {
