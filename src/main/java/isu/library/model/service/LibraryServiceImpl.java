@@ -1,18 +1,25 @@
 package isu.library.model.service;
 
+import isu.library.model.entity.Book;
 import isu.library.model.entity.Library;
 import isu.library.model.repository.LibraryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.sql.Time;
+import java.util.List;
 
 @Transactional
 @Service("libraryService")
 public class LibraryServiceImpl implements LibraryService{
     @Autowired
     private LibraryRepository libraryRepository;
+
+    @PersistenceContext
+    EntityManager entityManager;
 
     @Override
     public Iterable<Library> findAll() {
@@ -26,8 +33,23 @@ public class LibraryServiceImpl implements LibraryService{
     }
 
     @Override
+    public void updateLibrary(Library library) {
+        libraryRepository.save(library);
+    }
+
+    @Override
+    public Library findLibraryById(Integer id) {
+        return libraryRepository.findById(id).orElse(new Library());
+    }
+
+    @Override
     public void deleteLibraryByName(String name) {
         libraryRepository.deleteLibraryByName(name);
+    }
+
+    @Override
+    public Iterable<Library> executeQuery(String query) {
+        return ((List<Library>) entityManager.createNativeQuery(query, Library.class).getResultList());
     }
 
 }

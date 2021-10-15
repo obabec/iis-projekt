@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css" id="bootstrap-css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css" id="bootstrap-data">
+</head>
+<body>
+<form th:action="@{/libraries}">
+    <div class="row">
+        <div class="col-sm-4">
+            <input type="text" class="form-control" placeholder="Jmeno knihovny" th:name="library_name" th:value="${lib_name}"/>
+        </div>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" placeholder="Tag" th:name="library_tag" th:value="${lib_tag}"/>
+        </div>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" placeholder="City" th:name="library_city" th:value="${lib_name}"/>
+        </div>
+    </div>
+    <div class="col">
+        <input class="form-control" type="submit"/>
+    </div>
+
+</form>
+
+<table id="libraryListing" class="table table-hover">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Jmeno</th>
+        <th>Tag</th>
+        <th>Mesto</th>
+        <th>Akce</th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr th:each="library : ${libraries}">
+            <td th:text="${library.id}">Onions</td>
+            <td th:text="${library.name}">Onions</td>
+            <td th:text="${library.tag}">2.41</td>
+            <td th:text="${library.city}">yes</td>
+            <td>
+                <a th:href="@{/library(library_id=${library.id})}">
+                    <button class="btn btn-success">
+                        Spravovat
+                    </button>
+                </a>
+            </td>
+        </tr>
+    </tbody>
+    <tfoot>
+    <tr>
+        <th>Id</th>
+        <th>Jmeno</th>
+        <th>Tag</th>
+        <th>Mesto</th>
+        <th>Akce</th>
+    </tr>
+    </tfoot>
+</table>
+<!-- <p th:text="${bookName}"></p> -->
+</body>
+<script>
+    $(document).ready(function() {
+        $('#libraryListing').DataTable({searching: false});
+    });
+</script>
+</html>

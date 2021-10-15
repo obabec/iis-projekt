@@ -1,0 +1,76 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css" id="bootstrap-css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css" id="bootstrap-data">
+</head>
+<body>
+<form th:action="@{/library}" method="POST" th:object="${library}">
+    <input type="hidden" th:value="${library.id}" th:field="*{id}">
+    <div class="row">
+        <div class="col-sm-4">
+            <input type="text" class="form-control" placeholder="" th:name="name"
+                    th:value="${library.name}" th:field="*{name}"/>
+        </div>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" placeholder="" th:name="tag"
+                   th:value="${library.tag}" th:field="*{tag}"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <input type="text" class="form-control" placeholder="" th:name="city"
+                   th:value="${library.city}" th:field="*{city}"/>
+        </div>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" placeholder="" th:name="street"
+                   th:value="${library.street}" th:field="*{street}"/>
+        </div>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" placeholder="" th:name="street_number"
+                   th:value="${library.streetNumber}" th:field="*{streetNumber}"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <input type="time" class="form-control" placeholder="" th:name="from_time"
+                   th:value="${library.openFrom}" th:field="*{openFrom}"/>
+        </div>
+        <div class="col-sm-4">
+            <input type="time" class="form-control" placeholder="" th:name="to_time"
+                   th:value="${library.openTo}" th:field="*{openTo}"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-8">
+            <input type="textarea" class="form-control" placeholder="" th:name="description"
+                   th:value="${library.description}" th:field="*{description}"/>
+        </div>
+    </div>
+    <div class="col">
+        <input class="form-control" type="submit"/>
+    </div>
+
+</form>
+<a th:href="@{/(library_name=${library.name})}">
+    <button class="btn btn-primary">
+        Spravovat knizni tituly v knihovne
+    </button>
+</a>
+<a th:href="@{/library(library_id=${library.id})}">
+    <button class="btn btn-primary">
+        Spravovat rezervane
+    </button>
+</a>
+</body>
+<script>
+    $(document).ready(function() {
+        $('#bookListing').DataTable({searching: false});
+    });
+</script>
+</html>
