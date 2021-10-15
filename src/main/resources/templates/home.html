@@ -69,15 +69,21 @@
         <th>Datum vydani</th>
         <th>Zanr</th>
         <th>Autori</th>
+        <th>ISBN</th>
+        <th>Vydavatel</th>
+        <th>Hodnoceni</th>
     </tr>
     </thead>
     <tbody>
-        <tr th:each="book : ${books}">
-            <td th:text="${book.name}">Onions</td>
-            <td th:text="${book.release}">2.41</td>
-            <td th:text="${book.genre}">yes</td>
-            <td th:text="${book.authors}">Henrich</td>
-        </tr>
+    <tr th:each="book : ${books}">
+        <td th:text="${book.name}">Onions</td>
+        <td th:text="${book.release}">2.41</td>
+        <td th:text="${book.genre}">yes</td>
+        <td th:text="${book.authors}">Henrich</td>
+        <td th:text="${book.isbn}"> AC12</td>
+        <td th:text="${book.publisher}">Franz Josef</td>
+        <td th:text="${book.rate}">Franz Josef</td>
+    </tr>
     </tbody>
     <tfoot>
     <tr>
@@ -85,6 +91,9 @@
         <th>Datum vydani</th>
         <th>Zanr</th>
         <th>Autori</th>
+        <th>ISBN</th>
+        <th>Vydavatel</th>
+        <th>Hodnoceni</th>
     </tr>
     </tfoot>
 </table>
