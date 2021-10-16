@@ -83,6 +83,11 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public Book findById(int id) {
+        return bookRepository.findById(id);
+    }
+
+    @Override
     public Iterable<Book> executeQuery(String query) {
         return ((List<Book>) entityManager.createNativeQuery(query, Book.class).getResultList());
     }

@@ -53,4 +53,7 @@ public interface BookRepository extends CrudRepository<Book, Integer> {
     @Query(value = "SELECT * FROM book b WHERE library_id IN (select id from library where name like CONCAT('%', :libraryName, '%'))", nativeQuery = true)
     Iterable<Book> findAllInLibrary(@Param("libraryName") String libraryName);
 
+    @Query(value="SELECT * FROM book b WHERE b.id = :id")
+    Book findById(@Param("id") int id);
+
 }

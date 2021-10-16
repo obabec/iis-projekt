@@ -6,6 +6,7 @@ import java.sql.Date;
 
 public interface BookService {
     Iterable<Book> findAll();
+    Book findById(int id);
     Iterable<Book> findByName(String name, String libraryName);
     Iterable<Book> findAvailableByName(String name, String libraryName);
     Iterable<Book> findByAuthorName(String authorName, String libraryName);
