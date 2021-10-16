@@ -6,6 +6,7 @@ import java.sql.Date;
 
 public interface BookService {
     Iterable<Book> findAll();
+    Book findById(int id);
     Iterable<Book> findByName(String name, String libraryName);
     Iterable<Book> findAvailableByName(String name, String libraryName);
     Iterable<Book> findByAuthorName(String authorName, String libraryName);
@@ -16,5 +17,6 @@ public interface BookService {
     Iterable<Book> findAvailableByAuthorName(String authorName, String libraryName);
     Iterable<String> findAllGenres();
     Iterable<Book> executeQuery(String query);
-    void addNewBook(Integer libraryId, String name, Date release, String isbn, String publisher, String genre, Short rate);
+    int addNewBook(Integer libraryId, String name, Date release, String isbn, String publisher, String genre, Short rate);
+    void updateBook(Book book);
 }

@@ -25,7 +25,7 @@ SET default_table_access_method = heap;
 --
 
 CREATE TABLE public.authorship (
-    id integer NOT NULL,
+    id SERIAL,
     book_id integer NOT NULL,
     person_id integer NOT NULL
 );
@@ -38,7 +38,7 @@ ALTER TABLE public.authorship OWNER TO "compose-postgres";
 --
 
 CREATE TABLE public.blocking (
-    id integer NOT NULL,
+    id SERIAL,
     book_id integer NOT NULL,
     person_id integer NOT NULL,
     date_from date,
@@ -54,7 +54,7 @@ ALTER TABLE public.blocking OWNER TO "compose-postgres";
 --
 
 CREATE TABLE public.book (
-    id integer NOT NULL,
+    id SERIAL,
     library_id integer NOT NULL,
     name character varying(50),
     release date,
@@ -86,7 +86,7 @@ ALTER TABLE public.hibernate_sequence OWNER TO "compose-postgres";
 --
 
 CREATE TABLE public.library (
-    id integer NOT NULL,
+    id SERIAL,
     name character varying(50),
     tag character(5),
     street character varying(255),
@@ -105,7 +105,7 @@ ALTER TABLE public.library OWNER TO "compose-postgres";
 --
 
 CREATE TABLE public.person (
-    id integer NOT NULL,
+    id SERIAL,
     name character varying(20),
     surname character varying(50),
     birth_date date,
