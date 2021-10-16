@@ -2,11 +2,13 @@ package isu.library.controllers;
 
 import isu.library.model.entity.Book;
 import isu.library.model.entity.Library;
+import isu.library.model.entity.LibraryReservation;
 import isu.library.model.query.BookQueryBuilder;
 import isu.library.model.query.LibraryQueryBuilder;
 import isu.library.model.service.BookService;
 import isu.library.model.service.LibraryService;
 import isu.library.model.service.PersonService;
+import isu.library.model.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -27,6 +29,9 @@ public class HomeController {
 
     @Autowired
     private PersonService personService;
+
+    @Autowired
+    private ReservationService reservationService;
 
     @GetMapping("/")
     public String home(@RequestParam(name="book_name", required = false, defaultValue = "") String bookName,
@@ -125,5 +130,23 @@ public class HomeController {
         libraryService.updateLibrary(library);
         modelMap.put("library", library);
         return "library";
+    }
+
+    //todo: je potreba vyresit kdy budeme mazat prosle rezervace
+    @GetMapping("/reservations")
+    public String reservations(@RequestParam(name="library_id", required = true, defaultValue = "") Integer libraryId,
+                               @RequestParam(name="reservation_id", required = false, defaultValue = "") Integer reservationId,
+                               @RequestParam(name="action", required = false, defaultValue = "") Integer action,
+                               ModelMap modelMap) {
+        if (reservationId != null) {
+            if (action == 1) {
+                reservationService.switchToBorrow(reservationId);
+            } else {
+                reservationService.deleteReservation(reservationId);
+            }
+        }
+        modelMap.put("library", libraryId);
+        modelMap.put("reservations", reservationService.findAllReservationsInLibrary(libraryId));
+        return "reservations";
     }
 }
