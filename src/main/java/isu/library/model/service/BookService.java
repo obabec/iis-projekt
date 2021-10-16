@@ -17,5 +17,6 @@ public interface BookService {
     Iterable<Book> findAvailableByAuthorName(String authorName, String libraryName);
     Iterable<String> findAllGenres();
     Iterable<Book> executeQuery(String query);
-    void addNewBook(Integer libraryId, String name, Date release, String isbn, String publisher, String genre, Short rate);
+    int addNewBook(Integer libraryId, String name, Date release, String isbn, String publisher, String genre, Short rate);
+    void updateBook(Book book);
 }

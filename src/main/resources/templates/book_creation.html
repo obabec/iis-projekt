@@ -10,7 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </head>
 <body>
-<form method="POST" th:action="@{/book}" th:object="${book}">
+<form method="POST" th:action="${book.id == 0 ?'/book':'/book/' + book.id}" th:object="${book}">
     <div class="row">
         <div class="col-sm-4">
             <input type="text" class="form-control" placeholder="Jmeno knihy" th:name="name" th:value="${book.name}"/>
@@ -21,26 +21,26 @@
             </select>
         </div>
         <div class="col-sm-4">
-            <input type="text" class="form-control" placeholder="Žánr" th:name="genre"/>
+            <input type="text" class="form-control" placeholder="Žánr" th:name="genre" th:value="${book.genre}"/>
         </div>
     </div>
     <div class="row">
         <div class="col-sm-4">
-            <input type="text" class="form-control" placeholder="Autor" th:name="authors"/>
+            <input type="text" class="form-control" placeholder="Autor" th:name="authors" th:value="${book.authors}"/>
         </div>
         <div class="col-sm-3">
-            <input type="date" class="form-control" th:name="release"/>
+            <input type="date" class="form-control" th:name="release" th:value="${book.release}"/>
         </div>
     </div>
     <div class="row">
         <div class="col-sm-2">
-            <input type="text" class="form-control" placeholder="ISBN" th:name="isbn"/>
+            <input type="text" class="form-control" placeholder="ISBN" th:name="isbn" th:value="${book.isbn}"/>
         </div>
         <div class="col-sm-3">
-            <input type="text" class="form-control" placeholder="vydavatel" th:name="publisher"/>
+            <input type="text" class="form-control" placeholder="vydavatel" th:name="publisher" th:value="${book.publisher}"/>
         </div>
         <div class="col-sm-2">
-            <input type="number" id="rating_input" min="1" max="10" th:name="rate"/>
+            <input type="number" id="rating_input" min="1" max="10" th:name="rate" th:value="${book.rate}"/>
             <label class="form-check-label" for="rating_input">
                 rating
             </label>
@@ -56,6 +56,16 @@
     // In your Javascript (external .js resource or <script> tag)
     $(document).ready(function() {
         $('.library_search').select2();
+    });
+    $('select').select2({
+        placeholder: [[${library_id}]] != 0?{
+        id: [[${library_id}]], // the value of the option
+        text: 'Select an option'
+        }:
+        {
+        id: -1, // the value of the option
+        text: 'Select an option'
+        }
     });
 </script>
 </html>
