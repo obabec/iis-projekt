@@ -29,7 +29,7 @@ public class Reservation {
     @Column(name = "date_to")
     private Date dateTo;
     @Column(name = "is_borrowed")
-    private boolean borrowed;
+    private Boolean borrowed;
 
     public Reservation(Integer bookId, Integer parsonId, Date dateFrom, Date dateTo, boolean borrowed) {
         this.bookId = bookId;
