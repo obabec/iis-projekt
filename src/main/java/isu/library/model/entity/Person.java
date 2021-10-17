@@ -25,7 +25,17 @@ public class Person {
     private String surname;
     @Column(name = "birth_date")
     private Date birthDate;
-    private Short role;
+    private String role;
     private String username;
     private String password;
+
+    public Person(String name, String surname, Date birthDate, String role, String username, String password) {
+        this.name = name;
+        this.surname = surname;
+        this.birthDate = birthDate;
+        this.role = role;
+        this.username = username;
+        this.password = password;
+    }
+
 }
