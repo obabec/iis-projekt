@@ -6,60 +6,136 @@
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css" id="bootstrap-css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css" id="bootstrap-data">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
 </head>
 <body>
-<table id="libraryListing" class="table table-hover">
-    <thead>
-    <tr>
-        <th>Jmeno knihy</th>
-        <th>ISBN</th>
-        <th>Od</th>
-        <th>Do</th>
-        <th>Jmeno</th>
-        <th>Prijimeni</th>
-        <th>Datum naroznei</th>
-        <th>Stav</th>
-        <th>Akce</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="reservation : ${reservations}">
-        <td th:text="${reservation.bookName}">Onions</td>
-        <td th:text="${reservation.isbn}">Onions</td>
-        <td th:text="${{reservation.dateFrom}}">Onions</td>
-        <td th:text="${{reservation.dateTo}}">Onions</td>
-        <td th:text="${reservation.name}">2.41</td>
-        <td th:text="${reservation.surname}">yes</td>
-        <td th:text="${reservation.birthDate}">yes</td>
-        <td th:switch="${reservation.borrowed}">
-            <span th:case="false">Rezervovano</span>
-            <span th:case="*">Vypujceno</span>
-        </td>
+<div class="container-fluid">
+    <div class="row flex-nowrap">
+        <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
+            <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+                <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                    <span class="fs-5 d-none d-sm-inline">Menu</span>
+                </a>
+                <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+                    <li sec:authorize="isAnonymous()">
+                        <a href="/login" class="nav-link px-0 align-middle">
+                            <i class="fs-4 bi-unlock"></i> <span class="ms-1 d-none d-sm-inline">Login</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/" class="nav-link align-middle px-0">
+                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Sprava knih</span>
+                        </a>
+                    </li>
+                    <li sec:authorize="hasRole('ADMIN')">
+                        <a href="/libraries" class="nav-link px-0 align-middle">
+                            <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Sprava knihoven</span></a>
+                    </li>
+                    <li sec:authorize="hasAnyRole('LIBRARIAN', 'ADMIN')">
+                        <a th:href="@{/library(library_id=${library})}" class="nav-link px-0 align-middle">
+                            <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Sprava knihovny</span></a>
+                    </li>
+                    <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN')">
+                        <a href="/book" class="nav-link px-0 align-middle">
+                            <i class="fs-4 bi-book"></i> <span class="ms-1 d-none d-sm-inline">Pridani knih</span></a>
+                    </li>
+                    <li sec:authorize="hasRole('ADMIN')">
+                        <a href="#" class="nav-link px-0 align-middle">
+                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Sprava uzivatelu</span></a>
+                    </li>
+                    <!--<li>
+                        <a href="#submenu2" data-bs-toggle="collapse" class="nav-link px-0 align-middle ">
+                            <i class="fs-4 bi-bootstrap"></i> <span class="ms-1 d-none d-sm-inline">Bootstrap</span></a>
+                        <ul class="collapse nav flex-column ms-1" id="submenu2" data-bs-parent="#menu">
+                            <li class="w-100">
+                                <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Item</span> 1</a>
+                            </li>
+                            <li>
+                                <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Item</span> 2</a>
+                            </li>
+                        </ul>
+                    </li> -->
+                </ul>
+                <hr>
+                <div class="dropdown pb-4" sec:authorize="isAuthenticated()">
+                    <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fs-4 bi-person-circle"></i>
+                        <span class="d-none d-sm-inline mx-1" sec:authentication="name"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
 
-        <td th:switch="${reservation.borrowed}">
-            <!-- Add arguments to href - reservation id and library id -->
-            <a th:case="false" th:href="@{/reservations(reservation_id=${reservation.id}, library_id=${library}, action=1)}">
-                <button class="btn btn-primary">Vypujcit</button>
-            </a>
-            <a th:case="true" th:href="@{/reservations(reservation_id=${reservation.id}, library_id=${library}, action=2)}">
-                <button class="btn btn-warning">Vratit knihu</button>
-            </a>
-            <button th:case="*" class="btn btn-danger">Nevraceno</button>
-        </td>
-    </tr>
-    </tbody>
-    <tfoot>
-    <tr>
-        <th>Id</th>
-        <th>Jmeno</th>
-        <th>Tag</th>
-        <th>Mesto</th>
-        <th>Akce</th>
-    </tr>
-    </tfoot>
-</table>
+                        <li sec:authorize="hasRole('ADMIN')"><span class="dropdown-item">Administrator</span> </li>
+                        <li sec:authorize="hasRole('LIBRARIAN')"><span class="dropdown-item">Knihovnik</span> </li>
+                        <li sec:authorize="hasRole('READER')"><span class="dropdown-item">Ctenar</span> </li>
+
+                        <li sec:authorize="hasRole('READER')"><a class="dropdown-item" href="#">My reservations</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="/logout">Sign out</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col py-3">
+            <table id="libraryListing" class="table table-hover">
+                <thead>
+                <tr>
+                    <th>Jmeno knihy</th>
+                    <th>ISBN</th>
+                    <th>Od</th>
+                    <th>Do</th>
+                    <th>Jmeno</th>
+                    <th>Prijimeni</th>
+                    <th>Datum naroznei</th>
+                    <th>Stav</th>
+                    <th>Akce</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="reservation : ${reservations}">
+                    <td th:text="${reservation.bookName}">Onions</td>
+                    <td th:text="${reservation.isbn}">Onions</td>
+                    <td th:text="${{reservation.dateFrom}}">Onions</td>
+                    <td th:text="${{reservation.dateTo}}">Onions</td>
+                    <td th:text="${reservation.name}">2.41</td>
+                    <td th:text="${reservation.surname}">yes</td>
+                    <td th:text="${reservation.birthDate}">yes</td>
+                    <td th:switch="${reservation.borrowed}">
+                        <span th:case="false">Rezervovano</span>
+                        <span th:case="*">Vypujceno</span>
+                    </td>
+
+                    <td th:switch="${reservation.borrowed}">
+                        <!-- Add arguments to href - reservation id and library id -->
+                        <a th:case="false" th:href="@{/reservations(reservation_id=${reservation.id}, library_id=${library}, action=1)}">
+                            <button class="btn btn-primary">Vypujcit</button>
+                        </a>
+                        <a th:case="true" th:href="@{/reservations(reservation_id=${reservation.id}, library_id=${library}, action=2)}">
+                            <button class="btn btn-warning">Vratit knihu</button>
+                        </a>
+                        <button th:case="*" class="btn btn-danger">Nevraceno</button>
+                    </td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th>Id</th>
+                    <th>Jmeno</th>
+                    <th>Tag</th>
+                    <th>Mesto</th>
+                    <th>Akce</th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
 <!-- <p th:text="${bookName}"></p> -->
 </body>
 <script>

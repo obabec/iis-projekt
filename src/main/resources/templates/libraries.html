@@ -6,63 +6,126 @@
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css" id="bootstrap-css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css" id="bootstrap-data">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
 </head>
 <body>
-<form th:action="@{/libraries}">
-    <div class="row">
-        <div class="col-sm-4">
-            <input type="text" class="form-control" placeholder="Jmeno knihovny" th:name="library_name" th:value="${lib_name}"/>
-        </div>
-        <div class="col-sm-4">
-            <input type="text" class="form-control" placeholder="Tag" th:name="library_tag" th:value="${lib_tag}"/>
-        </div>
-        <div class="col-sm-4">
-            <input type="text" class="form-control" placeholder="City" th:name="library_city" th:value="${lib_name}"/>
-        </div>
-    </div>
-    <div class="col">
-        <input class="form-control" type="submit"/>
-    </div>
-
-</form>
-
-<table id="libraryListing" class="table table-hover">
-    <thead>
-    <tr>
-        <th>Id</th>
-        <th>Jmeno</th>
-        <th>Tag</th>
-        <th>Mesto</th>
-        <th>Akce</th>
-    </tr>
-    </thead>
-    <tbody>
-        <tr th:each="library : ${libraries}">
-            <td th:text="${library.id}">Onions</td>
-            <td th:text="${library.name}">Onions</td>
-            <td th:text="${library.tag}">2.41</td>
-            <td th:text="${library.city}">yes</td>
-            <td>
-                <a th:href="@{/library(library_id=${library.id})}">
-                    <button class="btn btn-success">
-                        Spravovat
-                    </button>
+<div class="container-fluid">
+    <div class="row flex-nowrap">
+        <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
+            <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+                <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                    <span class="fs-5 d-none d-sm-inline">Menu</span>
                 </a>
-            </td>
-        </tr>
-    </tbody>
-    <tfoot>
-    <tr>
-        <th>Id</th>
-        <th>Jmeno</th>
-        <th>Tag</th>
-        <th>Mesto</th>
-        <th>Akce</th>
-    </tr>
-    </tfoot>
-</table>
+                <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+                    <li class="nav-item">
+                        <a href="/" class="nav-link align-middle px-0">
+                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Sprava knih</span>
+                        </a>
+                    </li>
+                    <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN')">
+                        <a href="/book" class="nav-link px-0 align-middle">
+                            <i class="fs-4 bi-book"></i> <span class="ms-1 d-none d-sm-inline">Pridani knih</span></a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link px-0 align-middle">
+                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Sprava uzivatelu</span></a>
+                    </li>
+                    <!--<li>
+                        <a href="#submenu2" data-bs-toggle="collapse" class="nav-link px-0 align-middle ">
+                            <i class="fs-4 bi-bootstrap"></i> <span class="ms-1 d-none d-sm-inline">Bootstrap</span></a>
+                        <ul class="collapse nav flex-column ms-1" id="submenu2" data-bs-parent="#menu">
+                            <li class="w-100">
+                                <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Item</span> 1</a>
+                            </li>
+                            <li>
+                                <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Item</span> 2</a>
+                            </li>
+                        </ul>
+                    </li> -->
+                </ul>
+                <hr>
+                <div class="dropdown pb-4" sec:authorize="isAuthenticated()">
+                    <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fs-4 bi-person-circle"></i>
+                        <span class="d-none d-sm-inline mx-1" sec:authentication="name"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+
+                        <li sec:authorize="hasRole('ADMIN')"><span class="dropdown-item">Administrator</span> </li>
+                        <li sec:authorize="hasRole('LIBRARIAN')"><span class="dropdown-item">Knihovnik</span> </li>
+                        <li sec:authorize="hasRole('READER')"><span class="dropdown-item">Ctenar</span> </li>
+
+                        <li sec:authorize="hasRole('READER')"><a class="dropdown-item" href="#">My reservations</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="/logout">Sign out</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col py-3">
+            <form th:action="@{/libraries}">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" placeholder="Jmeno knihovny" th:name="library_name" th:value="${lib_name}"/>
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" placeholder="Tag" th:name="library_tag" th:value="${lib_tag}"/>
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" placeholder="City" th:name="library_city" th:value="${lib_name}"/>
+                    </div>
+                </div>
+                <div class="col">
+                    <input class="form-control" type="submit"/>
+                </div>
+
+            </form>
+            <table id="libraryListing" class="table table-hover">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Jmeno</th>
+                    <th>Tag</th>
+                    <th>Mesto</th>
+                    <th>Akce</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="library : ${libraries}">
+                    <td th:text="${library.id}">Onions</td>
+                    <td th:text="${library.name}">Onions</td>
+                    <td th:text="${library.tag}">2.41</td>
+                    <td th:text="${library.city}">yes</td>
+                    <td>
+                        <a th:href="@{/library(library_id=${library.id})}">
+                            <button class="btn btn-success">
+                                Spravovat
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th>Id</th>
+                    <th>Jmeno</th>
+                    <th>Tag</th>
+                    <th>Mesto</th>
+                    <th>Akce</th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
 <!-- <p th:text="${bookName}"></p> -->
 </body>
 <script>

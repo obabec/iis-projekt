@@ -3,7 +3,7 @@
 --
 
 -- Dumped from database version 13.1
--- Dumped by pg_dump version 13.1
+-- Dumped by pg_dump version 14.0
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -15,6 +15,22 @@ SET check_function_bodies = false;
 SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
+
+--
+-- Name: public; Type: SCHEMA; Schema: -; Owner: compose-postgres
+--
+
+CREATE SCHEMA public;
+
+
+ALTER SCHEMA public OWNER TO "compose-postgres";
+
+--
+-- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: compose-postgres
+--
+
+COMMENT ON SCHEMA public IS 'standard public schema';
+
 
 SET default_tablespace = '';
 
@@ -199,7 +215,8 @@ CREATE TABLE public.person (
     birth_date date,
     role character varying(20),
     username character varying(50),
-    password character varying(255)
+    password character varying(255),
+    library_id integer
 );
 
 
@@ -293,6 +310,7 @@ COPY public.book (id, library_id, name, release, isbn, publisher, genre, rate) F
 
 COPY public.library (id, name, tag, street, city, street_number, from_time, to_time, description) FROM stdin;
 1	knihovnos	k1   	Plumlovska	Prostejov	127	08:00:00	18:00:00	perfektni knihovna kamo
+2	kasdfa	k1   	Plumlovska	Prostejov	127	08:00:00	18:00:00	perfektni knihovna kamo
 \.
 
 
@@ -300,8 +318,10 @@ COPY public.library (id, name, tag, street, city, street_number, from_time, to_t
 -- Data for Name: person; Type: TABLE DATA; Schema: public; Owner: compose-postgres
 --
 
-COPY public.person (id, name, surname, birth_date, role, username, password) FROM stdin;
-1	Tomas	Korbar	1970-01-01	ADMIN	korbonaut	$2a$10$GRQmNECbcOX.e1IvtwgnOelX6O4VVS7sXxfYsySOeqN/Gy6ZZ5hNG
+COPY public.person (id, name, surname, birth_date, role, username, password, library_id) FROM stdin;
+1	Tomas	Korbar	1970-01-01	ADMIN	korbonaut	$2a$10$GRQmNECbcOX.e1IvtwgnOelX6O4VVS7sXxfYsySOeqN/Gy6ZZ5hNG	\N
+2	Tomas1	Korbar2	1970-01-01	LIBRARIAN	libr	$2a$10$GRQmNECbcOX.e1IvtwgnOelX6O4VVS7sXxfYsySOeqN/Gy6ZZ5hNG	1
+3	Tomas1	Korbar2	1970-01-01	LIBRARIAN	libr2	$2a$10$GRQmNECbcOX.e1IvtwgnOelX6O4VVS7sXxfYsySOeqN/Gy6ZZ5hNG	1
 \.
 
 
@@ -344,7 +364,7 @@ SELECT pg_catalog.setval('public.library_id_seq', 1, false);
 -- Name: person_id_seq; Type: SEQUENCE SET; Schema: public; Owner: compose-postgres
 --
 
-SELECT pg_catalog.setval('public.person_id_seq', 1, false);
+SELECT pg_catalog.setval('public.person_id_seq', 1, true);
 
 
 --
@@ -388,6 +408,13 @@ ALTER TABLE ONLY public.person
 
 
 --
+-- Name: person_username_uindex; Type: INDEX; Schema: public; Owner: compose-postgres
+--
+
+CREATE UNIQUE INDEX person_username_uindex ON public.person USING btree (username);
+
+
+--
 -- Name: blocking book; Type: FK CONSTRAINT; Schema: public; Owner: compose-postgres
 --
 
@@ -425,6 +452,14 @@ ALTER TABLE ONLY public.blocking
 
 ALTER TABLE ONLY public.authorship
     ADD CONSTRAINT person FOREIGN KEY (person_id) REFERENCES public.person(id);
+
+
+--
+-- Name: person person_library_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: compose-postgres
+--
+
+ALTER TABLE ONLY public.person
+    ADD CONSTRAINT person_library_id_fk FOREIGN KEY (library_id) REFERENCES public.library(id);
 
 
 --
