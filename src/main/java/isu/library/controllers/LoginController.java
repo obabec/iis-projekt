@@ -16,7 +16,6 @@ public class LoginController {
     @PostMapping("/login")
     public String login(@RequestParam(name="username", required = true, defaultValue = "") String username,
                         @RequestParam(name="password", required = true, defaultValue = "") String password) {
-
         return "redirect:/home";
     }
 }
