@@ -25,7 +25,7 @@ SET default_table_access_method = heap;
 --
 
 CREATE TABLE public.authorship (
-    id SERIAL,
+    id integer NOT NULL,
     book_id integer NOT NULL,
     person_id integer NOT NULL
 );
@@ -34,11 +34,33 @@ CREATE TABLE public.authorship (
 ALTER TABLE public.authorship OWNER TO "compose-postgres";
 
 --
+-- Name: authorship_id_seq; Type: SEQUENCE; Schema: public; Owner: compose-postgres
+--
+
+CREATE SEQUENCE public.authorship_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.authorship_id_seq OWNER TO "compose-postgres";
+
+--
+-- Name: authorship_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: compose-postgres
+--
+
+ALTER SEQUENCE public.authorship_id_seq OWNED BY public.authorship.id;
+
+
+--
 -- Name: blocking; Type: TABLE; Schema: public; Owner: compose-postgres
 --
 
 CREATE TABLE public.blocking (
-    id SERIAL,
+    id integer NOT NULL,
     book_id integer NOT NULL,
     person_id integer NOT NULL,
     date_from date,
@@ -50,11 +72,33 @@ CREATE TABLE public.blocking (
 ALTER TABLE public.blocking OWNER TO "compose-postgres";
 
 --
+-- Name: blocking_id_seq; Type: SEQUENCE; Schema: public; Owner: compose-postgres
+--
+
+CREATE SEQUENCE public.blocking_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.blocking_id_seq OWNER TO "compose-postgres";
+
+--
+-- Name: blocking_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: compose-postgres
+--
+
+ALTER SEQUENCE public.blocking_id_seq OWNED BY public.blocking.id;
+
+
+--
 -- Name: book; Type: TABLE; Schema: public; Owner: compose-postgres
 --
 
 CREATE TABLE public.book (
-    id SERIAL,
+    id integer NOT NULL,
     library_id integer NOT NULL,
     name character varying(50),
     release date,
@@ -66,6 +110,28 @@ CREATE TABLE public.book (
 
 
 ALTER TABLE public.book OWNER TO "compose-postgres";
+
+--
+-- Name: book_id_seq; Type: SEQUENCE; Schema: public; Owner: compose-postgres
+--
+
+CREATE SEQUENCE public.book_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.book_id_seq OWNER TO "compose-postgres";
+
+--
+-- Name: book_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: compose-postgres
+--
+
+ALTER SEQUENCE public.book_id_seq OWNED BY public.book.id;
+
 
 --
 -- Name: hibernate_sequence; Type: SEQUENCE; Schema: public; Owner: compose-postgres
@@ -86,7 +152,7 @@ ALTER TABLE public.hibernate_sequence OWNER TO "compose-postgres";
 --
 
 CREATE TABLE public.library (
-    id SERIAL,
+    id integer NOT NULL,
     name character varying(50),
     tag character(5),
     street character varying(255),
@@ -101,21 +167,100 @@ CREATE TABLE public.library (
 ALTER TABLE public.library OWNER TO "compose-postgres";
 
 --
+-- Name: library_id_seq; Type: SEQUENCE; Schema: public; Owner: compose-postgres
+--
+
+CREATE SEQUENCE public.library_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.library_id_seq OWNER TO "compose-postgres";
+
+--
+-- Name: library_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: compose-postgres
+--
+
+ALTER SEQUENCE public.library_id_seq OWNED BY public.library.id;
+
+
+--
 -- Name: person; Type: TABLE; Schema: public; Owner: compose-postgres
 --
 
 CREATE TABLE public.person (
-    id SERIAL,
+    id integer NOT NULL,
     name character varying(20),
     surname character varying(50),
     birth_date date,
-    role smallint,
+    role character varying(20),
     username character varying(50),
     password character varying(255)
 );
 
 
 ALTER TABLE public.person OWNER TO "compose-postgres";
+
+--
+-- Name: person_id_seq; Type: SEQUENCE; Schema: public; Owner: compose-postgres
+--
+
+CREATE SEQUENCE public.person_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.person_id_seq OWNER TO "compose-postgres";
+
+--
+-- Name: person_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: compose-postgres
+--
+
+ALTER SEQUENCE public.person_id_seq OWNED BY public.person.id;
+
+
+--
+-- Name: authorship id; Type: DEFAULT; Schema: public; Owner: compose-postgres
+--
+
+ALTER TABLE ONLY public.authorship ALTER COLUMN id SET DEFAULT nextval('public.authorship_id_seq'::regclass);
+
+
+--
+-- Name: blocking id; Type: DEFAULT; Schema: public; Owner: compose-postgres
+--
+
+ALTER TABLE ONLY public.blocking ALTER COLUMN id SET DEFAULT nextval('public.blocking_id_seq'::regclass);
+
+
+--
+-- Name: book id; Type: DEFAULT; Schema: public; Owner: compose-postgres
+--
+
+ALTER TABLE ONLY public.book ALTER COLUMN id SET DEFAULT nextval('public.book_id_seq'::regclass);
+
+
+--
+-- Name: library id; Type: DEFAULT; Schema: public; Owner: compose-postgres
+--
+
+ALTER TABLE ONLY public.library ALTER COLUMN id SET DEFAULT nextval('public.library_id_seq'::regclass);
+
+
+--
+-- Name: person id; Type: DEFAULT; Schema: public; Owner: compose-postgres
+--
+
+ALTER TABLE ONLY public.person ALTER COLUMN id SET DEFAULT nextval('public.person_id_seq'::regclass);
+
 
 --
 -- Data for Name: authorship; Type: TABLE DATA; Schema: public; Owner: compose-postgres
@@ -156,14 +301,50 @@ COPY public.library (id, name, tag, street, city, street_number, from_time, to_t
 --
 
 COPY public.person (id, name, surname, birth_date, role, username, password) FROM stdin;
+1	Tomas	Korbar	1970-01-01	ADMIN	korbonaut	$2a$10$GRQmNECbcOX.e1IvtwgnOelX6O4VVS7sXxfYsySOeqN/Gy6ZZ5hNG
 \.
+
+
+--
+-- Name: authorship_id_seq; Type: SEQUENCE SET; Schema: public; Owner: compose-postgres
+--
+
+SELECT pg_catalog.setval('public.authorship_id_seq', 1, false);
+
+
+--
+-- Name: blocking_id_seq; Type: SEQUENCE SET; Schema: public; Owner: compose-postgres
+--
+
+SELECT pg_catalog.setval('public.blocking_id_seq', 1, false);
+
+
+--
+-- Name: book_id_seq; Type: SEQUENCE SET; Schema: public; Owner: compose-postgres
+--
+
+SELECT pg_catalog.setval('public.book_id_seq', 1, false);
 
 
 --
 -- Name: hibernate_sequence; Type: SEQUENCE SET; Schema: public; Owner: compose-postgres
 --
 
-SELECT pg_catalog.setval('public.hibernate_sequence', 1, false);
+SELECT pg_catalog.setval('public.hibernate_sequence', 1, true);
+
+
+--
+-- Name: library_id_seq; Type: SEQUENCE SET; Schema: public; Owner: compose-postgres
+--
+
+SELECT pg_catalog.setval('public.library_id_seq', 1, false);
+
+
+--
+-- Name: person_id_seq; Type: SEQUENCE SET; Schema: public; Owner: compose-postgres
+--
+
+SELECT pg_catalog.setval('public.person_id_seq', 1, false);
 
 
 --

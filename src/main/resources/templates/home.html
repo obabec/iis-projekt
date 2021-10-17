@@ -97,7 +97,13 @@
     </tr>
     </tfoot>
 </table>
-<!-- <p th:text="${bookName}"></p> -->
+<div sec:authorize="hasRole('ADMIN')">
+    This content is only shown to administrators.
+</div>
+<div sec:authorize="hasRole('LIBRARIAN')">
+    This content is only shown to users.
+</div>
+Logged user: <span sec:authentication="name">Bob</span>
 </body>
 <script>
     $(document).ready(function() {
