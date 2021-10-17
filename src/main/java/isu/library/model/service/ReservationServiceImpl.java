@@ -2,6 +2,8 @@ package isu.library.model.service;
 
 import isu.library.model.entity.LibraryReservation;
 import isu.library.model.entity.Reservation;
+import isu.library.model.entity.UserReservation;
+import isu.library.model.repository.PersonRepository;
 import isu.library.model.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +20,6 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Autowired
     private ReservationRepository reservationRepository;
-
 
     @PersistenceContext
     EntityManager entityManager;
@@ -56,5 +57,11 @@ public class ReservationServiceImpl implements ReservationService {
             r.setDateTo(Date.valueOf(endDate));
             reservationRepository.save(r);
         }
+    }
+
+    @Override
+    public Iterable<UserReservation> findAllUserReservations(Integer personId) {
+        Iterable<UserReservation> userRes = entityManager.createNativeQuery("SELECT r.id, r.book_id, r.date_from, r.date_to, b.name, b.isbn, r.is_borrowed FROM blocking r INNER JOIN book b ON b.id = r.book_id WHERE r.person_id =" + personId, UserReservation.class).getResultList();
+        return userRes;
     }
 }

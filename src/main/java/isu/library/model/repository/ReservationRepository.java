@@ -7,7 +7,11 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
+
 @Repository("reservationRepository")
 public interface ReservationRepository extends CrudRepository<Reservation, Integer> {
     void deleteByBookId(Integer id);
+    void deleteReservationByDateFromBefore(Date lastResDate);
+    Iterable<Reservation> findReservationByDateFromBefore(Date lastResDate);
 }
