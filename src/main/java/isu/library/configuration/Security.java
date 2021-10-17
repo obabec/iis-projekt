@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.sql.Date;
 
@@ -36,7 +37,7 @@ public class Security extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
             .authorizeRequests()
-                .antMatchers("/home").permitAll()
+                .antMatchers("/").permitAll()
                 .antMatchers(HttpMethod.GET, "/book").permitAll()
                 .antMatchers(HttpMethod.POST, "/book").hasAnyRole("ADMIN", "LIBRARIAN")
                 .antMatchers(HttpMethod.GET, "/book/*").permitAll()
@@ -44,7 +45,8 @@ public class Security extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/libraries").hasRole("ADMIN")
                 .antMatchers("/library").hasAnyRole("ADMIN", "LIBRARIAN")
                 .antMatchers("/reservations").hasAnyRole("ADMIN", "LIBRARIAN")
-                .and().formLogin().loginPage("/login").permitAll();
+                .and().formLogin().loginPage("/login").permitAll()
+                .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET")).logoutSuccessUrl("/").invalidateHttpSession(true).deleteCookies("JSESSIONID").permitAll();
     }
 
     @Bean
