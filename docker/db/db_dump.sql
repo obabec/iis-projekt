@@ -16,22 +16,6 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
---
--- Name: public; Type: SCHEMA; Schema: -; Owner: compose-postgres
---
-
-CREATE SCHEMA public;
-
-
-ALTER SCHEMA public OWNER TO "compose-postgres";
-
---
--- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: compose-postgres
---
-
-COMMENT ON SCHEMA public IS 'standard public schema';
-
-
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;

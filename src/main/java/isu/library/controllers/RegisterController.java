@@ -36,7 +36,7 @@ public class RegisterController {
                            @RequestParam(name="birthdate", required = true, defaultValue = "") String birthdate,
                            ModelMap modelMap) {
         if (password.equals(password2)) {
-            Person new_user = new Person(name, surname, Date.valueOf(birthdate), "USER", username, bCryptPasswordEncoder.encode(password));
+            Person new_user = new Person(name, surname, Date.valueOf(birthdate), "USER", username, bCryptPasswordEncoder.encode(password), null);
             try {
                 userDetailsService.registerNewUserAccount(new_user);
             } catch (Exception e) {
