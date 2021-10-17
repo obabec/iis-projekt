@@ -28,14 +28,17 @@ public class Person {
     private String role;
     private String username;
     private String password;
+    @Column(name = "library_id")
+    private Integer libraryId;
 
-    public Person(String name, String surname, Date birthDate, String role, String username, String password) {
+    public Person(String name, String surname, Date birthDate, String role, String username, String password, Integer libraryId) {
         this.name = name;
         this.surname = surname;
         this.birthDate = birthDate;
         this.role = role;
         this.username = username;
         this.password = password;
+        this.libraryId = libraryId;
     }
 
 }

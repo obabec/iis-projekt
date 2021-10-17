@@ -23,16 +23,19 @@
                         <span class="fs-5 d-none d-sm-inline">Menu</span>
                     </a>
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link align-middle px-0">
-                                <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Sprava knih</span>
-                            </a>
+                        <li sec:authorize="isAnonymous()">
+                            <a href="/login" class="nav-link px-0 align-middle">
+                                <i class="fs-4 bi-unlock"></i> <span class="ms-1 d-none d-sm-inline">Login</span></a>
                         </li>
-                        <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN')">
+                        <li sec:authorize="hasRole('ADMIN')">
                             <a href="/libraries" class="nav-link px-0 align-middle">
                                 <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Sprava knihoven</span></a>
                         </li>
-                        <li sec:authorize="hasRole('ADMIN')">
+                        <li sec:authorize="hasRole('LIBRARIAN')">
+                            <a th:href="@{/library(library_id=${librarian_lib})}" class="nav-link px-0 align-middle">
+                                <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Sprava knihovny</span></a>
+                        </li>
+                        <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN')">
                             <a href="/book" class="nav-link px-0 align-middle">
                                 <i class="fs-4 bi-book"></i> <span class="ms-1 d-none d-sm-inline">Pridani knih</span></a>
                         </li>
@@ -54,7 +57,7 @@
                         </li> -->
                     </ul>
                     <hr>
-                    <div class="dropdown pb-4" sec:authorize="hasAnyRole('READER', 'ADMIN', 'LIBRARIAN')">
+                    <div class="dropdown pb-4" sec:authorize="isAuthenticated()">
                         <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fs-4 bi-person-circle"></i>
                             <span class="d-none d-sm-inline mx-1" sec:authentication="name"></span>
