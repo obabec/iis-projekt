@@ -3,7 +3,7 @@
 --
 
 -- Dumped from database version 13.1
--- Dumped by pg_dump version 14.0
+-- Dumped by pg_dump version 13.1
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -21,13 +21,48 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
+-- Name: author; Type: TABLE; Schema: public; Owner: compose-postgres
+--
+
+CREATE TABLE public.author (
+    id integer NOT NULL,
+    name character varying(50),
+    surname character varying(100)
+);
+
+
+ALTER TABLE public.author OWNER TO "compose-postgres";
+
+--
+-- Name: author_id_seq; Type: SEQUENCE; Schema: public; Owner: compose-postgres
+--
+
+CREATE SEQUENCE public.author_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.author_id_seq OWNER TO "compose-postgres";
+
+--
+-- Name: author_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: compose-postgres
+--
+
+ALTER SEQUENCE public.author_id_seq OWNED BY public.author.id;
+
+
+--
 -- Name: authorship; Type: TABLE; Schema: public; Owner: compose-postgres
 --
 
 CREATE TABLE public.authorship (
     id integer NOT NULL,
     book_id integer NOT NULL,
-    person_id integer NOT NULL
+    author_id integer NOT NULL
 );
 
 
@@ -229,6 +264,13 @@ ALTER SEQUENCE public.person_id_seq OWNED BY public.person.id;
 
 
 --
+-- Name: author id; Type: DEFAULT; Schema: public; Owner: compose-postgres
+--
+
+ALTER TABLE ONLY public.author ALTER COLUMN id SET DEFAULT nextval('public.author_id_seq'::regclass);
+
+
+--
 -- Name: authorship id; Type: DEFAULT; Schema: public; Owner: compose-postgres
 --
 
@@ -264,10 +306,18 @@ ALTER TABLE ONLY public.person ALTER COLUMN id SET DEFAULT nextval('public.perso
 
 
 --
+-- Data for Name: author; Type: TABLE DATA; Schema: public; Owner: compose-postgres
+--
+
+COPY public.author (id, name, surname) FROM stdin;
+\.
+
+
+--
 -- Data for Name: authorship; Type: TABLE DATA; Schema: public; Owner: compose-postgres
 --
 
-COPY public.authorship (id, book_id, person_id) FROM stdin;
+COPY public.authorship (id, book_id, author_id) FROM stdin;
 \.
 
 
@@ -310,6 +360,13 @@ COPY public.person (id, name, surname, birth_date, role, username, password, lib
 
 
 --
+-- Name: author_id_seq; Type: SEQUENCE SET; Schema: public; Owner: compose-postgres
+--
+
+SELECT pg_catalog.setval('public.author_id_seq', 1, false);
+
+
+--
 -- Name: authorship_id_seq; Type: SEQUENCE SET; Schema: public; Owner: compose-postgres
 --
 
@@ -349,6 +406,14 @@ SELECT pg_catalog.setval('public.library_id_seq', 1, false);
 --
 
 SELECT pg_catalog.setval('public.person_id_seq', 1, true);
+
+
+--
+-- Name: author author_pkey; Type: CONSTRAINT; Schema: public; Owner: compose-postgres
+--
+
+ALTER TABLE ONLY public.author
+    ADD CONSTRAINT author_pkey PRIMARY KEY (id);
 
 
 --
@@ -399,6 +464,14 @@ CREATE UNIQUE INDEX person_username_uindex ON public.person USING btree (usernam
 
 
 --
+-- Name: authorship author; Type: FK CONSTRAINT; Schema: public; Owner: compose-postgres
+--
+
+ALTER TABLE ONLY public.authorship
+    ADD CONSTRAINT author FOREIGN KEY (author_id) REFERENCES public.author(id);
+
+
+--
 -- Name: blocking book; Type: FK CONSTRAINT; Schema: public; Owner: compose-postgres
 --
 
@@ -427,14 +500,6 @@ ALTER TABLE ONLY public.book
 --
 
 ALTER TABLE ONLY public.blocking
-    ADD CONSTRAINT person FOREIGN KEY (person_id) REFERENCES public.person(id);
-
-
---
--- Name: authorship person; Type: FK CONSTRAINT; Schema: public; Owner: compose-postgres
---
-
-ALTER TABLE ONLY public.authorship
     ADD CONSTRAINT person FOREIGN KEY (person_id) REFERENCES public.person(id);
 
 
