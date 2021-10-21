@@ -28,12 +28,16 @@
                             <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Sprava knih</span>
                         </a>
                     </li>
+                    <li sec:authorize="isAnonymous()">
+                        <a href="/register" class="nav-link px-0 align-middle">
+                            <i class="fs-4 bi-gear-fill"></i> <span class="ms-1 d-none d-sm-inline">Register</span></a>
+                    </li>
                     <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN')">
                         <a href="/book" class="nav-link px-0 align-middle">
                             <i class="fs-4 bi-book"></i> <span class="ms-1 d-none d-sm-inline">Pridani knih</span></a>
                     </li>
                     <li>
-                        <a href="#" class="nav-link px-0 align-middle">
+                        <a href="/users" class="nav-link px-0 align-middle">
                             <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Sprava uzivatelu</span></a>
                     </li>
                     <!--<li>
@@ -110,6 +114,11 @@
                                 Spravovat
                             </button>
                         </a>
+                        <a th:href="@{/deleteLibrary(library_id=${library.id})}">
+                            <button class="btn btn-warning">
+                                Smazat knihovnu
+                            </button>
+                        </a>
                     </td>
                 </tr>
                 </tbody>
@@ -123,6 +132,11 @@
                 </tr>
                 </tfoot>
             </table>
+            <a sec:authorize="hasRole('ADMIN')" th:href="@{/library}">
+                <button class="btn btn-success">
+                    Pridat novou knihovny
+                </button>
+            </a>
         </div>
     </div>
 </div>

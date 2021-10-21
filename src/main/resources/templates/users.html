@@ -87,56 +87,42 @@
             </div>
         </div>
         <div class="col py-3">
-            <table id="libraryListing" class="table table-hover">
+            <table id="userListing" class="table table-hover">
                 <thead>
                 <tr>
-                    <th>Jmeno knihy</th>
-                    <th>ISBN</th>
-                    <th>Od</th>
-                    <th>Do</th>
                     <th>Jmeno</th>
                     <th>Prijimeni</th>
-                    <th>Datum naroznei</th>
-                    <th>Stav</th>
+                    <th>Datum narozeni</th>
+                    <th>Role</th>
+                    <th>Username</th>
                     <th>Akce</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="reservation : ${reservations}">
-                    <td th:text="${reservation.bookName}">Onions</td>
-                    <td th:text="${reservation.isbn}">Onions</td>
-                    <td th:text="${{reservation.dateFrom}}">Onions</td>
-                    <td th:text="${{reservation.dateTo}}">Onions</td>
-                    <td th:text="${reservation.name}">2.41</td>
-                    <td th:text="${reservation.surname}">yes</td>
-                    <td th:text="${reservation.birthDate}">yes</td>
-                    <td th:switch="${reservation.borrowed}">
-                        <span th:case="false">Rezervovano</span>
-                        <span th:case="*">Vypujceno</span>
-                    </td>
-
-                    <td th:switch="${reservation.borrowed}">
+                <tr th:each="user : ${users}">
+                    <td th:text="${user.name}">Onions</td>
+                    <td th:text="${user.surname}">Onions</td>
+                    <td th:text="${{user.birthDate}}">Onions</td>
+                    <td th:text="${{user.role}}">Onions</td>
+                    <td th:text="${user.username}">2.41</td>
+                    <td>
                         <!-- Add arguments to href - reservation id and library id -->
-                        <a th:case="false" th:href="@{/reservations(reservation_id=${reservation.id}, library_id=${library}, action=1)}">
-                            <button class="btn btn-primary">Vypujcit</button>
+                        <a th:href="@{/userDelete(user_id=${user.id})}">
+                            <button class="btn btn-primary">Smazat uzivatele</button>
                         </a>
-                        <a th:case="true" th:href="@{/reservations(reservation_id=${reservation.id}, library_id=${library}, action=2)}">
-                            <button class="btn btn-warning">Vratit knihu</button>
+                        <a th:href="@{/userUpdate(user_id=${user.id})}">
+                            <button class="btn btn-warning">Upravit uzivatele</button>
                         </a>
-                        <button th:case="*" class="btn btn-danger">Nevraceno</button>
                     </td>
                 </tr>
                 </tbody>
                 <tfoot>
                 <tr>
-                    <th>Jmeno knihy</th>
-                    <th>ISBN</th>
-                    <th>Od</th>
-                    <th>Do</th>
                     <th>Jmeno</th>
                     <th>Prijimeni</th>
-                    <th>Datum naroznei</th>
-                    <th>Stav</th>
+                    <th>Datum narozeni</th>
+                    <th>Role</th>
+                    <th>Username</th>
                     <th>Akce</th>
                 </tr>
                 </tfoot>
@@ -148,7 +134,7 @@
 </body>
 <script>
     $(document).ready(function() {
-        $('#libraryListing').DataTable({searching: false});
+        $('#userListing').DataTable({searching: false});
     });
 </script>
 </html>

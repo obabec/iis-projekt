@@ -1,6 +1,5 @@
 package isu.library.model.service;
 
-import isu.library.model.entity.Book;
 import isu.library.model.entity.Library;
 import isu.library.model.repository.LibraryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +40,11 @@ public class LibraryServiceImpl implements LibraryService{
     public Library findLibraryById(Integer id) {
         Library lib = new Library();
         return libraryRepository.findById(id).orElse(lib);
+    }
+
+    @Override
+    public void deleteLibraryById(Integer id) {
+        libraryRepository.deleteLibraryById(id);
     }
 
     @Override

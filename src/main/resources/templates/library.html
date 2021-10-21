@@ -27,6 +27,10 @@
                         <a href="/login" class="nav-link px-0 align-middle">
                             <i class="fs-4 bi-unlock"></i> <span class="ms-1 d-none d-sm-inline">Login</span></a>
                     </li>
+                    <li sec:authorize="isAnonymous()">
+                        <a href="/register" class="nav-link px-0 align-middle">
+                            <i class="fs-4 bi-gear-fill"></i> <span class="ms-1 d-none d-sm-inline">Register</span></a>
+                    </li>
                     <li class="nav-item">
                         <a href="/" class="nav-link align-middle px-0">
                             <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Sprava knih</span>
@@ -45,7 +49,7 @@
                             <i class="fs-4 bi-book"></i> <span class="ms-1 d-none d-sm-inline">Pridani knih</span></a>
                     </li>
                     <li sec:authorize="hasRole('ADMIN')">
-                        <a href="#" class="nav-link px-0 align-middle">
+                        <a href="/users" class="nav-link px-0 align-middle">
                             <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Sprava uzivatelu</span></a>
                     </li>
                     <!--<li>
@@ -87,25 +91,25 @@
                 <input type="hidden" th:value="${library.id}" th:field="*{id}">
                 <div class="row">
                     <div class="col-sm-4">
-                        <input type="text" class="form-control" placeholder="" th:name="name"
+                        <input type="text" class="form-control" placeholder="Jmeno" th:name="name"
                                 th:value="${library.name}" th:field="*{name}"/>
                     </div>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control" placeholder="" th:name="tag"
+                        <input type="text" class="form-control" placeholder="Tag" th:name="tag"
                                th:value="${library.tag}" th:field="*{tag}"/>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-4">
-                        <input type="text" class="form-control" placeholder="" th:name="city"
+                        <input type="text" class="form-control" placeholder="Mesto" th:name="city"
                                th:value="${library.city}" th:field="*{city}"/>
                     </div>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control" placeholder="" th:name="street"
+                        <input type="text" class="form-control" placeholder="Ulice" th:name="street"
                                th:value="${library.street}" th:field="*{street}"/>
                     </div>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control" placeholder="" th:name="street_number"
+                        <input type="text" class="form-control" placeholder="C.P" th:name="street_number"
                                th:value="${library.streetNumber}" th:field="*{streetNumber}"/>
                     </div>
                 </div>
@@ -121,7 +125,7 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-8">
-                        <input type="textarea" class="form-control" placeholder="" th:name="description"
+                        <input type="textarea" class="form-control" placeholder="Popis" th:name="description"
                                th:value="${library.description}" th:field="*{description}"/>
                     </div>
                 </div>
@@ -130,16 +134,18 @@
                 </div>
 
             </form>
-            <a th:href="@{/(library_name=${library.name})}">
-                <button class="btn btn-primary">
-                    Spravovat knizni tituly v knihovne
-                </button>
-            </a>
-            <a th:href="@{/reservations(library_id=${library.id})}">
-                <button class="btn btn-warning">
-                    Spravovat rezervane
-                </button>
-            </a>
+            <div th:if="${library.id != null}">
+                <a th:href="@{/(library_name=${library.name})}">
+                    <button class="btn btn-primary">
+                        Spravovat knizni tituly v knihovne
+                    </button>
+                </a>
+                <a th:href="@{/reservations(library_id=${library.id})}">
+                    <button class="btn btn-warning">
+                        Spravovat rezervane
+                    </button>
+                </a>
+            </div>
         </div>
     </div>
 </div>

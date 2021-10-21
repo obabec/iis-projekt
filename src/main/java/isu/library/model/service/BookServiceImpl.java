@@ -1,6 +1,5 @@
 package isu.library.model.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import isu.library.model.entity.Book;
 import isu.library.model.query.BookQueryBuilder;
 import isu.library.model.repository.BookRepository;
