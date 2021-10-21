@@ -44,6 +44,11 @@ public class LibraryServiceImpl implements LibraryService{
     }
 
     @Override
+    public void deleteLibraryById(Integer id) {
+        libraryRepository.deleteLibraryById(id);
+    }
+
+    @Override
     public void deleteLibraryByName(String name) {
         libraryRepository.deleteLibraryByName(name);
     }

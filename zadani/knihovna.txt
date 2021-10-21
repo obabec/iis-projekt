@@ -19,16 +19,17 @@ Popis:
         zadává nové knižní tituly
         spravuje knihovnu, přidává knižní tituly ke spravované knihovně
         spravuje rezervace čtenářů, zadává a vyřizuje výpůjčky knih
-        vystavuje objednávky knih u distributora knih
+        vystavuje objednávky knih u distributora knih - nemame
+        Vyresit moznost vypujcky bez predchozi registrace -- Nemame
 
-    distributor knih
+    distributor knih - nemame
         zadává nové knižní tituly
         vyřizuje objednávky knih od knihovníků (po vyřízení objednávky se tyto knihy automaticky přidají do knihovny)
         má rovněž práva (a) neregistrovaného uživatele
 
     čtenář
         rezervuje knižní tituly (rezervaci je možné provést i v případě nedostupnosti knih, kdy je uživatel zařazen do fronty čekatelů)
-        hlasuje za dokoupení knih do dané knihovny (každému titulu v dané knihovně může udělit pouze jeden hlas)
+        hlasuje za dokoupení knih do dané knihovny (každému titulu v dané knihovně může udělit pouze jeden hlas) - nemame
         má rovněž práva (a) neregistrovaného uživatele
 
     neregistrovaný uživatel

@@ -7,6 +7,7 @@ import lombok.Setter;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.sql.Date;
@@ -18,12 +19,13 @@ import java.sql.Date;
 @NoArgsConstructor
 public class Reservation {
     private @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(columnDefinition = "SERIAL")
     int id;
     @Column(name = "book_id")
     private Integer bookId;
     @Column(name = "person_id")
-    private Integer parsonId;
+    private Integer personId;
     @Column(name = "date_from")
     private Date dateFrom;
     @Column(name = "date_to")
@@ -31,9 +33,9 @@ public class Reservation {
     @Column(name = "is_borrowed")
     private Boolean borrowed;
 
-    public Reservation(Integer bookId, Integer parsonId, Date dateFrom, Date dateTo, boolean borrowed) {
+    public Reservation(Integer bookId, Integer personId, Date dateFrom, Date dateTo, boolean borrowed) {
         this.bookId = bookId;
-        this.parsonId = parsonId;
+        this.personId = personId;
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
         this.borrowed = borrowed;

@@ -12,4 +12,5 @@ public interface LibraryService {
     Iterable<Library> executeQuery(String query);
     void updateLibrary(Library library);
     Library findLibraryById(Integer id);
+    void deleteLibraryById(Integer id);
 }

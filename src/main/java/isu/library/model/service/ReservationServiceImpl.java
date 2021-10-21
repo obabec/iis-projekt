@@ -13,6 +13,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Transactional
 @Service("reservationService")
@@ -63,5 +64,41 @@ public class ReservationServiceImpl implements ReservationService {
     public Iterable<UserReservation> findAllUserReservations(Integer personId) {
         Iterable<UserReservation> userRes = entityManager.createNativeQuery("SELECT r.id, r.book_id, r.date_from, r.date_to, b.name, b.isbn, r.is_borrowed FROM blocking r INNER JOIN book b ON b.id = r.book_id WHERE r.person_id =" + personId, UserReservation.class).getResultList();
         return userRes;
+    }
+
+    @Override
+    public Optional<Reservation> findReservationByBookIdAndPersonId(Integer bookId, Integer personId) {
+        return reservationRepository.findReservationByBookIdAndPersonId(bookId, personId);
+    }
+
+    @Override
+    public void saveNewReservation(Integer bookId, Integer personId, LocalDate dateFrom) {
+        Reservation res;
+        if (dateFrom == null) {
+            res = new Reservation(bookId, personId, Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now().plusDays(2)), false);
+        } else {
+            res = new Reservation(bookId, personId, Date.valueOf(dateFrom), Date.valueOf(dateFrom.plusDays(2)), false);
+        }
+        reservationRepository.save(res);
+    }
+
+    @Override
+    public Optional<Reservation> findReservationByLatestDate(Integer bookId) {
+        return reservationRepository.findReservationByLatestDate(bookId);
+    }
+
+    @Override
+    public Iterable<Reservation> findReservationsByBookIdAndDateFromGreaterThan(Integer bookId, Date startDate) {
+        return reservationRepository.findReservationsByBookIdAndDateFromGreaterThan(bookId, startDate);
+    }
+
+    @Override
+    public Optional<Reservation> findReservationById(Integer id) {
+        return  reservationRepository.findReservationById(id);
+    }
+
+    @Override
+    public void updateReservation(Reservation reservation) {
+        reservationRepository.save(reservation);
     }
 }

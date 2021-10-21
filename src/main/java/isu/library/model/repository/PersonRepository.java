@@ -14,5 +14,7 @@ public interface PersonRepository extends CrudRepository<Person, Integer> {
     Iterable<String> findAuthorsForBook(@Param("bookId") Integer bookId);
 
     Optional<Person> findPersonByUsername(String username);
-
+    Iterable<Person> findPersonByUsernameNotNull();
+    void deleteById(Integer id);
+    Optional<Person> findPersonById(Integer id);
 }

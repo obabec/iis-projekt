@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.sql.Time;
+
 @Controller
 public class LibraryController {
 
@@ -50,7 +52,7 @@ public class LibraryController {
     }
 
     @GetMapping("/library")
-    public String library(@RequestParam(name="library_id", required = true, defaultValue = "") Integer libraryId,
+    public String library(@RequestParam(name="library_id", required = false, defaultValue = "") Integer libraryId,
                           Authentication authentication,
                           ModelMap modelMap) {
         if (authentication != null && ((UserDetails)authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
@@ -60,7 +62,14 @@ public class LibraryController {
                 return "home";
             }
         }
-        modelMap.put("library", libraryService.findLibraryById(libraryId));
+        if (libraryId == null) {
+            Library library = new Library();
+            library.setOpenFrom(Time.valueOf("08:10:00"));
+            library.setOpenTo(Time.valueOf("08:10:00"));
+            modelMap.put("library", library);
+        } else {
+            modelMap.put("library", libraryService.findLibraryById(libraryId));
+        }
         return "library";
     }
 
@@ -75,8 +84,25 @@ public class LibraryController {
                 return "home";
             }
         }
-        libraryService.updateLibrary(library);
+        if (library.getId() == null) {
+            libraryService.addNewLibrary(library.getName(), library.getTag(), library.getStreet(), library.getCity(),
+                    library.getStreetNumber(), library.getOpenFrom(), library.getOpenTo(), library.getDescription());
+        } else {
+            libraryService.updateLibrary(library);
+        }
         modelMap.put("library", library);
         return "library";
+    }
+
+    @GetMapping("/deleteLibrary")
+    public String deleteLibrary(@RequestParam(name="library_id", required = true, defaultValue = "") Integer libraryId,
+                                Authentication authentication,
+                                ModelMap modelMap) {
+        if (authentication != null && ((UserDetails)authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
+            return "home";
+        }
+        libraryService.deleteLibraryById(libraryId);
+        modelMap.put("libraries", libraryService.findAll());
+        return "libraries";
     }
 }

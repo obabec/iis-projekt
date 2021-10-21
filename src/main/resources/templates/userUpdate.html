@@ -87,68 +87,50 @@
             </div>
         </div>
         <div class="col py-3">
-            <table id="libraryListing" class="table table-hover">
-                <thead>
-                <tr>
-                    <th>Jmeno knihy</th>
-                    <th>ISBN</th>
-                    <th>Od</th>
-                    <th>Do</th>
-                    <th>Jmeno</th>
-                    <th>Prijimeni</th>
-                    <th>Datum naroznei</th>
-                    <th>Stav</th>
-                    <th>Akce</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="reservation : ${reservations}">
-                    <td th:text="${reservation.bookName}">Onions</td>
-                    <td th:text="${reservation.isbn}">Onions</td>
-                    <td th:text="${{reservation.dateFrom}}">Onions</td>
-                    <td th:text="${{reservation.dateTo}}">Onions</td>
-                    <td th:text="${reservation.name}">2.41</td>
-                    <td th:text="${reservation.surname}">yes</td>
-                    <td th:text="${reservation.birthDate}">yes</td>
-                    <td th:switch="${reservation.borrowed}">
-                        <span th:case="false">Rezervovano</span>
-                        <span th:case="*">Vypujceno</span>
-                    </td>
+            <!--th:action="${book.id == 0 ?'/book':'/book/' + book.id}"-->
+            <form th:action="@{/userUpdate}" method="POST" th:object="${user}">
+                <input type="hidden" th:value="${user.id}" th:field="*{id}">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" placeholder="Jmeno" th:name="name" th:value="${user.name}"/>
+                    </div>
 
-                    <td th:switch="${reservation.borrowed}">
-                        <!-- Add arguments to href - reservation id and library id -->
-                        <a th:case="false" th:href="@{/reservations(reservation_id=${reservation.id}, library_id=${library}, action=1)}">
-                            <button class="btn btn-primary">Vypujcit</button>
-                        </a>
-                        <a th:case="true" th:href="@{/reservations(reservation_id=${reservation.id}, library_id=${library}, action=2)}">
-                            <button class="btn btn-warning">Vratit knihu</button>
-                        </a>
-                        <button th:case="*" class="btn btn-danger">Nevraceno</button>
-                    </td>
-                </tr>
-                </tbody>
-                <tfoot>
-                <tr>
-                    <th>Jmeno knihy</th>
-                    <th>ISBN</th>
-                    <th>Od</th>
-                    <th>Do</th>
-                    <th>Jmeno</th>
-                    <th>Prijimeni</th>
-                    <th>Datum naroznei</th>
-                    <th>Stav</th>
-                    <th>Akce</th>
-                </tr>
-                </tfoot>
-            </table>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" placeholder="Prijimani" th:name="surname" th:value="${user.surname}"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <input type="date" class="form-control" placeholder="Datum narozeni" th:name="birthDate" th:value="${user.birthDate}"/>
+                    </div>
+                    <div class="dropdown col-sm-4">
+                        <select class="role_search" name="state" th:name="role">
+                            <option th:each="role : ${roles}" th:value="${role}" th:text="${role}" th:selected="${user.role == role}"/>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" placeholder="Username" th:name="username" th:value="${user.username}"/>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" placeholder="Password" th:name="password"/>
+                    </div>
+                    <div class="dropdown col-sm-4" th:if="${user.libraryId != null}">
+                        <select class="library_search" name="state" th:name="libraryId">
+                            <option th:each="library : ${libraries}" th:value="${library.id}" th:text="${library.name}" th:selected="${library.id == user.libraryId}"/>
+                        </select>
+                    </div>
+                </div>
+                <div class="col">
+                    <input class="form-control" type="submit"/>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 <!-- <p th:text="${bookName}"></p> -->
 </body>
 <script>
-    $(document).ready(function() {
-        $('#libraryListing').DataTable({searching: false});
-    });
 </script>
 </html>

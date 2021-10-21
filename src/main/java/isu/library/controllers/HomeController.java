@@ -15,13 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
@@ -49,6 +46,7 @@ public class HomeController {
                        @RequestParam(name="isbn", required = false, defaultValue = "") String isbn,
                        @RequestParam(name="publisher", required = false, defaultValue = "") String publisher,
                        @RequestParam(name="genre", required = false, defaultValue = "") String genre,
+                       @RequestParam(name="message", required = false, defaultValue = "") String message,
                        Authentication authentication,
                        ModelMap modelMap) {
         if (authentication != null && ((UserDetails)authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
@@ -98,6 +96,7 @@ public class HomeController {
             builder = builder.filterByGenre(bookGenre);
             modelMap.put("book_genre", bookGenre);
         }
+        modelMap.put("message", message);
         Iterable<Book> books = bookService.executeQuery(builder.getQuery());
         for (Book b: books) {
             b.setAuthors(new ArrayList<Integer>());

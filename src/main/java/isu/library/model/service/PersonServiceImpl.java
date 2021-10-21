@@ -27,6 +27,29 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
+    public Iterable<Person> findPersonByUsernameNotNull() {
+        return personRepository.findPersonByUsernameNotNull();
+    }
+
+    @Override
+    public void deleteById(Integer id) {
+        if (id != null) {
+            personRepository.deleteById(id);
+        }
+    }
+
+    @Override
+    public Optional<Person> findPersonById(Integer id) {
+        Optional<Person> person = personRepository.findPersonById(id);
+        return person;
+    }
+
+    @Override
+    public void updatePerson(Person person) {
+        personRepository.save(person);
+    }
+
+    @Override
     public Optional<Person> findPersonById(int id) {
         return personRepository.findById(id);
     }
