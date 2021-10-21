@@ -3,10 +3,7 @@ package isu.library.controllers;
 import isu.library.model.entity.Book;
 import isu.library.model.entity.Library;
 import isu.library.model.entity.Person;
-import isu.library.model.service.AuthorshipService;
-import isu.library.model.service.BookService;
-import isu.library.model.service.LibraryService;
-import isu.library.model.service.PersonService;
+import isu.library.model.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -31,6 +28,9 @@ public class BookController {
     private LibraryService libraryService;
 
     @Autowired
+    private AuthorService authorService;
+
+    @Autowired
     private PersonService personService;
 
     @Autowired
@@ -49,10 +49,10 @@ public class BookController {
     public String book_update(@ModelAttribute(value="book") Book book, @PathVariable("id") int bookId, ModelMap modelMap) {
         modelMap.put("libraries", libraryService.findAll());
         modelMap.put("chosen_library", libraryService.findLibraryById(book.getLibraryId()));
-        modelMap.put("possible_authors", personService.findAll());
+        modelMap.put("possible_authors", authorService.findAll());
         ArrayList<String> chosen_authors = new ArrayList<>();
         for (Integer id: book.getAuthors()) {
-            chosen_authors.add(String.valueOf(personService.findPersonById(id).get().getId()));
+            chosen_authors.add(String.valueOf(authorService.findAuthorById(id).get().getId()));
         }
         modelMap.put("chosen_authors", chosen_authors);
         book.setId(bookId);
@@ -100,7 +100,7 @@ public class BookController {
             }
             modelMap.put("libraries", libraryService.findAll());
         }
-        modelMap.put("possible_authors", personService.findAll());
+        modelMap.put("possible_authors", authorService.findAll());
         modelMap.put("chosen_authors", new ArrayList<String>());
         modelMap.put("book", book);
         return "book_creation";
@@ -114,10 +114,10 @@ public class BookController {
         modelMap.put("book", found_book);
         modelMap.put("chosen_library", libraryService.findLibraryById(found_book.getLibraryId()));
         modelMap.put("libraries", libraryService.findAll());
-        modelMap.put("possible_authors", personService.findAll());
+        modelMap.put("possible_authors", authorService.findAll());
         ArrayList<String> chosen_authors = new ArrayList<>();
         for (Integer id: found_book.getAuthors()) {
-            chosen_authors.add(String.valueOf(personService.findPersonById(id).get().getId()));
+            chosen_authors.add(String.valueOf(authorService.findAuthorById(id).get().getId()));
         }
 
         modelMap.put("chosen_authors", chosen_authors);
