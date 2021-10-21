@@ -6,10 +6,7 @@ import isu.library.model.entity.LibraryReservation;
 import isu.library.model.entity.Person;
 import isu.library.model.query.BookQueryBuilder;
 import isu.library.model.query.LibraryQueryBuilder;
-import isu.library.model.service.BookService;
-import isu.library.model.service.LibraryService;
-import isu.library.model.service.PersonService;
-import isu.library.model.service.ReservationService;
+import isu.library.model.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,6 +20,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -38,6 +36,9 @@ public class HomeController {
 
     @Autowired
     private ReservationService reservationService;
+
+    @Autowired
+    private AuthorshipService authorshipService;
 
     @GetMapping("/")
     public String home(@RequestParam(name="book_name", required = false, defaultValue = "") String bookName,
@@ -100,7 +101,10 @@ public class HomeController {
             modelMap.put("book_genre", bookGenre);
         }
         Iterable<Book> books = bookService.executeQuery(builder.getQuery());
-        books = personService.findAuthorsForBooks(books);
+        for (Book b: books) {
+            b.setAuthors(new ArrayList<Integer>());
+            authorshipService.findAuthorshipByBookId(b.getId()).forEach(a -> b.getAuthors().add(personService.findPersonById(a.getPersonId()).get().getId()));
+        }
         modelMap.put("books", books);
         return "home";
     }

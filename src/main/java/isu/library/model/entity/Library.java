@@ -13,9 +13,9 @@ import java.sql.Time;
 
 @Entity
 @Table(name = "library")
+@NoArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
 public class Library {
     private @Id
     @GeneratedValue

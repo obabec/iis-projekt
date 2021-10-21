@@ -138,6 +138,7 @@
                         <th>ISBN</th>
                         <th>Vydavatel</th>
                         <th>Hodnoceni</th>
+                        <th sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN')">Akce</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -149,6 +150,30 @@
                         <td th:text="${book.isbn}"> AC12</td>
                         <td th:text="${book.publisher}">Franz Josef</td>
                         <td th:text="${book.rate}">Franz Josef</td>
+                        <td sec:authorize="hasRole('ADMIN')">
+                            <a th:href="${'/book/' + book.id}">
+                                <button class="btn btn-success">
+                                    Edit
+                                </button>
+                            </a>
+                            <a th:href="${'/book/' + book.id + '/delete'}">
+                                <button class="btn btn-danger">
+                                    Smazat
+                                </button>
+                            </a>
+                        </td>
+                        <td sec:authorize="hasRole('LIBRARIAN')" th:if="${book.libraryId == librarian_lib}">
+                            <a th:href="${'/book/' + book.id}">
+                                <button class="btn btn-success">
+                                    Edit
+                                </button>
+                            </a>
+                            <a th:href="${'/book/' + book.id + '/delete'}">
+                                <button class="btn btn-danger">
+                                    Smazat
+                                </button>
+                            </a>
+                        </td>
                     </tr>
                     </tbody>
                     <tfoot>
@@ -160,6 +185,7 @@
                         <th>ISBN</th>
                         <th>Vydavatel</th>
                         <th>Hodnoceni</th>
+                        <th sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN')">Akce</th>
                     </tr>
                     </tfoot>
                 </table>
