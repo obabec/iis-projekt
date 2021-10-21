@@ -6,6 +6,7 @@ import isu.library.model.entity.Person;
 import java.util.Optional;
 
 public interface PersonService {
-    Iterable<Book> findAuthorsForBooks(Iterable<Book> books);
     Optional<Person> findPersonByUsername(String username);
+    Optional<Person> findPersonById(int id);
+    Iterable<Person> findAll();
 }

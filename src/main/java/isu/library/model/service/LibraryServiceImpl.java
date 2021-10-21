@@ -39,7 +39,8 @@ public class LibraryServiceImpl implements LibraryService{
 
     @Override
     public Library findLibraryById(Integer id) {
-        return libraryRepository.findById(id).orElse(new Library());
+        Library lib = new Library();
+        return libraryRepository.findById(id).orElse(lib);
     }
 
     @Override

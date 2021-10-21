@@ -1,7 +1,9 @@
 package isu.library.controllers;
 
 import isu.library.model.entity.Book;
+import isu.library.model.entity.Library;
 import isu.library.model.entity.Person;
+import isu.library.model.service.AuthorshipService;
 import isu.library.model.service.BookService;
 import isu.library.model.service.LibraryService;
 import isu.library.model.service.PersonService;
@@ -17,7 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Collections;
+import java.util.*;
 
 @Controller
 public class BookController {
@@ -30,42 +32,75 @@ public class BookController {
     @Autowired
     private PersonService personService;
 
+    @Autowired
+    private AuthorshipService authorshipService;
+
     @PostMapping("/book")
     public String book_creation(@ModelAttribute(value="book") Book book, ModelMap modelMap) {
-        modelMap.put("libraries", libraryService.findAll());
-        modelMap.put("book", book);
-        modelMap.put("library_id", book.getLibraryId());
         int id = bookService.addNewBook(book.getLibraryId(), book.getName(), book.getRelease(), book.getIsbn(), book.getPublisher(), book.getGenre(), book.getRate());
+        for (Integer author_id: book.getAuthors()) {
+            authorshipService.addNewAuthorship(author_id, id);
+        }
         return "redirect:/book/" + id;
     }
 
     @PostMapping("/book/{id}")
     public String book_update(@ModelAttribute(value="book") Book book, @PathVariable("id") int bookId, ModelMap modelMap) {
         modelMap.put("libraries", libraryService.findAll());
-        modelMap.put("library_id", book.getLibraryId()-1);
+        modelMap.put("chosen_library", libraryService.findLibraryById(book.getLibraryId()));
+        modelMap.put("possible_authors", personService.findAll());
+        ArrayList<String> chosen_authors = new ArrayList<>();
+        for (Integer id: book.getAuthors()) {
+            chosen_authors.add(String.valueOf(personService.findPersonById(id).get().getId()));
+        }
+        modelMap.put("chosen_authors", chosen_authors);
         book.setId(bookId);
+        authorshipService.removeAuthorshipsByBookId(bookId);
+        for (Integer author_id: book.getAuthors()) {
+            authorshipService.addNewAuthorship(author_id, bookId);
+        }
         modelMap.put("book", book);
         bookService.updateBook(book);
         return "book_creation";
     }
 
+    @GetMapping("/book/{id}/delete")
+    public String book_delete(@PathVariable("id") int bookId, ModelMap modelMap, Authentication authentication) {
+        if (authentication != null) {
+            if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
+                if (personService.findPersonByUsername(authentication.getName()).get().getLibraryId() != bookService.findById(bookId).getLibraryId()) {
+                    return "redirect:/forbidden";
+                }
+            } else if (!authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+                return "redirect:/forbidden";
+            }
+        }
+        bookService.removeById(bookId);
+        return "redirect:/";
+    }
+
     @GetMapping("/book")
-    public String book_creation(@RequestParam(name="library_id", required = false, defaultValue = "") Integer libraryId,
+    public String book_creation(@RequestParam(name="library_id", required = false, defaultValue = "") Integer realLibraryId,
                                 Authentication authentication,
                                 ModelMap modelMap) {
         Book book = new Book();
         if (authentication != null && ((UserDetails)authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
             String username = ((UserDetails)authentication.getPrincipal()).getUsername();
             Person user = personService.findPersonByUsername(username).get();
-            libraryId = user.getLibraryId();
+            realLibraryId = user.getLibraryId();
         }
-        if (libraryId != null) {
-            modelMap.put("library_id", libraryId - 1);
-            modelMap.put("libraries", Collections.singletonList(libraryService.findLibraryById(libraryId)));
+        if (realLibraryId != null) {
+            modelMap.put("chosen_library", libraryService.findLibraryById(realLibraryId));
+            modelMap.put("libraries", Collections.singletonList(libraryService.findLibraryById(realLibraryId)));
         } else {
-            modelMap.put("library_id", 0);
+            for (Library l: libraryService.findAll()) {
+                modelMap.put("chosen_library", l);
+                break;
+            }
             modelMap.put("libraries", libraryService.findAll());
         }
+        modelMap.put("possible_authors", personService.findAll());
+        modelMap.put("chosen_authors", new ArrayList<String>());
         modelMap.put("book", book);
         return "book_creation";
     }
@@ -73,9 +108,18 @@ public class BookController {
     @GetMapping("/book/{id}")
     public String book_creation(@PathVariable("id") int bookId, ModelMap modelMap) {
         Book found_book = bookService.findById(bookId);
+        found_book.setAuthors(new ArrayList<>());
+        authorshipService.findAuthorshipByBookId(bookId).forEach(a -> found_book.getAuthors().add(personService.findPersonById(a.getPersonId()).get().getId()));
         modelMap.put("book", found_book);
-        modelMap.put("library_id", found_book.getLibraryId()-1);
+        modelMap.put("chosen_library", libraryService.findLibraryById(found_book.getLibraryId()));
         modelMap.put("libraries", libraryService.findAll());
+        modelMap.put("possible_authors", personService.findAll());
+        ArrayList<String> chosen_authors = new ArrayList<>();
+        for (Integer id: found_book.getAuthors()) {
+            chosen_authors.add(String.valueOf(personService.findPersonById(id).get().getId()));
+        }
+
+        modelMap.put("chosen_authors", chosen_authors);
         return "book_creation";
     }
 

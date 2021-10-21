@@ -5,7 +5,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.sql.Array;
 import java.sql.Date;
+import java.util.ArrayList;
 
 @Entity
 @Table(name = "book")
@@ -24,7 +26,7 @@ public class Book {
     private String genre;
     private Short rate;
     @Transient
-    private String authors;
+    private ArrayList<Integer> authors;
 
     public Book(Integer libraryId, String name, Date release, String isbn, String publisher, String genre, Short rate) {
         this.libraryId = libraryId;
