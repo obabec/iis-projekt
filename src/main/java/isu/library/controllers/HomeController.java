@@ -1,18 +1,12 @@
 package isu.library.controllers;
 
 import isu.library.model.entity.Book;
-import isu.library.model.entity.Library;
-import isu.library.model.entity.LibraryReservation;
 import isu.library.model.entity.Person;
 import isu.library.model.query.BookQueryBuilder;
-import isu.library.model.query.LibraryQueryBuilder;
-import isu.library.model.service.BookService;
-import isu.library.model.service.LibraryService;
-import isu.library.model.service.PersonService;
-import isu.library.model.service.ReservationService;
 import isu.library.model.service.AuthorshipService;
+import isu.library.model.service.BookService;
+import isu.library.model.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,7 +16,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 public class HomeController {

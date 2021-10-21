@@ -3,7 +3,6 @@ package isu.library.model.service;
 import isu.library.model.entity.LibraryReservation;
 import isu.library.model.entity.Reservation;
 import isu.library.model.entity.UserReservation;
-import isu.library.model.repository.PersonRepository;
 import isu.library.model.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

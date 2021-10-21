@@ -1,6 +1,5 @@
 package isu.library.model.service;
 
-import isu.library.model.entity.Book;
 import isu.library.model.entity.Library;
 import isu.library.model.repository.LibraryRepository;
 import org.springframework.beans.factory.annotation.Autowired;

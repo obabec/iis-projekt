@@ -1,6 +1,5 @@
 package isu.library.controllers;
 
-import isu.library.model.entity.Library;
 import isu.library.model.entity.Person;
 import isu.library.model.service.LibraryService;
 import isu.library.model.service.PersonService;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
