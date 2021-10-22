@@ -44,6 +44,7 @@ public class Security extends WebSecurityConfigurerAdapter {
                 .antMatchers( "/userUpdate").hasRole("ADMIN")
                 .antMatchers( "/userDelete").hasRole("ADMIN")
                 .antMatchers( "/users").hasRole("ADMIN")
+                .antMatchers("/reservation/createLoan").hasAnyRole("ADMIN", "LIBRARIAN")
                 .antMatchers(HttpMethod.GET, "/votes").authenticated()
                 .antMatchers(HttpMethod.GET, "/deleteVote").hasAnyRole("ADMIN", "LIBRARIAN")
                 .antMatchers(HttpMethod.GET, "/deleteLibrary").hasRole("ADMIN")

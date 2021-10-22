@@ -53,5 +53,10 @@ public class PersonServiceImpl implements PersonService {
         return personRepository.findAll();
     }
 
+    @Override
+    public Iterable<Person> findPersonsByRole(String role) {
+        return personRepository.findPersonByRole(role);
+    }
+
 
 }

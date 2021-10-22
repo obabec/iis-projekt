@@ -6,6 +6,8 @@
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
@@ -36,10 +38,6 @@
                             <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Sprava knih</span>
                         </a>
                     </li>
-                    <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN')">
-                        <a th:href="@{/reservations(library_id=${library.id})}" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Sprava rezervaci</span></a>
-                    </li>
                     <li sec:authorize="hasRole('ADMIN')">
                         <a href="/libraries" class="nav-link px-0 align-middle">
                             <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Sprava knihoven</span></a>
@@ -55,10 +53,6 @@
                     <li sec:authorize="hasAnyRole('ADMIN', 'READER', 'LIBRARIAN')">
                         <a href="/votes" class="nav-link px-0 align-middle">
                             <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline"> Hlasovani</span></a>
-                    </li>
-                    <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN')">
-                        <a href="/reservations/createLoan" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Vypujcka</span></a>
                     </li>
                 </ul>
                 <hr>
@@ -83,72 +77,33 @@
             </div>
         </div>
         <div class="col py-3">
-            <form th:action="@{/library}" method="POST" th:object="${library}">
-                <input type="hidden" th:value="${library.id}" th:field="*{id}">
+            <form th:action="@{/reservations/createLoan}" method="POST" th:object="${reservation}">
                 <div class="row">
                     <div class="col-sm-4">
-                        <input type="text" class="form-control" placeholder="Jmeno" th:name="name"
-                                th:value="${library.name}" th:field="*{name}"/>
+                        <select class="book_search" th:name="readers" th:field="*{bookId}">
+                            <option th:each="book : ${availableBooks}" th:value="${book.id}" th:text="${book.id + ' - ' + book.name}"/>
+                        </select>
                     </div>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control" placeholder="Tag" th:name="tag"
-                               th:value="${library.tag}" th:field="*{tag}"/>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" placeholder="Mesto" th:name="city"
-                               th:value="${library.city}" th:field="*{city}"/>
-                    </div>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" placeholder="Ulice" th:name="street"
-                               th:value="${library.street}" th:field="*{street}"/>
-                    </div>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" placeholder="C.P" th:name="street_number"
-                               th:value="${library.streetNumber}" th:field="*{streetNumber}"/>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-4">
-                        <input type="time" class="form-control" placeholder="" th:name="from_time"
-                               th:value="${library.openFrom}" th:field="*{openFrom}"/>
-                    </div>
-                    <div class="col-sm-4">
-                        <input type="time" class="form-control" placeholder="" th:name="to_time"
-                               th:value="${library.openTo}" th:field="*{openTo}"/>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-8">
-                        <input type="textarea" class="form-control" placeholder="Popis" th:name="description"
-                               th:value="${library.description}" th:field="*{description}"/>
+                        <select class="reader_search" th:name="readers" th:field="*{personId}">
+                            <option th:each="user : ${readers}" th:value="${user.id}" th:text="${user.name + ' ' + user.surname + ' ' + user.birthDate}"/>
+                        </select>
                     </div>
                 </div>
                 <div class="col">
                     <input class="form-control" type="submit"/>
                 </div>
-
             </form>
-            <div th:if="${library.id != null}">
-                <a th:href="@{/(library_name=${library.name})}">
-                    <button class="btn btn-primary">
-                        Spravovat knizni tituly v knihovne
-                    </button>
-                </a>
-                <a th:href="@{/reservations(library_id=${library.id})}">
-                    <button class="btn btn-warning">
-                        Spravovat rezervane
-                    </button>
-                </a>
-            </div>
+            <p th:if= "${message != ''}" th:text="${message}"></p>
         </div>
     </div>
 </div>
 </body>
 <script>
-    $(document).ready(function() {
-        $('#bookListing').DataTable({searching: false});
-    });
+    $('.reader_search').select2();
+    $('.reader_search').trigger('change');
+
+    $('.book_search').select2();
+    $('.book_search').trigger('change');
 </script>
 </html>

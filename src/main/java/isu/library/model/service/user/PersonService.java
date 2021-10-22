@@ -12,4 +12,6 @@ public interface PersonService {
     void updatePerson(Person person);
     Optional<Person> findPersonById(int id);
     Iterable<Person> findAll();
+    Iterable<Person> findPersonsByRole(String role);
+
 }

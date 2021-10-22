@@ -21,5 +21,8 @@ public interface BookService {
     void updateBook(Book book);
     void removeById(int id);
     Iterable<String> findBooksByLibraryId(Integer libraryId);
+    Iterable<Book> findAvailableBooks(Integer libraryId);
+    boolean isBookAvailable(Integer bookId);
+
 
 }

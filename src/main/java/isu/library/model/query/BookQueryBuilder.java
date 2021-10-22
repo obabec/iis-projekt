@@ -39,6 +39,12 @@ public class BookQueryBuilder {
         return this;
     }
 
+    public BookQueryBuilder filterByLibraryId(Integer libraryId) {
+        addWhereOrAnd();
+        this.query += "library_id IN (select id from library where id = " + libraryId + ")";
+        return this;
+    }
+
     public BookQueryBuilder filterByAvailability() {
         addWhereOrAnd();
         this.query += "b.id NOT IN (SELECT book_id FROM blocking WHERE CURRENT_DATE BETWEEN date_from AND date_to)";
@@ -48,6 +54,12 @@ public class BookQueryBuilder {
     public BookQueryBuilder filterByName(String bookName) {
         addWhereOrAnd();
         this.query += "b.name LIKE '%" + bookName + "%'";
+        return this;
+    }
+
+    public BookQueryBuilder filterById(Integer id) {
+        addWhereOrAnd();
+        this.query += "b.id = " + id;
         return this;
     }
 

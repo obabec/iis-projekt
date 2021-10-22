@@ -93,6 +93,17 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
+    public int saveNewLoan(Integer bookId, Integer personId, LocalDate dateFrom) {
+        Reservation res = new Reservation(bookId, personId, Date.valueOf(dateFrom), Date.valueOf(dateFrom.plusDays(14)), false);
+        try {
+            reservationRepository.save(res);
+            return res.getId();
+        } catch (Exception e) {
+            return -1;
+        }
+    }
+
+    @Override
     public Optional<Reservation> findReservationByLatestDate(Integer bookId) {
         return reservationRepository.findReservationByLatestDate(bookId);
     }

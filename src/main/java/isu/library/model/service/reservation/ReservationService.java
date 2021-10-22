@@ -17,6 +17,7 @@ public interface ReservationService {
     Iterable<UserReservation> findAllUserReservations(Integer personId);
     Optional<Reservation> findReservationByBookIdAndPersonId(Integer bookId, Integer personId);
     void saveNewReservation(Integer bookId, Integer personId, LocalDate dateFrom);
+    int saveNewLoan(Integer bookId, Integer personId, LocalDate dateFrom);
     Optional<Reservation> findReservationByLatestDate(Integer bookId);
     Iterable<Reservation> findReservationsByBookIdAndDateFromGreaterThan(Integer bookId, Date startDate);
     Optional<Reservation> findReservationById(Integer id);
