@@ -29,7 +29,7 @@ public class LoanController {
     @Autowired
     BookService bookService;
 
-    @PostMapping("/reservation/createLoan")
+    @PostMapping("/reservations/createLoan")
     public String createLoan(@ModelAttribute(value="reservation") Reservation reservation,
                                 ModelMap modelMap,
                                 Authentication authentication) {

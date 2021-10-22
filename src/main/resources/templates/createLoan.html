@@ -36,10 +36,6 @@
                             <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Sprava knih</span>
                         </a>
                     </li>
-                    <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN')">
-                        <a th:href="@{/reservations(library_id=${library.id})}" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Sprava rezervaci</span></a>
-                    </li>
                     <li sec:authorize="hasRole('ADMIN')">
                         <a href="/libraries" class="nav-link px-0 align-middle">
                             <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Sprava knihoven</span></a>
@@ -83,10 +79,10 @@
                 <div class="row">
                     <div class="col-sm-4">
                         <input type="text" class="form-control" placeholder="ID knihy" th:name="book_id"
-                               th:field="*{book_id}"/>
+                               th:field="*{bookId}"/>
                     </div>
                     <div class="col-sm-4">
-                        <select class="reader_search" th:name="readers">
+                        <select class="reader_search" th:name="readers" th:field="*{personId}">
                             <option th:each="user : ${readers}" th:value="${user.id}" th:text="${user.name + ' ' + user.surname + ' ' + user.birthDate}"/>
                         </select>
                     </div>

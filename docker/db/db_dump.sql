@@ -3,7 +3,7 @@
 --
 
 -- Dumped from database version 13.1
--- Dumped by pg_dump version 13.1
+-- Dumped by pg_dump version 14.0
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -16,6 +16,22 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
+--
+-- Name: public; Type: SCHEMA; Schema: -; Owner: compose-postgres
+--
+
+CREATE SCHEMA public;
+
+
+ALTER SCHEMA public OWNER TO "compose-postgres";
+
+--
+-- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: compose-postgres
+--
+
+COMMENT ON SCHEMA public IS 'standard public schema';
+
+
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
@@ -23,7 +39,6 @@ SET default_table_access_method = heap;
 --
 -- Name: author; Type: TABLE; Schema: public; Owner: compose-postgres
 --
-
 CREATE ROLE root superuser PASSWORD 'password' login;
 CREATE DATABASE root;
 CREATE TABLE public.author (
@@ -264,6 +279,78 @@ ALTER TABLE public.person_id_seq OWNER TO "compose-postgres";
 
 ALTER SEQUENCE public.person_id_seq OWNED BY public.person.id;
 
+
+--
+-- Name: user_vote; Type: TABLE; Schema: public; Owner: compose-postgres
+--
+
+CREATE TABLE public.user_vote (
+    id integer NOT NULL,
+    vote_id integer NOT NULL,
+    user_id integer NOT NULL
+);
+
+
+ALTER TABLE public.user_vote OWNER TO "compose-postgres";
+
+--
+-- Name: user_vote_id_seq; Type: SEQUENCE; Schema: public; Owner: compose-postgres
+--
+
+CREATE SEQUENCE public.user_vote_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.user_vote_id_seq OWNER TO "compose-postgres";
+
+--
+-- Name: user_vote_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: compose-postgres
+--
+
+ALTER SEQUENCE public.user_vote_id_seq OWNED BY public.user_vote.id;
+
+
+--
+-- Name: votes; Type: TABLE; Schema: public; Owner: compose-postgres
+--
+
+CREATE TABLE public.votes (
+    id integer NOT NULL,
+    book_name character varying(255) NOT NULL,
+    library_id integer NOT NULL,
+    vote_amount integer DEFAULT 0 NOT NULL
+);
+
+
+ALTER TABLE public.votes OWNER TO "compose-postgres";
+
+--
+-- Name: votes_id_seq; Type: SEQUENCE; Schema: public; Owner: compose-postgres
+--
+
+CREATE SEQUENCE public.votes_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.votes_id_seq OWNER TO "compose-postgres";
+
+--
+-- Name: votes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: compose-postgres
+--
+
+ALTER SEQUENCE public.votes_id_seq OWNED BY public.votes.id;
+
+
 --
 -- Name: author id; Type: DEFAULT; Schema: public; Owner: compose-postgres
 --
@@ -305,6 +392,21 @@ ALTER TABLE ONLY public.library ALTER COLUMN id SET DEFAULT nextval('public.libr
 
 ALTER TABLE ONLY public.person ALTER COLUMN id SET DEFAULT nextval('public.person_id_seq'::regclass);
 
+
+--
+-- Name: user_vote id; Type: DEFAULT; Schema: public; Owner: compose-postgres
+--
+
+ALTER TABLE ONLY public.user_vote ALTER COLUMN id SET DEFAULT nextval('public.user_vote_id_seq'::regclass);
+
+
+--
+-- Name: votes id; Type: DEFAULT; Schema: public; Owner: compose-postgres
+--
+
+ALTER TABLE ONLY public.votes ALTER COLUMN id SET DEFAULT nextval('public.votes_id_seq'::regclass);
+
+
 --
 -- Data for Name: author; Type: TABLE DATA; Schema: public; Owner: compose-postgres
 --
@@ -326,6 +428,7 @@ COPY public.authorship (id, book_id, author_id) FROM stdin;
 --
 
 COPY public.blocking (id, book_id, person_id, date_from, date_to, is_borrowed) FROM stdin;
+4	1	4	2021-10-22	2021-11-05	f
 \.
 
 
@@ -356,7 +459,33 @@ COPY public.person (id, name, surname, birth_date, role, username, password, lib
 1	Tomas	Korbar	1970-01-01	ADMIN	korbonaut	$2a$10$GRQmNECbcOX.e1IvtwgnOelX6O4VVS7sXxfYsySOeqN/Gy6ZZ5hNG	\N
 2	Tomas1	Korbar2	1970-01-01	LIBRARIAN	libr	$2a$10$GRQmNECbcOX.e1IvtwgnOelX6O4VVS7sXxfYsySOeqN/Gy6ZZ5hNG	1
 3	Tomas1	Korbar2	1970-01-01	LIBRARIAN	libr2	$2a$10$GRQmNECbcOX.e1IvtwgnOelX6O4VVS7sXxfYsySOeqN/Gy6ZZ5hNG	1
+4	Tomas1	Korbar2	1970-01-01	READER	reader	$2a$10$GRQmNECbcOX.e1IvtwgnOelX6O4VVS7sXxfYsySOeqN/Gy6ZZ5hNG	1
 \.
+
+
+--
+-- Data for Name: user_vote; Type: TABLE DATA; Schema: public; Owner: compose-postgres
+--
+
+COPY public.user_vote (id, vote_id, user_id) FROM stdin;
+1	1	4
+\.
+
+
+--
+-- Data for Name: votes; Type: TABLE DATA; Schema: public; Owner: compose-postgres
+--
+
+COPY public.votes (id, book_name, library_id, vote_amount) FROM stdin;
+1	Mikirova uzasna pout	1	1
+2	Mikirova uzasna pout	1	0
+3	Mikirova uzasna pout	1	0
+4	Mikirova uzasna pout	1	0
+5	Mikirova uzasna pout	1	0
+6	Mikirova uzasna pout	1	0
+7	Mikirova uzasna pout	1	0
+\.
+
 
 --
 -- Name: author_id_seq; Type: SEQUENCE SET; Schema: public; Owner: compose-postgres
@@ -376,7 +505,7 @@ SELECT pg_catalog.setval('public.authorship_id_seq', 1, false);
 -- Name: blocking_id_seq; Type: SEQUENCE SET; Schema: public; Owner: compose-postgres
 --
 
-SELECT pg_catalog.setval('public.blocking_id_seq', 1, false);
+SELECT pg_catalog.setval('public.blocking_id_seq', 4, true);
 
 
 --
@@ -405,6 +534,21 @@ SELECT pg_catalog.setval('public.library_id_seq', 1, false);
 --
 
 SELECT pg_catalog.setval('public.person_id_seq', 1, true);
+
+
+--
+-- Name: user_vote_id_seq; Type: SEQUENCE SET; Schema: public; Owner: compose-postgres
+--
+
+SELECT pg_catalog.setval('public.user_vote_id_seq', 1, true);
+
+
+--
+-- Name: votes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: compose-postgres
+--
+
+SELECT pg_catalog.setval('public.votes_id_seq', 7, true);
+
 
 --
 -- Name: author author_pkey; Type: CONSTRAINT; Schema: public; Owner: compose-postgres
@@ -455,10 +599,40 @@ ALTER TABLE ONLY public.person
 
 
 --
+-- Name: user_vote user_vote_pk; Type: CONSTRAINT; Schema: public; Owner: compose-postgres
+--
+
+ALTER TABLE ONLY public.user_vote
+    ADD CONSTRAINT user_vote_pk PRIMARY KEY (id);
+
+
+--
+-- Name: votes votes_pk; Type: CONSTRAINT; Schema: public; Owner: compose-postgres
+--
+
+ALTER TABLE ONLY public.votes
+    ADD CONSTRAINT votes_pk PRIMARY KEY (id);
+
+
+--
 -- Name: person_username_uindex; Type: INDEX; Schema: public; Owner: compose-postgres
 --
 
 CREATE UNIQUE INDEX person_username_uindex ON public.person USING btree (username);
+
+
+--
+-- Name: user_vote_id_uindex; Type: INDEX; Schema: public; Owner: compose-postgres
+--
+
+CREATE UNIQUE INDEX user_vote_id_uindex ON public.user_vote USING btree (id);
+
+
+--
+-- Name: votes_id_uindex; Type: INDEX; Schema: public; Owner: compose-postgres
+--
+
+CREATE UNIQUE INDEX votes_id_uindex ON public.votes USING btree (id);
 
 
 --
@@ -494,6 +668,14 @@ ALTER TABLE ONLY public.book
 
 
 --
+-- Name: votes library_fk; Type: FK CONSTRAINT; Schema: public; Owner: compose-postgres
+--
+
+ALTER TABLE ONLY public.votes
+    ADD CONSTRAINT library_fk FOREIGN KEY (library_id) REFERENCES public.library(id) ON DELETE CASCADE;
+
+
+--
 -- Name: blocking person; Type: FK CONSTRAINT; Schema: public; Owner: compose-postgres
 --
 
@@ -507,6 +689,22 @@ ALTER TABLE ONLY public.blocking
 
 ALTER TABLE ONLY public.person
     ADD CONSTRAINT person_library_id_fk FOREIGN KEY (library_id) REFERENCES public.library(id);
+
+
+--
+-- Name: user_vote user_vote_user_id; Type: FK CONSTRAINT; Schema: public; Owner: compose-postgres
+--
+
+ALTER TABLE ONLY public.user_vote
+    ADD CONSTRAINT user_vote_user_id FOREIGN KEY (user_id) REFERENCES public.person(id) ON DELETE CASCADE;
+
+
+--
+-- Name: user_vote user_vote_vote_id; Type: FK CONSTRAINT; Schema: public; Owner: compose-postgres
+--
+
+ALTER TABLE ONLY public.user_vote
+    ADD CONSTRAINT user_vote_vote_id FOREIGN KEY (vote_id) REFERENCES public.votes(id) ON DELETE CASCADE;
 
 
 --
