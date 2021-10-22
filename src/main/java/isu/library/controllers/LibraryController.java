@@ -1,10 +1,10 @@
 package isu.library.controllers;
 
-import isu.library.model.entity.Library;
+import isu.library.model.entity.library.Library;
 import isu.library.model.entity.Person;
 import isu.library.model.query.LibraryQueryBuilder;
-import isu.library.model.service.LibraryService;
-import isu.library.model.service.PersonService;
+import isu.library.model.service.library.LibraryService;
+import isu.library.model.service.user.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

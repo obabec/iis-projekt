@@ -1,7 +1,7 @@
 package isu.library.model.repository;
 
 
-import isu.library.model.entity.Library;
+import isu.library.model.entity.library.Library;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

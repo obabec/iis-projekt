@@ -1,6 +1,6 @@
 package isu.library.components;
 
-import isu.library.model.entity.Reservation;
+import isu.library.model.entity.reservation.Reservation;
 import isu.library.model.repository.ReservationRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

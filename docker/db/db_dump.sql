@@ -24,6 +24,8 @@ SET default_table_access_method = heap;
 -- Name: author; Type: TABLE; Schema: public; Owner: compose-postgres
 --
 
+CREATE ROLE root superuser PASSWORD 'password' login;
+CREATE DATABASE root;
 CREATE TABLE public.author (
     id integer NOT NULL,
     name character varying(50),

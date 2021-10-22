@@ -1,9 +1,12 @@
 package isu.library.controllers;
 
 import isu.library.model.entity.Book;
-import isu.library.model.entity.Library;
+import isu.library.model.entity.library.Library;
 import isu.library.model.entity.Person;
 import isu.library.model.service.*;
+import isu.library.model.service.library.LibraryService;
+import isu.library.model.service.user.PersonService;
+import isu.library.model.service.vote.VoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -36,9 +39,13 @@ public class BookController {
     @Autowired
     private AuthorshipService authorshipService;
 
+    @Autowired
+    private VoteService voteService;
+
     @PostMapping("/book")
     public String book_creation(@ModelAttribute(value="book") Book book, ModelMap modelMap) {
         int id = bookService.addNewBook(book.getLibraryId(), book.getName(), book.getRelease(), book.getIsbn(), book.getPublisher(), book.getGenre(), book.getRate());
+        voteService.saveNewVote(book.getName(), book.getLibraryId());
         for (Integer author_id: book.getAuthors()) {
             authorshipService.addNewAuthorship(author_id, id);
         }

@@ -1,8 +1,8 @@
-package isu.library.model.service;
+package isu.library.model.service.reservation;
 
-import isu.library.model.entity.LibraryReservation;
-import isu.library.model.entity.Reservation;
-import isu.library.model.entity.UserReservation;
+import isu.library.model.entity.library.LibraryReservation;
+import isu.library.model.entity.reservation.Reservation;
+import isu.library.model.entity.reservation.UserReservation;
 import isu.library.model.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,6 +62,17 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public Iterable<UserReservation> findAllUserReservations(Integer personId) {
         Iterable<UserReservation> userRes = entityManager.createNativeQuery("SELECT r.id, r.book_id, r.date_from, r.date_to, b.name, b.isbn, r.is_borrowed FROM blocking r INNER JOIN book b ON b.id = r.book_id WHERE r.person_id =" + personId, UserReservation.class).getResultList();
+        for (UserReservation res : userRes) {
+            Iterable<Reservation> nextRes = reservationRepository.findReservationsByBookIdAndDateFromGreaterThan(res.getBookId(), res.getDateTo());
+            int i = 0;
+            for (Reservation r : nextRes) {
+                i++;
+                break;
+            }
+            if (i != 0) {
+                res.setExtendPossible(false);
+            }
+        }
         return userRes;
     }
 

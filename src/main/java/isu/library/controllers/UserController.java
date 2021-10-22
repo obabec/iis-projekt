@@ -1,8 +1,8 @@
 package isu.library.controllers;
 
 import isu.library.model.entity.Person;
-import isu.library.model.service.LibraryService;
-import isu.library.model.service.PersonService;
+import isu.library.model.service.library.LibraryService;
+import isu.library.model.service.user.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
