@@ -36,7 +36,14 @@ public class LoanController {
         if (authentication != null && ((UserDetails)authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
             String username = ((UserDetails) authentication.getPrincipal()).getUsername();
             Person user = personService.findPersonByUsername(username).get();
-            modelMap.put("availableBooks", bookService.findBooksByLibraryId(user.getLibraryId()));
+            // Osetreni refreshe - asi by to chtelo vymyslet lepe a udelat dotaz na databazi jestli je kniha aktualne dostupna
+            if (!bookService.isBookAvailable(reservation.getBookId())) {
+                modelMap.put("readers", personService.findPersonsByRole("READER"));
+                modelMap.put("reservation", new Reservation());
+                modelMap.put("message", "Kniha je jiz zapujcena");
+                modelMap.put("availableBooks", bookService.findAvailableBooks(user.getLibraryId()));
+                return "createLoan";
+            }
             modelMap.put("readers", personService.findPersonsByRole("READER"));
             modelMap.put("reservation", new Reservation());
             int id = reservationService.saveNewLoan(reservation.getBookId(), reservation.getPersonId(), LocalDate.now());
@@ -45,6 +52,7 @@ public class LoanController {
             } else {
                 modelMap.put("message", "Vypujcka byla evidovana v systemu");
             }
+            modelMap.put("availableBooks", bookService.findAvailableBooks(user.getLibraryId()));
             return "createLoan";
         } else {
             return "redirect:/";
@@ -58,7 +66,7 @@ public class LoanController {
         if (authentication != null && ((UserDetails)authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
             String username = ((UserDetails) authentication.getPrincipal()).getUsername();
             Person user = personService.findPersonByUsername(username).get();
-            modelMap.put("availableBooks", bookService.findBooksByLibraryId(user.getLibraryId()));
+            modelMap.put("availableBooks", bookService.findAvailableBooks(user.getLibraryId()));
             modelMap.put("readers", personService.findPersonsByRole("READER"));
             modelMap.put("reservation", new Reservation());
             return "createLoan";

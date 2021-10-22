@@ -15,32 +15,15 @@ SET check_function_bodies = false;
 SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
-
---
--- Name: public; Type: SCHEMA; Schema: -; Owner: compose-postgres
---
-
-CREATE SCHEMA public;
-
-
-ALTER SCHEMA public OWNER TO "compose-postgres";
-
---
--- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: compose-postgres
---
-
-COMMENT ON SCHEMA public IS 'standard public schema';
-
-
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
-
+CREATE ROLE root superuser PASSWORD 'password' login;
+CREATE DATABASE root;
 --
 -- Name: author; Type: TABLE; Schema: public; Owner: compose-postgres
 --
-CREATE ROLE root superuser PASSWORD 'password' login;
-CREATE DATABASE root;
+
 CREATE TABLE public.author (
     id integer NOT NULL,
     name character varying(50),

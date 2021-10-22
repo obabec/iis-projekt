@@ -53,6 +53,18 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public Iterable<Book> findAvailableBooks(Integer libraryId) {
+        String query = (new BookQueryBuilder()).filterByAvailability().filterByLibraryId(libraryId).getQuery();
+        return ((List<Book>) entityManager.createNativeQuery(query, Book.class).getResultList());
+    }
+
+    @Override
+    public boolean isBookAvailable(Integer bookId) {
+        String query = (new BookQueryBuilder()).filterByAvailability().filterById(bookId).getQuery();
+        return !((List<Book>) entityManager.createNativeQuery(query, Book.class).getResultList()).isEmpty();
+    }
+
+    @Override
     public Iterable<Book> findByGenre(String genre, String libraryName) {
         String query = (new BookQueryBuilder()).filterByGenre(genre).filterByLibrary(libraryName).getQuery();
         return ((List<Book>) entityManager.createNativeQuery(query, Book.class).getResultList());
