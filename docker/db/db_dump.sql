@@ -136,7 +136,7 @@ ALTER SEQUENCE public.blocking_id_seq OWNED BY public.blocking.id;
 
 CREATE TABLE public.book (
     id integer NOT NULL,
-    library_id integer NOT NULL,
+    library_id integer,
     name character varying(50),
     release date,
     isbn character(13),
@@ -264,7 +264,6 @@ ALTER TABLE public.person_id_seq OWNER TO "compose-postgres";
 
 ALTER SEQUENCE public.person_id_seq OWNED BY public.person.id;
 
-
 --
 -- Name: author id; Type: DEFAULT; Schema: public; Owner: compose-postgres
 --
@@ -305,7 +304,6 @@ ALTER TABLE ONLY public.library ALTER COLUMN id SET DEFAULT nextval('public.libr
 --
 
 ALTER TABLE ONLY public.person ALTER COLUMN id SET DEFAULT nextval('public.person_id_seq'::regclass);
-
 
 --
 -- Data for Name: author; Type: TABLE DATA; Schema: public; Owner: compose-postgres
@@ -360,7 +358,6 @@ COPY public.person (id, name, surname, birth_date, role, username, password, lib
 3	Tomas1	Korbar2	1970-01-01	LIBRARIAN	libr2	$2a$10$GRQmNECbcOX.e1IvtwgnOelX6O4VVS7sXxfYsySOeqN/Gy6ZZ5hNG	1
 \.
 
-
 --
 -- Name: author_id_seq; Type: SEQUENCE SET; Schema: public; Owner: compose-postgres
 --
@@ -408,7 +405,6 @@ SELECT pg_catalog.setval('public.library_id_seq', 1, false);
 --
 
 SELECT pg_catalog.setval('public.person_id_seq', 1, true);
-
 
 --
 -- Name: author author_pkey; Type: CONSTRAINT; Schema: public; Owner: compose-postgres

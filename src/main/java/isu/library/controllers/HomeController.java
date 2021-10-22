@@ -1,8 +1,11 @@
 package isu.library.controllers;
 
+import isu.library.model.entity.Author;
+import isu.library.model.entity.Authorship;
 import isu.library.model.entity.Book;
 import isu.library.model.entity.Person;
 import isu.library.model.query.BookQueryBuilder;
+import isu.library.model.service.AuthorService;
 import isu.library.model.service.AuthorshipService;
 import isu.library.model.service.BookService;
 import isu.library.model.service.user.PersonService;
@@ -25,6 +28,9 @@ public class HomeController {
 
     @Autowired
     private PersonService personService;
+
+    @Autowired
+    private AuthorService authorService;
 
     @Autowired
     private AuthorshipService authorshipService;
@@ -98,8 +104,14 @@ public class HomeController {
         Iterable<Book> books = bookService.executeQuery(builder.getQuery());
         for (Book b: books) {
             b.setAuthors(new ArrayList<Integer>());
-            authorshipService.findAuthorshipByBookId(b.getId()).forEach(a -> b.getAuthors().add(personService.findPersonById(a.getPersonId()).get().getId()));
+            b.setAuthors_names(new ArrayList<String>());
+            for (Authorship authorship: authorshipService.findAuthorshipByBookId(b.getId())) {
+                Author author = authorService.findAuthorById(authorship.getAuthorId()).get();
+                b.getAuthors().add(author.getId());
+                b.getAuthors_names().add(author.getName() + " " + author.getSurname());
+            }
         }
+
         modelMap.put("books", books);
         return "home";
     }

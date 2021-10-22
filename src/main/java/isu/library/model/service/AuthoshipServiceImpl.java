@@ -16,8 +16,8 @@ public class AuthoshipServiceImpl implements AuthorshipService{
     AuthorshipRepository repository;
 
     @Override
-    public void addNewAuthorship(int person_id, int book_id) {
-        repository.save(new Authorship(person_id, book_id));
+    public void addNewAuthorship(int author_id, int book_id) {
+        repository.save(new Authorship(author_id, book_id));
     }
 
     @Override

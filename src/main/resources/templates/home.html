@@ -156,7 +156,9 @@
                         <td th:text="${book.name}">Onions</td>
                         <td th:text="${book.release}">2.41</td>
                         <td th:text="${book.genre}">yes</td>
-                        <td th:text="${book.authors}">Henrich</td>
+                        <td>
+                            <p th:each="author_name : ${book.authors_names}" th:text="${author_name}"></p>
+                        </td>
                         <td th:text="${book.isbn}"> AC12</td>
                         <td th:text="${book.publisher}">Franz Josef</td>
                         <td th:text="${book.rate}">Franz Josef</td>
