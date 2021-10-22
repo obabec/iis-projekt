@@ -5,7 +5,8 @@ import isu.library.model.entity.Person;
 import isu.library.model.query.BookQueryBuilder;
 import isu.library.model.service.AuthorshipService;
 import isu.library.model.service.BookService;
-import isu.library.model.service.PersonService;
+import isu.library.model.service.user.PersonService;
+import isu.library.model.service.vote.VoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -28,6 +29,9 @@ public class HomeController {
     @Autowired
     private AuthorshipService authorshipService;
 
+    @Autowired
+    private VoteService voteService;
+
     @GetMapping("/")
     public String home(@RequestParam(name="book_name", required = false, defaultValue = "") String bookName,
                        @RequestParam(name="library_name", required = false, defaultValue = "") String libraryName,
@@ -42,6 +46,7 @@ public class HomeController {
                        @RequestParam(name="message", required = false, defaultValue = "") String message,
                        Authentication authentication,
                        ModelMap modelMap) {
+
         if (authentication != null && ((UserDetails)authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
             String username = ((UserDetails)authentication.getPrincipal()).getUsername();
             Person user = personService.findPersonByUsername(username).get();

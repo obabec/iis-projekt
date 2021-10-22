@@ -1,9 +1,9 @@
 package isu.library.controllers;
 
 import isu.library.model.entity.Person;
-import isu.library.model.entity.Reservation;
-import isu.library.model.service.PersonService;
-import isu.library.model.service.ReservationService;
+import isu.library.model.entity.reservation.Reservation;
+import isu.library.model.service.user.PersonService;
+import isu.library.model.service.reservation.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -29,7 +29,7 @@ public class ReservationController {
 
     @Autowired
     PersonService personService;
-    //todo: je potreba vyresit kdy budeme mazat prosle rezervace
+
     private static final int RESERVATION_DURATION = 2;
     @GetMapping("/reservationSummary")
     public String reservations(Authentication authentication,
@@ -43,6 +43,18 @@ public class ReservationController {
         } else {
             return "home";
         }
+    }
+
+    @GetMapping("/reservationExtend")
+    public String reservationExtend(@RequestParam(name="reservation_id", required = true, defaultValue = "") Integer reservationId,
+                                    Authentication authentication,
+                                    ModelMap modelMap) {
+        Optional<Reservation> reservation = reservationService.findReservationById(reservationId);
+        if (reservation.isPresent()) {
+            reservation.get().setDateTo(Date.valueOf(reservation.get().getDateTo().toLocalDate().plusDays(7)));
+            reservationService.updateReservation(reservation.get());
+        }
+        return "redirect:/reservationSummary";
     }
 
     @GetMapping("/reservations/create")

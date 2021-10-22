@@ -1,4 +1,4 @@
-package isu.library.model.entity;
+package isu.library.model.entity.reservation;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.SecondaryTable;
 import javax.persistence.SecondaryTables;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.sql.Date;
 
 @Getter
@@ -21,9 +22,8 @@ import java.sql.Date;
 @Table(name = "blocking")
 @SecondaryTables({
         @SecondaryTable(name = "book"),
-        @SecondaryTable(name = "person")
 })
-public class LibraryReservation {
+public class UserReservation {
     @Id
     private Integer id;
     @Column(name = "book_id", table = "book")
@@ -36,12 +36,9 @@ public class LibraryReservation {
     private String bookName;
     @Column(name = "isbn", table = "book")
     private String isbn;
-    @Column(name = "name", table = "person")
-    private String name;
-    @Column(name = "surname", table = "person")
-    private String surname;
-    @Column(name = "birth_date", table = "person")
-    private Date birthDate;
     @Column(name = "is_borrowed")
     private Boolean borrowed;
+
+    @Transient
+    private Boolean extendPossible = true;
 }

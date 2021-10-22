@@ -1,6 +1,6 @@
-package isu.library.model.service;
+package isu.library.model.service.library;
 
-import isu.library.model.entity.Library;
+import isu.library.model.entity.library.Library;
 import isu.library.model.repository.LibraryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

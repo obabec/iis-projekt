@@ -23,27 +23,47 @@
                     <span class="fs-5 d-none d-sm-inline">Menu</span>
                 </a>
                 <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
-                    <li class="nav-item">
-                        <a href="/" class="nav-link align-middle px-0">
-                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Sprava knih</span>
-                        </a>
+                    <li sec:authorize="isAnonymous()">
+                        <a href="/login" class="nav-link px-0 align-middle">
+                            <i class="fs-4 bi-unlock"></i> <span class="ms-1 d-none d-sm-inline">Login</span></a>
                     </li>
                     <li sec:authorize="isAnonymous()">
                         <a href="/register" class="nav-link px-0 align-middle">
                             <i class="fs-4 bi-gear-fill"></i> <span class="ms-1 d-none d-sm-inline">Register</span></a>
                     </li>
+                    <li class="nav-item">
+                        <a href="/" class="nav-link align-middle px-0">
+                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Sprava knih</span>
+                        </a>
+                    </li>
+                    <li sec:authorize="hasRole('ADMIN')">
+                        <a href="/libraries" class="nav-link px-0 align-middle">
+                            <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Sprava knihoven</span></a>
+                    </li>
+                    <li sec:authorize="hasAnyRole('LIBRARIAN', 'ADMIN')">
+                        <a th:href="@{/library(library_id=${library})}" class="nav-link px-0 align-middle">
+                            <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Sprava knihovny</span></a>
+                    </li>
                     <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN')">
                         <a href="/book" class="nav-link px-0 align-middle">
                             <i class="fs-4 bi-book"></i> <span class="ms-1 d-none d-sm-inline">Pridani knih</span></a>
                     </li>
-                    <li>
+                    <li sec:authorize="hasRole('ADMIN')">
                         <a href="/users" class="nav-link px-0 align-middle">
                             <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Sprava uzivatelu</span></a>
                     </li>
-                    <li sec:authorize="hasAnyRole('ADMIN', 'READER', 'LIBRARIAN')">
-                        <a href="/votes" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline"> Hlasovani</span></a>
-                    </li>
+                    <!--<li>
+                        <a href="#submenu2" data-bs-toggle="collapse" class="nav-link px-0 align-middle ">
+                            <i class="fs-4 bi-bootstrap"></i> <span class="ms-1 d-none d-sm-inline">Bootstrap</span></a>
+                        <ul class="collapse nav flex-column ms-1" id="submenu2" data-bs-parent="#menu">
+                            <li class="w-100">
+                                <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Item</span> 1</a>
+                            </li>
+                            <li>
+                                <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Item</span> 2</a>
+                            </li>
+                        </ul>
+                    </li> -->
                 </ul>
                 <hr>
                 <div class="dropdown pb-4" sec:authorize="isAuthenticated()">
@@ -67,68 +87,58 @@
             </div>
         </div>
         <div class="col py-3">
-            <form th:action="@{/libraries}">
+            <form th:action="@{/votes}" method="GET">
                 <div class="row">
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" placeholder="Jmeno knihovny" th:name="library_name" th:value="${lib_name}"/>
+                    <div class="dropdown col-sm-4">
+                        <select class="library_search" name="library" th:name="library_id">
+                            <option th:each="library : ${libraries}" th:value="${library.id}" th:text="${library.name}" th:selected="${library.id == library_id}"/>
+                        </select>
                     </div>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" placeholder="Tag" th:name="library_tag" th:value="${lib_tag}"/>
-                    </div>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" placeholder="City" th:name="library_city" th:value="${lib_name}"/>
+                    <div class="col">
+                        <input class="form-control" type="submit"/>
                     </div>
                 </div>
-                <div class="col">
-                    <input class="form-control" type="submit"/>
-                </div>
-
             </form>
-            <table id="libraryListing" class="table table-hover">
+
+            <table id="voteListing" class="table table-hover">
                 <thead>
                 <tr>
-                    <th>Id</th>
-                    <th>Jmeno</th>
-                    <th>Tag</th>
-                    <th>Mesto</th>
+                    <th>Jmeno knihy</th>
+                    <th>Jmeno knihovny</th>
+                    <th>Pocet hlasu</th>
                     <th>Akce</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="library : ${libraries}">
-                    <td th:text="${library.id}">Onions</td>
-                    <td th:text="${library.name}">Onions</td>
-                    <td th:text="${library.tag}">2.41</td>
-                    <td th:text="${library.city}">yes</td>
-                    <td>
-                        <a th:href="@{/library(library_id=${library.id})}">
-                            <button class="btn btn-success">
-                                Spravovat
-                            </button>
+                <tr th:each="vote : ${votes}">
+                    <td th:text="${vote.bookName}">Onions</td>
+                    <td th:text="${{vote.library.name}}">Onions</td>
+                    <td th:text="${{vote.voteAmount}}">Onions</td>
+                    <td th:switch="${vote.enabled}" sec:authorize="hasRole('READER')">
+                        <!-- Add arguments to href - reservation id and library id -->
+                        <a th:case="false">
+                            <button class="btn btn-primary" disabled>Hlasovat</button>
                         </a>
-                        <a th:href="@{/deleteLibrary(library_id=${library.id})}">
-                            <button class="btn btn-warning">
-                                Smazat knihovnu
-                            </button>
+                        <a th:case="true" th:href="@{/votes(vote_id=${vote.id}, library_id=${library_id})}">
+                            <button class="btn btn-primary">Hlasovat</button>
+                        </a>
+                    </td>
+                    <td sec:authorize="hasAnyRole('LIBRARIAN', 'ADMIN')">
+                        <a th:href="@{/deleteVote(vote_id=${vote.id}, library_id=${library_id})}">
+                            <button class="btn btn-primary">Smazat hlasovani</button>
                         </a>
                     </td>
                 </tr>
                 </tbody>
                 <tfoot>
                 <tr>
-                    <th>Id</th>
-                    <th>Jmeno</th>
-                    <th>Tag</th>
-                    <th>Mesto</th>
+                    <th>Jmeno knihy</th>
+                    <th>Jmeno knihovny</th>
+                    <th>Pocet hlasu</th>
                     <th>Akce</th>
                 </tr>
                 </tfoot>
             </table>
-            <a sec:authorize="hasRole('ADMIN')" th:href="@{/library}">
-                <button class="btn btn-success">
-                    Pridat novou knihovny
-                </button>
-            </a>
         </div>
     </div>
 </div>

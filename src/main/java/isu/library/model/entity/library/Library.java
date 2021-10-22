@@ -1,4 +1,4 @@
-package isu.library.model.entity;
+package isu.library.model.entity.library;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

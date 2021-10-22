@@ -47,6 +47,10 @@
                             <a href="/users" class="nav-link px-0 align-middle">
                                 <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Sprava uzivatelu</span></a>
                         </li>
+                        <li sec:authorize="hasAnyRole('ADMIN', 'READER', 'LIBRARIAN')">
+                            <a href="/votes" class="nav-link px-0 align-middle">
+                                <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline"> Hlasovani</span></a>
+                        </li>
                         <!--<li>
                             <a href="#submenu2" data-bs-toggle="collapse" class="nav-link px-0 align-middle ">
                                 <i class="fs-4 bi-bootstrap"></i> <span class="ms-1 d-none d-sm-inline">Bootstrap</span></a>
@@ -180,12 +184,12 @@
                                 </button>
                             </a>
                         </td>
-                        <td sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN')">
-                            <!--th:href="@{/reservations(reservation_id=${book.id}, library_id=${library}, action=1)}" -->
+<!--                        <td sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN')">
+                            th:href="@{/reservations(reservation_id=${book.id}, library_id=${library}, action=1)}"
                             <a >
                                 <button class="btn btn-warning">Smazat</button>
                             </a>
-                        </td>
+                        </td> -->
                         <td sec:authorize="hasRole('READER')">
                             <a th:href="@{/reservations/create(book_id=${book.id})}">
                                 <button class="btn btn-primary">Rezervovat</button>

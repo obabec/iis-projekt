@@ -56,4 +56,8 @@ public interface BookRepository extends CrudRepository<Book, Integer> {
     @Query(value="SELECT * FROM book b WHERE b.id = :id", nativeQuery = true)
     Book findById(@Param("id") int id);
 
+
+    @Query(value = "SELECT DISTINCT b.name FROM book b WHERE b.library_id = :library_id", nativeQuery = true)
+    Iterable<String> findBookNamesInLibrary(@Param("library_id") Integer libraryId);
+
 }

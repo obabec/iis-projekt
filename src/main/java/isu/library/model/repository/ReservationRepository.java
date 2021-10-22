@@ -1,6 +1,6 @@
 package isu.library.model.repository;
 
-import isu.library.model.entity.Reservation;
+import isu.library.model.entity.reservation.Reservation;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;

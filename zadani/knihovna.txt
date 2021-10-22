@@ -29,7 +29,7 @@ Popis:
 
     čtenář
         rezervuje knižní tituly (rezervaci je možné provést i v případě nedostupnosti knih, kdy je uživatel zařazen do fronty čekatelů)
-        hlasuje za dokoupení knih do dané knihovny (každému titulu v dané knihovně může udělit pouze jeden hlas) - nemame
+        hlasuje za dokoupení knih do dané knihovny (každému titulu v dané knihovně může udělit pouze jeden hlas) - Co delat pri updatu jmena knihy
         má rovněž práva (a) neregistrovaného uživatele
 
     neregistrovaný uživatel

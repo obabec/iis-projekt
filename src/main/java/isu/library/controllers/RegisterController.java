@@ -1,9 +1,9 @@
 package isu.library.controllers;
 
 import isu.library.model.entity.Person;
-import isu.library.model.entity.Reservation;
-import isu.library.model.service.MyUserDetailsService;
-import isu.library.model.service.ReservationService;
+import isu.library.model.entity.reservation.Reservation;
+import isu.library.model.service.user.MyUserDetailsService;
+import isu.library.model.service.reservation.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;

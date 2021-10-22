@@ -1,6 +1,6 @@
-package isu.library.model.service;
+package isu.library.model.service.library;
 
-import isu.library.model.entity.Library;
+import isu.library.model.entity.library.Library;
 
 import java.sql.Time;
 

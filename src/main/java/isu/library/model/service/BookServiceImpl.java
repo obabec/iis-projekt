@@ -107,4 +107,9 @@ public class BookServiceImpl implements BookService {
     public void removeById(int id) {
         bookRepository.deleteById(id);
     }
+
+    @Override
+    public Iterable<String> findBooksByLibraryId(Integer libraryId) {
+        return bookRepository.findBookNamesInLibrary(libraryId);
+    }
 }

@@ -1,8 +1,8 @@
-package isu.library.model.service;
+package isu.library.model.service.reservation;
 
-import isu.library.model.entity.LibraryReservation;
-import isu.library.model.entity.Reservation;
-import isu.library.model.entity.UserReservation;
+import isu.library.model.entity.library.LibraryReservation;
+import isu.library.model.entity.reservation.Reservation;
+import isu.library.model.entity.reservation.UserReservation;
 
 import java.sql.Date;
 import java.time.LocalDate;

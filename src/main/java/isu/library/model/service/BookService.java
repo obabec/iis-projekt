@@ -20,4 +20,6 @@ public interface BookService {
     int addNewBook(Integer libraryId, String name, Date release, String isbn, String publisher, String genre, Short rate);
     void updateBook(Book book);
     void removeById(int id);
+    Iterable<String> findBooksByLibraryId(Integer libraryId);
+
 }
