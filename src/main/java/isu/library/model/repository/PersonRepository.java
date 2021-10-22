@@ -17,4 +17,5 @@ public interface PersonRepository extends CrudRepository<Person, Integer> {
     Iterable<Person> findPersonByUsernameNotNull();
     void deleteById(Integer id);
     Optional<Person> findPersonById(Integer id);
+    Iterable<Person> findPersonByRole(String role);
 }
