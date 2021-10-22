@@ -23,13 +23,13 @@ public interface BookRepository extends CrudRepository<Book, Integer> {
     Iterable<Book> findAvailableBookByName(@Param("bookName") String bookName, @Param("libraryName") String libraryName);
     // Hledani knihy dle autora - Working
     @Query(value = "SELECT b.id, b.name, b.release, b.isbn, b.publisher, b.genre, b.rate FROM book b " +
-            "INNER JOIN authorship a ON b.id = a.book_id INNER JOIN person p ON a.person_id = p.id WHERE p.surname " +
+            "INNER JOIN authorship a ON b.id = a.book_id INNER JOIN author p ON a.author_id = p.id WHERE CONCAT(p.name, ' ', p.surname) " +
             "LIKE CONCAT('%', :authorName, '%') AND library_id IN " +
             "(select id from library where name like CONCAT('%', :libraryName, '%'))", nativeQuery = true)
     Iterable<Book> findByAuthorName(@Param("authorName") String authorName, @Param("libraryName") String libraryName);
 
     @Query(value = "SELECT b.id, b.name, b.release, b.isbn, b.publisher, b.genre, b.rate FROM book b " +
-            "INNER JOIN authorship a ON b.id = a.book_id INNER JOIN person p ON a.person_id = p.id WHERE p.surname " +
+            "INNER JOIN authorship a ON b.id = a.book_id INNER JOIN author p ON a.author_id = p.id WHERE CONCAT(p.name, ' ', p.surname) " +
             "LIKE CONCAT('%', :authorName, '%') AND library_id IN " +
             "(select id from library where name like CONCAT('%', :libraryName, '%')) AND " +
             "b.id NOT IN (SELECT book_id FROM blocking WHERE CURRENT_DATE BETWEEN date_from AND date_to)", nativeQuery = true)

@@ -22,11 +22,11 @@ public class Authorship {
     @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(columnDefinition = "SERIAL") int id;
     @Column(name = "book_id")
     private Integer bookId;
-    @Column(name = "person_id")
-    private Integer personId;
+    @Column(name = "author_id")
+    private Integer authorId;
 
-    public Authorship(int personId, int bookId) {
-        this.personId = personId;
+    public Authorship(int authorId, int bookId) {
+        this.authorId = authorId;
         this.bookId = bookId;
     }
 }

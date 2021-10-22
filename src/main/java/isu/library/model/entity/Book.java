@@ -32,6 +32,8 @@ public class Book {
     private Short rate;
     @Transient
     private ArrayList<Integer> authors;
+    @Transient
+    private ArrayList<String> authors_names;
 
     public Book(Integer libraryId, String name, Date release, String isbn, String publisher, String genre, Short rate) {
         this.libraryId = libraryId;

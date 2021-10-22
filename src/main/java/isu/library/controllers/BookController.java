@@ -117,7 +117,7 @@ public class BookController {
     public String book_creation(@PathVariable("id") int bookId, ModelMap modelMap) {
         Book found_book = bookService.findById(bookId);
         found_book.setAuthors(new ArrayList<>());
-        authorshipService.findAuthorshipByBookId(bookId).forEach(a -> found_book.getAuthors().add(personService.findPersonById(a.getPersonId()).get().getId()));
+        authorshipService.findAuthorshipByBookId(bookId).forEach(a -> found_book.getAuthors().add(authorService.findAuthorById(a.getAuthorId()).get().getId()));
         modelMap.put("book", found_book);
         modelMap.put("chosen_library", libraryService.findLibraryById(found_book.getLibraryId()));
         modelMap.put("libraries", libraryService.findAll());

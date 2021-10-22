@@ -13,4 +13,7 @@ import java.util.Optional;
 public interface AuthorRepository extends CrudRepository<Author, Integer> {
     @Query(value="SELECT * FROM author WHERE id = :id", nativeQuery = true)
     Optional<Author> findAuthorById(@Param("id") Integer authorId);
+
+    @Query(value="SELECT * FROM author", nativeQuery = true)
+    Iterable<Author> findAll();
 }
