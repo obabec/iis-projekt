@@ -105,8 +105,8 @@
                 </thead>
                 <tbody>
                 <tr th:each="order : ${orders}">
-                    <td th:text="${order.title_name}">Kolumbo</td>
-                    <td th:text="${order.library_name}">VUT KNIHOVNA</td>
+                    <td th:text="${order.titleName}">Kolumbo</td>
+                    <td th:text="${order.libraryName}">VUT KNIHOVNA</td>
                     <td th:text="${order.count}">yes</td>
                     <td>
                         <a th:href="${'/order/' + order.id + '/fulfill'}">

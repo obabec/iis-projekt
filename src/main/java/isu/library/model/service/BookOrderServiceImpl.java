@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @Transactional
 @Service
@@ -39,5 +40,15 @@ public class BookOrderServiceImpl implements BookOrderService{
     @Override
     public Iterable<BookOrder> findByTitleIdAndLibraryId(int title_id, int library_id) {
         return repository.findByTitleIdAndLibraryId(title_id, library_id);
+    }
+
+    @Override
+    public Optional<BookOrder> findById(int id) {
+        return repository.findById(id);
+    }
+
+    @Override
+    public void removeById(int id) {
+        repository.removeById(id);
     }
 }

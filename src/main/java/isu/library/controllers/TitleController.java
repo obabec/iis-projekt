@@ -44,7 +44,7 @@ public class TitleController {
                             Authentication authentication,
                             ModelMap modelMap) {
         BookQueryBuilder builder = new BookQueryBuilder();
-        if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
+        if (authentication != null && authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
             modelMap.put("librarians_library", personService.findPersonByUsername(authentication.getName()).get().getLibraryId());
         }
         if (!releaseDate.isEmpty()) {
