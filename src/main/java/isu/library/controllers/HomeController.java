@@ -102,6 +102,7 @@ public class HomeController {
             builder = builder.filterByGenre(bookGenre);
             modelMap.put("book_genre", bookGenre);
         }
+        builder.filterBooks();
         modelMap.put("message", message);
         Iterable<Book> books = bookService.executeQuery(builder.getQuery());
         for (Book b: books) {

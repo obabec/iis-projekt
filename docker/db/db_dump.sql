@@ -3,7 +3,7 @@
 --
 
 -- Dumped from database version 13.1
--- Dumped by pg_dump version 14.0
+-- Dumped by pg_dump version 13.1
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -15,11 +15,11 @@ SET check_function_bodies = false;
 SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
+
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
-CREATE ROLE root superuser PASSWORD 'password' login;
-CREATE DATABASE root;
+
 --
 -- Name: author; Type: TABLE; Schema: public; Owner: compose-postgres
 --
@@ -166,6 +166,42 @@ ALTER TABLE public.book_id_seq OWNER TO "compose-postgres";
 --
 
 ALTER SEQUENCE public.book_id_seq OWNED BY public.book.id;
+
+
+--
+-- Name: book_order; Type: TABLE; Schema: public; Owner: compose-postgres
+--
+
+CREATE TABLE public.book_order (
+    id integer NOT NULL,
+    title_id integer NOT NULL,
+    library_id integer NOT NULL,
+    count integer
+);
+
+
+ALTER TABLE public.book_order OWNER TO "compose-postgres";
+
+--
+-- Name: book_order_id_seq; Type: SEQUENCE; Schema: public; Owner: compose-postgres
+--
+
+CREATE SEQUENCE public.book_order_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.book_order_id_seq OWNER TO "compose-postgres";
+
+--
+-- Name: book_order_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: compose-postgres
+--
+
+ALTER SEQUENCE public.book_order_id_seq OWNED BY public.book_order.id;
 
 
 --
@@ -363,6 +399,13 @@ ALTER TABLE ONLY public.book ALTER COLUMN id SET DEFAULT nextval('public.book_id
 
 
 --
+-- Name: book_order id; Type: DEFAULT; Schema: public; Owner: compose-postgres
+--
+
+ALTER TABLE ONLY public.book_order ALTER COLUMN id SET DEFAULT nextval('public.book_order_id_seq'::regclass);
+
+
+--
 -- Name: library id; Type: DEFAULT; Schema: public; Owner: compose-postgres
 --
 
@@ -395,6 +438,7 @@ ALTER TABLE ONLY public.votes ALTER COLUMN id SET DEFAULT nextval('public.votes_
 --
 
 COPY public.author (id, name, surname) FROM stdin;
+1	Napoleon	Solo
 \.
 
 
@@ -403,6 +447,8 @@ COPY public.author (id, name, surname) FROM stdin;
 --
 
 COPY public.authorship (id, book_id, author_id) FROM stdin;
+1	2	1
+2	1	1
 \.
 
 
@@ -421,6 +467,15 @@ COPY public.blocking (id, book_id, person_id, date_from, date_to, is_borrowed) F
 
 COPY public.book (id, library_id, name, release, isbn, publisher, genre, rate) FROM stdin;
 1	1	Mikirova uzasna pout	2017-03-14	ABC15        	Korbi	vesmirna komedie	5
+2	\N	Man	2021-09-27	XYZ          	Germany	From uncle	2
+\.
+
+
+--
+-- Data for Name: book_order; Type: TABLE DATA; Schema: public; Owner: compose-postgres
+--
+
+COPY public.book_order (id, title_id, library_id, count) FROM stdin;
 \.
 
 
@@ -467,6 +522,10 @@ COPY public.votes (id, book_name, library_id, vote_amount) FROM stdin;
 5	Mikirova uzasna pout	1	0
 6	Mikirova uzasna pout	1	0
 7	Mikirova uzasna pout	1	0
+8	Mikirova uzasna pout	1	0
+9	Mikirova uzasna pout	1	0
+10	Mikirova uzasna pout	1	0
+11	Mikirova uzasna pout	1	0
 \.
 
 
@@ -474,14 +533,14 @@ COPY public.votes (id, book_name, library_id, vote_amount) FROM stdin;
 -- Name: author_id_seq; Type: SEQUENCE SET; Schema: public; Owner: compose-postgres
 --
 
-SELECT pg_catalog.setval('public.author_id_seq', 1, false);
+SELECT pg_catalog.setval('public.author_id_seq', 1, true);
 
 
 --
 -- Name: authorship_id_seq; Type: SEQUENCE SET; Schema: public; Owner: compose-postgres
 --
 
-SELECT pg_catalog.setval('public.authorship_id_seq', 1, false);
+SELECT pg_catalog.setval('public.authorship_id_seq', 2, true);
 
 
 --
@@ -495,7 +554,14 @@ SELECT pg_catalog.setval('public.blocking_id_seq', 4, true);
 -- Name: book_id_seq; Type: SEQUENCE SET; Schema: public; Owner: compose-postgres
 --
 
-SELECT pg_catalog.setval('public.book_id_seq', 1, false);
+SELECT pg_catalog.setval('public.book_id_seq', 2, true);
+
+
+--
+-- Name: book_order_id_seq; Type: SEQUENCE SET; Schema: public; Owner: compose-postgres
+--
+
+SELECT pg_catalog.setval('public.book_order_id_seq', 1, false);
 
 
 --
@@ -530,7 +596,7 @@ SELECT pg_catalog.setval('public.user_vote_id_seq', 1, true);
 -- Name: votes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: compose-postgres
 --
 
-SELECT pg_catalog.setval('public.votes_id_seq', 7, true);
+SELECT pg_catalog.setval('public.votes_id_seq', 11, true);
 
 
 --
@@ -555,6 +621,14 @@ ALTER TABLE ONLY public.authorship
 
 ALTER TABLE ONLY public.blocking
     ADD CONSTRAINT blocking_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: book_order book_order_pkey; Type: CONSTRAINT; Schema: public; Owner: compose-postgres
+--
+
+ALTER TABLE ONLY public.book_order
+    ADD CONSTRAINT book_order_pkey PRIMARY KEY (id);
 
 
 --
@@ -651,6 +725,14 @@ ALTER TABLE ONLY public.book
 
 
 --
+-- Name: book_order library; Type: FK CONSTRAINT; Schema: public; Owner: compose-postgres
+--
+
+ALTER TABLE ONLY public.book_order
+    ADD CONSTRAINT library FOREIGN KEY (library_id) REFERENCES public.library(id);
+
+
+--
 -- Name: votes library_fk; Type: FK CONSTRAINT; Schema: public; Owner: compose-postgres
 --
 
@@ -672,6 +754,14 @@ ALTER TABLE ONLY public.blocking
 
 ALTER TABLE ONLY public.person
     ADD CONSTRAINT person_library_id_fk FOREIGN KEY (library_id) REFERENCES public.library(id);
+
+
+--
+-- Name: book_order title; Type: FK CONSTRAINT; Schema: public; Owner: compose-postgres
+--
+
+ALTER TABLE ONLY public.book_order
+    ADD CONSTRAINT title FOREIGN KEY (title_id) REFERENCES public.book(id);
 
 
 --

@@ -25,5 +25,5 @@ public interface BookService {
     Iterable<Book> findAvailableBooks(Integer libraryId);
     boolean isBookAvailable(Integer bookId);
 
-
+    Iterable<Book> findAllTitles();
 }

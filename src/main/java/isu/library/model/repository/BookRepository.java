@@ -10,6 +10,9 @@ import org.springframework.stereotype.Repository;
 public interface BookRepository extends CrudRepository<Book, Integer> {
 
 
+    @Query(value="SELECT * FROM book b WHERE b.library_id IS NULL", nativeQuery = true)
+    Iterable<Book> findAllTitles();
+
     @Query(value = "SELECT DISTINCT b.genre FROM Book b")
     Iterable<String> findAllGenres();
 
