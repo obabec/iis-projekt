@@ -16,9 +16,11 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 
 @Controller
@@ -114,5 +116,10 @@ public class HomeController {
 
         modelMap.put("books", books);
         return "home";
+    }
+
+    @ExceptionHandler(Exception.class)
+    public String handleError(HttpServletRequest req, Exception ex) {
+        return "error";
     }
 }
