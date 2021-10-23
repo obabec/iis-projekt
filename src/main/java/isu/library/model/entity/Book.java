@@ -44,4 +44,13 @@ public class Book {
         this.genre = genre;
         this.rate = rate;
     }
+
+    public Book(String name, Date release, String isbn, String publisher, String genre, Short rate) {
+        this.name = name;
+        this.release = release;
+        this.isbn = isbn;
+        this.publisher = publisher;
+        this.genre = genre;
+        this.rate = rate;
+    }
 }
