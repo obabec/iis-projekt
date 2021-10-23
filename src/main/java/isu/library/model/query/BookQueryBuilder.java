@@ -33,6 +33,12 @@ public class BookQueryBuilder {
         return this;
     }
 
+    public BookQueryBuilder filterBooks() {
+        addWhereOrAnd();
+        this.query += "library_id IS NOT NULL";
+        return this;
+    }
+
     public BookQueryBuilder filterByLibrary(String libraryName) {
         addWhereOrAnd();
         this.query += "library_id IN (select id from library where name like '%" + libraryName + "%')";

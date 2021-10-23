@@ -65,6 +65,11 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public Iterable<Book> findAllTitles() {
+        return bookRepository.findAllTitles();
+    }
+
+    @Override
     public Iterable<Book> findByGenre(String genre, String libraryName) {
         String query = (new BookQueryBuilder()).filterByGenre(genre).filterByLibrary(libraryName).getQuery();
         return ((List<Book>) entityManager.createNativeQuery(query, Book.class).getResultList());
@@ -106,6 +111,13 @@ public class BookServiceImpl implements BookService {
     @Override
     public int addNewBook(Integer libraryId, String name, Date release, String isbn, String publisher, String genre, Short rate) {
         Book b = new Book(libraryId, name, release, isbn, publisher, genre, rate);
+        bookRepository.save(b);
+        return b.getId();
+    }
+
+    @Override
+    public int addNewBook(String name, Date release, String isbn, String publisher, String genre, Short rate) {
+        Book b = new Book(name,release,isbn,publisher,genre,rate);
         bookRepository.save(b);
         return b.getId();
     }

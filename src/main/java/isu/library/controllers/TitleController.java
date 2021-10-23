@@ -7,8 +7,10 @@ import isu.library.model.query.BookQueryBuilder;
 import isu.library.model.service.AuthorService;
 import isu.library.model.service.AuthorshipService;
 import isu.library.model.service.BookService;
+import isu.library.model.service.user.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +29,9 @@ public class TitleController {
     @Autowired
     AuthorService authorService;
 
+    @Autowired
+    PersonService personService;
+
     @GetMapping("/titles")
     public String getTitles(@RequestParam(name="book_name", required = false, defaultValue = "") String bookName,
                             @RequestParam(name="book_genre", required = false, defaultValue = "") String bookGenre,
@@ -39,6 +44,9 @@ public class TitleController {
                             Authentication authentication,
                             ModelMap modelMap) {
         BookQueryBuilder builder = new BookQueryBuilder();
+        if (authentication != null && authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
+            modelMap.put("librarians_library", personService.findPersonByUsername(authentication.getName()).get().getLibraryId());
+        }
         if (!releaseDate.isEmpty()) {
             if (before.equals("on")) {
                 modelMap.put("before", before);
@@ -87,9 +95,18 @@ public class TitleController {
         return "titles";
     }
 
+    @GetMapping("/title")
+    public String title_creation(ModelMap modelMap) {
+        Book book = new Book();
+        modelMap.put("book", book);
+        modelMap.put("possible_authors", authorService.findAll());
+        modelMap.put("chosen_authors", new ArrayList<String>());
+        return "title";
+    }
+
     @PostMapping("/title")
     public String book_creation(@ModelAttribute(value="book") Book book, ModelMap modelMap) {
-        int id = bookService.addNewBook(book.getLibraryId(), book.getName(), book.getRelease(), book.getIsbn(), book.getPublisher(), book.getGenre(), book.getRate());
+        int id = bookService.addNewBook(book.getName(), book.getRelease(), book.getIsbn(), book.getPublisher(), book.getGenre(), book.getRate());
         for (Integer author_id: book.getAuthors()) {
             authorshipService.addNewAuthorship(author_id, id);
         }

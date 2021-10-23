@@ -74,15 +74,10 @@
             </div>
         </div>
         <div class="col py-3">
-            <form method="POST" th:action="${book.id == 0 ?'/book':'/book/' + book.id}" th:object="${book}">
+            <form method="POST" th:action="${book.id == 0 ?'/title':'/title/' + book.id}" th:object="${book}">
                 <div class="row">
                     <div class="col-sm-4">
                         <input type="text" class="form-control" placeholder="Jmeno knihy" th:name="name" th:value="${book.name}"/>
-                    </div>
-                    <div class="col-sm-4">
-                        <select class="library_search" th:name="libraryId">
-                            <option th:each="library : ${libraries}" th:value="${library.id}" th:text="${library.name}"/>
-                        </select>
                     </div>
                     <div class="col-sm-4">
                         <input type="text" class="form-control" placeholder="Žánr" th:name="genre" th:value="${book.genre}"/>
@@ -125,9 +120,6 @@
 /*<![CDATA[*/
     // In your Javascript (external .js resource or <script> tag)
     $(document).ready(function() {
-        $('.library_search').select2();
-        $('.library_search').val('[[${chosen_library.getId()}]]')
-        $('.library_search').trigger('change');
 
         $('.author_search').select2();
         $('.author_search').val([[${chosen_authors}]])
