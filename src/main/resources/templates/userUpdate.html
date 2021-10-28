@@ -1,7 +1,8 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Getting Started: Serving Web Content</title>
+    <title>IIS knihovna</title>
+    <link rel="shortcut icon" href="icons/favicon.ico" type="image/x-icon">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
@@ -24,41 +25,41 @@
                 </a>
                 <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                     <li sec:authorize="isAnonymous()">
-                        <a href="/login" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-unlock"></i> <span class="ms-1 d-none d-sm-inline">Login</span></a>
+                        <a href="/login" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-unlock"></i> <span class="ms-1 d-none d-sm-inline">Přihlášní</span></a>
                     </li>
                     <li sec:authorize="isAnonymous()">
-                        <a href="/register" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-gear-fill"></i> <span class="ms-1 d-none d-sm-inline">Register</span></a>
+                        <a href="/register" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-gear-fill"></i> <span class="ms-1 d-none d-sm-inline">Registrace</span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="/" class="nav-link align-middle px-0">
-                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Sprava knih</span>
+                        <a href="/" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Správa knih</span>
                         </a>
                     </li>
                     <li sec:authorize="hasRole('ADMIN')">
-                        <a href="/libraries" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Sprava knihoven</span></a>
+                        <a href="/libraries" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Správa knihoven</span></a>
                     </li>
                     <li sec:authorize="hasAnyRole('LIBRARIAN', 'ADMIN')">
-                        <a th:href="@{/library(library_id=${library})}" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Sprava knihovny</span></a>
+                        <a th:href="@{/library(library_id=${library})}" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Správa knihovny</span></a>
                     </li>
                     <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN')">
-                        <a href="/book" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-book"></i> <span class="ms-1 d-none d-sm-inline">Pridani knih</span></a>
+                        <a href="/book" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-book"></i> <span class="ms-1 d-none d-sm-inline">Přidání knih</span></a>
                     </li>
                     <li sec:authorize="hasRole('ADMIN')">
-                        <a href="/users" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Sprava uzivatelu</span></a>
+                        <a href="/users" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Správa uživatelů</span></a>
                     </li>
                     <li sec:authorize="hasAnyRole('ADMIN', 'READER', 'LIBRARIAN')">
-                        <a href="/votes" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline"> Hlasovani</span></a>
+                        <a href="/votes" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Hlasováni</span></a>
                     </li>
                     <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN')">
-                        <a href="/reservations/createLoan" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Vypujcka</span></a>
+                        <a href="/reservations/createLoan" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Výpůjčka</span></a>
                     </li>
                 </ul>
                 <hr>
@@ -69,59 +70,48 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
 
-                        <li sec:authorize="hasRole('ADMIN')"><span class="dropdown-item">Administrator</span> </li>
-                        <li sec:authorize="hasRole('LIBRARIAN')"><span class="dropdown-item">Knihovnik</span> </li>
-                        <li sec:authorize="hasRole('READER')"><span class="dropdown-item">Ctenar</span> </li>
+                        <li sec:authorize="hasRole('ADMIN')"><span class="dropdown-item">Administrátor</span> </li>
+                        <li sec:authorize="hasRole('LIBRARIAN')"><span class="dropdown-item">Knihovník</span> </li>
+                        <li sec:authorize="hasRole('READER')"><span class="dropdown-item">Čtenář</span> </li>
 
-                        <li sec:authorize="hasRole('READER')"><a class="dropdown-item" href="#">My reservations</a></li>
+                        <li sec:authorize="hasRole('READER')"><a class="dropdown-item" href="#">Moje rezervace</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="/logout">Sign out</a></li>
+                        <li><a class="dropdown-item" href="/logout">Odhlášení</a></li>
                     </ul>
                 </div>
             </div>
         </div>
-        <div class="col py-3">
+        <div class="container mx-auto col-auto col-lg-4 col-md-6 col-sm-7 row align-items-center">
+            <div class="container bg-light rounded p-3">
             <!--th:action="${book.id == 0 ?'/book':'/book/' + book.id}"-->
-            <form th:action="@{/userUpdate}" method="POST" th:object="${user}">
-                <input type="hidden" th:value="${user.id}" th:field="*{id}">
-                <div class="row">
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" placeholder="Jmeno" th:name="name" th:value="${user.name}"/>
-                    </div>
-
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" placeholder="Prijimani" th:name="surname" th:value="${user.surname}"/>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-4">
-                        <input type="date" class="form-control" placeholder="Datum narozeni" th:name="birthDate" th:value="${user.birthDate}"/>
-                    </div>
-                    <div class="dropdown col-sm-4">
-                        <select class="role_search" name="state" th:name="role">
-                            <option th:each="role : ${roles}" th:value="${role}" th:text="${role}" th:selected="${user.role == role}"/>
-                        </select>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-2">
-                        <input type="text" class="form-control" placeholder="Username" th:name="username" th:value="${user.username}"/>
-                    </div>
-                    <div class="col-sm-3">
-                        <input type="text" class="form-control" placeholder="Password" th:name="password"/>
-                    </div>
-                    <div class="dropdown col-sm-4" th:if="${user.libraryId != null}">
-                        <select class="library_search" name="state" th:name="libraryId">
+                <h2 class="fw-bold mb-4 text-uppercase text-center">Uživatel</h2>
+                <form th:action="@{/userUpdate}" method="POST" th:object="${user}">
+                    <input type="hidden" class="form-control" placeholder="Id" th:value="${user.id}" th:field="*{id}">
+                    <label for="name" class="form-label mt-2">Jméno</label>
+                    <input type="text" class="form-control" id="name" th:name="name" th:value="${user.name}"/>
+                    <label for="surname" class="form-label mt-2">Příjmení</label>
+                    <input type="text" class="form-control" id="surname" th:name="surname" th:value="${user.surname}"/>
+                    <label for="birthDate" class="form-label mt-2">Datum Narození</label>
+                    <input type="date" class="form-control" id="birthDate" th:name="birthDate" th:value="${user.birthDate}"/>
+                    <label for="role" class="form-label mt-2">Role</label>
+                    <select class="role_search form-select" name="state" id="role" th:name="role">
+                        <option th:each="role : ${roles}" th:value="${role}" th:text="${role}" th:selected="${user.role == role}"/>
+                    </select>
+                    <label for="username" class="form-label mt-2">Uživatelské jméno</label>
+                    <input type="text" class="form-control" id="username" th:name="username" th:value="${user.username}"/>
+                    <label for="password" class="form-label mt-2">Heslo</label>
+                    <input type="text" class="form-control" id="password" th:name="password"/>
+                    <div th:if="${user.libraryId != null}">
+                        <label for="libraryId" class="form-label mt-2">Kihovny</label>
+                        <select class="library_search form-select" name="state" id="libraryId" th:name="libraryId">
                             <option th:each="library : ${libraries}" th:value="${library.id}" th:text="${library.name}" th:selected="${library.id == user.libraryId}"/>
                         </select>
                     </div>
-                </div>
-                <div class="col">
-                    <input class="form-control" type="submit"/>
-                </div>
-            </form>
+                    <input class="form-control btn btn-primary my-3" type="submit" value="Odeslat"/>
+                </form>
+            </div>
         </div>
     </div>
 </div>

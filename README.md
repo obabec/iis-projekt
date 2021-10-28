@@ -41,4 +41,4 @@ all security things, so we can regulate mess which will security generate.
 
 - Ondrej Babec (ond.babec@gmail.com, xbabec00)
 - Tomas Korbar (tomas.korb@seznam.cz, xkorba02)
-- Ladislav Dokoupil ()
+- Ladislav Dokoupil (ladislav.dok@email.cz, xdokou14)

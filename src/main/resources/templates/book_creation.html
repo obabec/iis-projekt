@@ -1,7 +1,8 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Create book</title>
+    <title>IIS knihovna</title>
+    <link rel="shortcut icon" href="icons/favicon.ico" type="image/x-icon">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -27,36 +28,36 @@
                 </a>
                 <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                     <li sec:authorize="isAnonymous()">
-                        <a href="/login" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-unlock"></i> <span class="ms-1 d-none d-sm-inline">Login</span></a>
+                        <a href="/login" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-unlock"></i> <span class="ms-1 d-none d-sm-inline">Přihlášní</span></a>
                     </li>
                     <li sec:authorize="isAnonymous()">
-                        <a href="/register" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-gear-fill"></i> <span class="ms-1 d-none d-sm-inline">Register</span></a>
+                        <a href="/register" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-gear-fill"></i> <span class="ms-1 d-none d-sm-inline">Registrace</span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="/" class="nav-link align-middle px-0">
-                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Sprava knih</span>
+                        <a href="/" class="nav-link align-middle px-0 text-light">
+                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Správa knih</span>
                         </a>
                     </li>
                     <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN')">
-                        <a href="/libraries" class="nav-link px-0 align-middle">
-                            <iß class="fs-4 bi-building"></iß> <span class="ms-1 d-none d-sm-inline">Sprava knihoven</span></a>
+                        <a href="/libraries" class="nav-link px-0 align-middle text-light">
+                            <iß class="fs-4 bi-building"></iß> <span class="ms-1 d-none d-sm-inline">Správa knihoven</span></a>
                     </li>
                     <li sec:authorize="hasRole('ADMIN')">
-                        <a href="#" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Sprava uzivatelu</span></a>
+                        <a href="#" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Správa uzivatelu</span></a>
                     </li>
                     <li sec:authorize="hasAnyRole('ADMIN', 'READER', 'LIBRARIAN')">
-                        <a href="/votes" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline"> Hlasovani</span></a>
+                        <a href="/votes" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline"> Hlasováni</span></a>
                     </li>
                     <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN')">
-                        <a href="/reservations/createLoan" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Vypujcka</span></a>
+                        <a href="/reservations/createLoan" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Výpůjčka</span></a>
                     </li>
                     <!--<li>
-                        <a href="#submenu2" data-bs-toggle="collapse" class="nav-link px-0 align-middle ">
+                        <a href="#submenu2" data-bs-toggle="collapse" class="nav-link px-0 align-middle text-light ">
                             <i class="fs-4 bi-bootstrap"></i> <span class="ms-1 d-none d-sm-inline">Bootstrap</span></a>
                         <ul class="collapse nav flex-column ms-1" id="submenu2" data-bs-parent="#menu">
                             <li class="w-100">
@@ -76,62 +77,67 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
 
-                        <li sec:authorize="hasRole('ADMIN')"><span class="dropdown-item">Administrator</span> </li>
-                        <li sec:authorize="hasRole('LIBRARIAN')"><span class="dropdown-item">Knihovnik</span> </li>
-                        <li sec:authorize="hasRole('READER')"><span class="dropdown-item">Ctenar</span> </li>
+                        <li sec:authorize="hasRole('ADMIN')"><span class="dropdown-item">Administrátor</span> </li>
+                        <li sec:authorize="hasRole('LIBRARIAN')"><span class="dropdown-item">Knihovník</span> </li>
+                        <li sec:authorize="hasRole('READER')"><span class="dropdown-item">Čtenář</span> </li>
 
-                        <li sec:authorize="hasRole('READER')"><a class="dropdown-item" href="#">My reservations</a></li>
+                        <li sec:authorize="hasRole('READER')"><a class="dropdown-item" href="#">Moje rezervace</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="/logout">Sign out</a></li>
+                        <li><a class="dropdown-item" href="/logout">Odhlášení</a></li>
                     </ul>
                 </div>
             </div>
         </div>
-        <div class="col py-3">
-            <form method="POST" th:action="${book.id == 0 ?'/book':'/book/' + book.id}" th:object="${book}">
-                <div class="row">
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" placeholder="Jmeno knihy" th:name="name" th:value="${book.name}"/>
+
+        <div class="mx-auto col-xl-10 col-md-9 col-sm-8 col-10 row align-items-center">
+            <div class="rounded bg-light p-3">
+                <h2 class="fw-bold mb-4 text-uppercase text-center">Vytvořit knihu</h2>
+                <form method="POST" th:action="${book.id == 0 ?'/book':'/book/' + book.id}" th:object="${book}" class="row g-3">
+                    <div class="col-md-4 col-sm-6">
+                        <label class="form-check-label" for="book_name">Název knihy</label>
+                        <input type="text" class="form-control" id="book_name" th:name="name" th:value="${book.name}"/>
                     </div>
-                    <div class="col-sm-4">
-                        <select class="library_search" th:name="libraryId">
-                            <option th:each="library : ${libraries}" th:value="${library.id}" th:text="${library.name}"/>
-                        </select>
+                    <div class="col-md-4 col-sm-6">
+                        <label class="form-check-label" for="genre">Žánr</label>
+                        <input type="text" class="form-control" id="genre" th:name="genre" th:value="${book.genre}"/>
                     </div>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" placeholder="Žánr" th:name="genre" th:value="${book.genre}"/>
+                    <div class="col-md-4 col-sm-6">
+                        <label class="form-check-label" for="release">Rok vydání</label>
+                        <input type="date" class="form-control" id="release" th:name="release" th:value="${book.release}"/>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-4">
-                        <select class="author_search" th:name="authors" multiple="multiple">
+                    <div class="col-md-4 col-sm-6">
+                        <label class="form-check-label" for="isbn">ISBN</label>
+                        <input type="text" class="form-control" id="isbn" th:name="isbn" th:value="${book.isbn}"/>
+                    </div>
+                    <div class="col-md-4 col-sm-6">
+                        <label class="form-check-label" for="publisher">Vydavatel</label>
+                        <input type="text" class="form-control" id="publisher" th:name="publisher" th:value="${book.publisher}"/>
+                    </div>
+                    <div class="col-md-4 col-sm-6">
+                        <label class="form-check-label" for="rate">Hodnocení</label>
+                        <input type="number" class="form-control" min="1" max="10" id="rate" th:name="rate" th:value="${book.rate}"/>
+                    </div>
+                    <div class="col-4">
+                        <label class="form-check-label" for="genre">Autoři</label>
+                        <select class="author_search form-select" th:name="authors" multiple="multiple">
                             <option th:each="user : ${possible_authors}" th:value="${user.id}" th:text="${user.name + ' ' + user.surname}"/>
                         </select>
                     </div>
-                    <div class="col-sm-3">
-                        <input type="date" class="form-control" th:name="release" th:value="${book.release}"/>
+                    <div class="col-4">
+                        <label class="form-check-label" for="libraryId">Knihovna: </label>
+                        <select class="library_search form-select" id="libraryId" th:name="libraryId">
+                            <option th:each="library : ${libraries}" th:value="${library.id}" th:text="${library.name}"/>
+                        </select>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-2">
-                        <input type="text" class="form-control" placeholder="ISBN" th:name="isbn" th:value="${book.isbn}"/>
+                    <div class="row">
+                        <div class="col-md-3 mt-4">
+                            <input class="form-control btn btn-primary" type="submit" value="Odeslat"/>
+                        </div>
                     </div>
-                    <div class="col-sm-3">
-                        <input type="text" class="form-control" placeholder="vydavatel" th:name="publisher" th:value="${book.publisher}"/>
-                    </div>
-                    <div class="col-sm-2">
-                        <input type="number" id="rating_input" min="1" max="10" th:name="rate" th:value="${book.rate}"/>
-                        <label class="form-check-label" for="rating_input">
-                            rating
-                        </label>
-                    </div>
-                </div>
-                <div class="col">
-                    <input class="form-control" type="submit"/>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
 </div>

@@ -1,7 +1,8 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Getting Started: Serving Web Content</title>
+    <title>IIS knihovna</title>
+    <link rel="shortcut icon" href="icons/favicon.ico" type="image/x-icon">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
@@ -24,37 +25,37 @@
                 </a>
                 <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                     <li sec:authorize="isAnonymous()">
-                        <a href="/login" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-unlock"></i> <span class="ms-1 d-none d-sm-inline">Login</span></a>
+                        <a href="/login" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-unlock"></i> <span class="ms-1 d-none d-sm-inline">Přihlášní</span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="/" class="nav-link align-middle px-0">
-                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Sprava knih</span>
+                        <a href="/" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Správa knih</span>
                         </a>
                     </li>
                     <li sec:authorize="hasRole('ADMIN')">
-                        <a href="/libraries" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Sprava knihoven</span></a>
+                        <a href="/libraries" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Správa knihoven</span></a>
                     </li>
                     <li sec:authorize="hasAnyRole('LIBRARIAN', 'ADMIN')">
-                        <a th:href="@{/library(library_id=${library})}" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Sprava knihovny</span></a>
+                        <a th:href="@{/library(library_id=${library})}" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Správa knihovny</span></a>
                     </li>
                     <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN')">
-                        <a href="/book" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-book"></i> <span class="ms-1 d-none d-sm-inline">Pridani knih</span></a>
+                        <a href="/book" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-book"></i> <span class="ms-1 d-none d-sm-inline">Přidání knih</span></a>
                     </li>
                     <li sec:authorize="hasRole('ADMIN')">
-                        <a href="/users" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Sprava uzivatelu</span></a>
+                        <a href="/users" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Správa uživatelů</span></a>
                     </li>
                     <li sec:authorize="hasAnyRole('ADMIN', 'READER', 'LIBRARIAN')">
-                        <a href="/votes" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline"> Hlasovani</span></a>
+                        <a href="/votes" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Hlasováni</span></a>
                     </li>
                     <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN')">
-                        <a href="/reservations/createLoan" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Vypujcka</span></a>
+                        <a href="/reservations/createLoan" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Výpůjčka</span></a>
                     </li>
                 </ul>
                 <hr>
@@ -65,62 +66,55 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
 
-                        <li sec:authorize="hasRole('ADMIN')"><span class="dropdown-item">Administrator</span> </li>
-                        <li sec:authorize="hasRole('LIBRARIAN')"><span class="dropdown-item">Knihovnik</span> </li>
-                        <li sec:authorize="hasRole('READER')"><span class="dropdown-item">Ctenar</span> </li>
+                        <li sec:authorize="hasRole('ADMIN')"><span class="dropdown-item">Administrátor</span> </li>
+                        <li sec:authorize="hasRole('LIBRARIAN')"><span class="dropdown-item">Knihovník</span> </li>
+                        <li sec:authorize="hasRole('READER')"><span class="dropdown-item">Čtenář</span> </li>
 
-                        <li sec:authorize="hasRole('READER')"><a class="dropdown-item" href="/reservationSummary">My reservations</a></li>
+                        <li sec:authorize="hasRole('READER')"><a class="dropdown-item" href="/reservationSummary">Moje rezervace</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="/logout">Sign out</a></li>
+                        <li><a class="dropdown-item" href="/logout">Odhlášení</a></li>
                     </ul>
                 </div>
             </div>
         </div>
-        <div class="col py-3">
-            <table id="reservationListing" class="table table-hover">
-                <thead>
-                <tr>
-                    <th>Jmeno knihy</th>
-                    <th>ISBN</th>
-                    <th>Od</th>
-                    <th>Do</th>
-                    <th>Stav</th>
-                    <th>Akce</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="reservation : ${reservations}">
-                    <td th:text="${reservation.bookName}">Onions</td>
-                    <td th:text="${reservation.isbn}">Onions</td>
-                    <td th:text="${{reservation.dateFrom}}">Onions</td>
-                    <td th:text="${{reservation.dateTo}}">Onions</td>
-                    <td th:switch="${reservation.borrowed}">
-                        <span th:case="false">Rezervovano</span>
-                        <span th:case="true">Vypujceno</span>
-                        <span th:case="*">Nevraceno</span>
-                    </td>
-                    <td>
-                        <a th:if="${reservation.extendPossible == true}" th:href="@{/reservationExtend(reservation_id=${reservation.id})}">
-                            <button class="btn btn-primary">Prodlouzit</button>
-                        </a>
+        <div class="col-auto col-xl-10 col-md-9 col-sm-9 col-10">
+            <h2 class="fw-bold mb-4 text-uppercase text-center">Rezervace</h2>
+            <div class="table-responsive">
+                <table id="reservationListing" class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Název knihy</th>
+                        <th>ISBN</th>
+                        <th>Od</th>
+                        <th>Do</th>
+                        <th>Stav</th>
+                        <th>Akce</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="reservation : ${reservations}">
+                        <td th:text="${reservation.bookName}">Onions</td>
+                        <td th:text="${reservation.isbn}">Onions</td>
+                        <td th:text="${{reservation.dateFrom}}">Onions</td>
+                        <td th:text="${{reservation.dateTo}}">Onions</td>
+                        <td th:switch="${reservation.borrowed}">
+                            <span th:case="false">Rezervovano</span>
+                            <span th:case="true">Vypujceno</span>
+                            <span th:case="*">Nevraceno</span>
+                        </td>
+                        <td>
+                            <a th:if="${reservation.extendPossible == true}" th:href="@{/reservationExtend(reservation_id=${reservation.id})}">
+                                <button class="btn btn-primary">Prodloužit</button>
+                            </a>
 
-                        <button th:if="${reservation.extendPossible == false}" class="btn btn-warning" disabled>Nelze prodlouzit</button>
-                    </td>
-                </tr>
-                </tbody>
-                <tfoot>
-                <tr>
-                    <th>Jmeno knihy</th>
-                    <th>ISBN</th>
-                    <th>Od</th>
-                    <th>Do</th>
-                    <th>Stav</th>
-                    <th>Akce</th>
-                </tr>
-                </tfoot>
-            </table>
+                            <button th:if="${reservation.extendPossible == false}" class="btn btn-warning" disabled>Nelze prodloužit</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

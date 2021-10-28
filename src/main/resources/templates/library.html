@@ -1,7 +1,8 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Getting Started: Serving Web Content</title>
+    <title>IIS knihovna</title>
+    <link rel="shortcut icon" href="icons/favicon.ico" type="image/x-icon">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
@@ -24,41 +25,41 @@
                 </a>
                 <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                     <li sec:authorize="isAnonymous()">
-                        <a href="/login" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-unlock"></i> <span class="ms-1 d-none d-sm-inline">Login</span></a>
+                        <a href="/login" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-unlock"></i> <span class="ms-1 d-none d-sm-inline">Přihlášní</span></a>
                     </li>
                     <li sec:authorize="isAnonymous()">
-                        <a href="/register" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-gear-fill"></i> <span class="ms-1 d-none d-sm-inline">Register</span></a>
+                        <a href="/register" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-gear-fill"></i> <span class="ms-1 d-none d-sm-inline">Registrace</span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="/" class="nav-link align-middle px-0">
-                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Sprava knih</span>
+                        <a href="/" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Správa knih</span>
                         </a>
                     </li>
                     <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN')">
-                        <a th:href="@{/reservations(library_id=${library.id})}" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Sprava rezervaci</span></a>
+                        <a th:href="@{/reservations(library_id=${library.id})}" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Správa knihoven</span></a>
                     </li>
                     <li sec:authorize="hasRole('ADMIN')">
-                        <a href="/libraries" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Sprava knihoven</span></a>
+                        <a href="/libraries" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Správa knihoven</span></a>
                     </li>
                     <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN')">
-                        <a href="/book" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-book"></i> <span class="ms-1 d-none d-sm-inline">Pridani knih</span></a>
+                        <a href="/book" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-book"></i> <span class="ms-1 d-none d-sm-inline">Přidání knih</span></a>
                     </li>
                     <li sec:authorize="hasRole('ADMIN')">
-                        <a href="/users" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Sprava uzivatelu</span></a>
+                        <a href="/users" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Správa uživatelů</span></a>
                     </li>
                     <li sec:authorize="hasAnyRole('ADMIN', 'READER', 'LIBRARIAN')">
-                        <a href="/votes" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline"> Hlasovani</span></a>
+                        <a href="/votes" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Hlasováni</span></a>
                     </li>
                     <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN')">
-                        <a href="/reservations/createLoan" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Vypujcka</span></a>
+                        <a href="/reservations/createLoan" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Výpůjčka</span></a>
                     </li>
                 </ul>
                 <hr>
@@ -69,78 +70,84 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
 
-                        <li sec:authorize="hasRole('ADMIN')"><span class="dropdown-item">Administrator</span> </li>
-                        <li sec:authorize="hasRole('LIBRARIAN')"><span class="dropdown-item">Knihovnik</span> </li>
-                        <li sec:authorize="hasRole('READER')"><span class="dropdown-item">Ctenar</span> </li>
+                        <li sec:authorize="hasRole('ADMIN')"><span class="dropdown-item">Administrátor</span> </li>
+                        <li sec:authorize="hasRole('LIBRARIAN')"><span class="dropdown-item">Knihovník</span> </li>
+                        <li sec:authorize="hasRole('READER')"><span class="dropdown-item">Čtenář</span> </li>
 
-                        <li sec:authorize="hasRole('READER')"><a class="dropdown-item" href="#">My reservations</a></li>
+                        <li sec:authorize="hasRole('READER')"><a class="dropdown-item" href="#">Moje rezervace</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="/logout">Sign out</a></li>
+                        <li><a class="dropdown-item" href="/logout">Odhlášení</a></li>
                     </ul>
                 </div>
             </div>
         </div>
-        <div class="col py-3">
-            <form th:action="@{/library}" method="POST" th:object="${library}">
-                <input type="hidden" th:value="${library.id}" th:field="*{id}">
-                <div class="row">
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" placeholder="Jmeno" th:name="name"
-                                th:value="${library.name}" th:field="*{name}"/>
+        <div class="container mx-auto col-auto col-lg-4 col-md-6 col-sm-7 row align-items-center">
+            <div class="container bg-light rounded p-3">
+                <h2 class="fw-bold mb-4 text-uppercase text-center">Knihovna</h2>
+                <form th:action="@{/library}" method="POST" th:object="${library}" class="row g-2">
+                        <input class="form-control" type="hidden" th:value="${library.id}" placeholder="id" id="libid" th:field="*{id}"/>
+                        <div class="col-6">
+                            <label class="form-check-label" for="name">Název</label>
+                            <input type="text" class="form-control" id="name" th:name="name"
+                                    th:value="${library.name}" th:field="*{name}"/>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-check-label" for="tag">Tag</label>
+                            <input type="text" class="form-control" id="tag" th:name="tag"
+                                   th:value="${library.tag}" th:field="*{tag}"/>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-check-label" for="city">Město</label>
+                            <input type="text" class="form-control" id="city" th:name="city"
+                                   th:value="${library.city}" th:field="*{city}"/>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-check-label" for="street">Ulice</label>
+                            <input type="text" class="form-control" id="street" th:name="street"
+                                   th:value="${library.street}" th:field="*{street}"/>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-check-label" for="street_number">Číslo popisné</label>
+                            <input type="text" class="form-control" id="street_number" th:name="street_number"
+                                   th:value="${library.streetNumber}" th:field="*{streetNumber}"/>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-check-label" for="from_time">Od</label>
+                            <input type="time" class="form-control" id="from_time" th:name="from_time"
+                                   th:value="${library.openFrom}" th:field="*{openFrom}"/>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-check-label" for="to_time">Do</label>
+                            <input type="time" class="form-control" id="to_time" th:name="to_time"
+                                   th:value="${library.openTo}" th:field="*{openTo}"/>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-check-label" for="description">Popis</label>
+                            <input type="textarea" class="form-control" id="description" th:name="description"
+                                   th:value="${library.description}" th:field="*{description}"/>
+                        </div>
+                        <div class="col-6 my-3">
+                            <input class="form-control btn btn-secondary" type="submit" value="Odeslat"/>
+                        </div>
+                </form>
+                <div class="row g-2" th:if="${library.id != null}">
+                    <div class="col-6">
+                        <a th:href="@{/(library_name=${library.name})}">
+                            <button class="form-control btn btn-primary">
+                                Spravovat knižní tituly
+                            </button>
+                        </a>
                     </div>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" placeholder="Tag" th:name="tag"
-                               th:value="${library.tag}" th:field="*{tag}"/>
+                    <div class="col-6">
+                        <a th:href="@{/reservations(library_id=${library.id})}">
+                            <button class="form-control btn btn-info">
+                                Spravovat rezervace
+                            </button>
+                        </a>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" placeholder="Mesto" th:name="city"
-                               th:value="${library.city}" th:field="*{city}"/>
-                    </div>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" placeholder="Ulice" th:name="street"
-                               th:value="${library.street}" th:field="*{street}"/>
-                    </div>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" placeholder="C.P" th:name="street_number"
-                               th:value="${library.streetNumber}" th:field="*{streetNumber}"/>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-4">
-                        <input type="time" class="form-control" placeholder="" th:name="from_time"
-                               th:value="${library.openFrom}" th:field="*{openFrom}"/>
-                    </div>
-                    <div class="col-sm-4">
-                        <input type="time" class="form-control" placeholder="" th:name="to_time"
-                               th:value="${library.openTo}" th:field="*{openTo}"/>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-8">
-                        <input type="textarea" class="form-control" placeholder="Popis" th:name="description"
-                               th:value="${library.description}" th:field="*{description}"/>
-                    </div>
-                </div>
-                <div class="col">
-                    <input class="form-control" type="submit"/>
-                </div>
-
-            </form>
-            <div th:if="${library.id != null}">
-                <a th:href="@{/(library_name=${library.name})}">
-                    <button class="btn btn-primary">
-                        Spravovat knizni tituly v knihovne
-                    </button>
-                </a>
-                <a th:href="@{/reservations(library_id=${library.id})}">
-                    <button class="btn btn-warning">
-                        Spravovat rezervane
-                    </button>
-                </a>
             </div>
         </div>
     </div>
