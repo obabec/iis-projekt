@@ -36,7 +36,7 @@
                         <a href="/libraries" class="nav-link px-0 align-middle text-light">
                             <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Správa knihoven</span></a>
                     </li>
-                    <li sec:authorize="hasRole('LIBRARIAN')">
+                    <li sec:authorize="hasAnyRole('LIBRARIAN', 'ADMIN')">
                         <a th:href="@{/library(library_id=${librarian_lib})}" class="nav-link px-0 align-middle text-light">
                             <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Správa knihovny</span></a>
                     </li>
