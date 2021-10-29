@@ -77,7 +77,7 @@ public class BookQueryBuilder {
 
     public BookQueryBuilder filterByIsbn(String isbn) {
         addWhereOrAnd();
-        this.query += "b.isbn = " + isbn;
+        this.query += "b.isbn LIKE '%" + isbn + "%'";
         return this;
     }
 
