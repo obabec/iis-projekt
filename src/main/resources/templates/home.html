@@ -16,192 +16,193 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
 </head>
 <body>
-    <div class="container-fluid">
-        <div class="row flex-nowrap">
-            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
-                <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
-                    <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                        <span class="fs-5 d-none d-sm-inline">Menu</span>
+<div class="container-fluid">
+    <div class="row flex-nowrap">
+        <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
+            <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+                <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                    <span class="fs-5 d-none d-sm-inline">Menu</span>
+                </a>
+                <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+                    <li sec:authorize="isAnonymous()">
+                        <a href="/login" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-unlock"></i> <span class="ms-1 d-none d-sm-inline">Přihlášní</span></a>
+                    </li>
+                    <li sec:authorize="isAnonymous()">
+                        <a href="/register" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-gear-fill"></i> <span class="ms-1 d-none d-sm-inline">Registrace</span></a>
+                    </li>
+                    <li sec:authorize="hasRole('ADMIN')">
+                        <a href="/libraries" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Správa knihoven</span></a>
+                    </li>
+                    <li sec:authorize="hasRole('LIBRARIAN')">
+                        <a th:href="@{/library(library_id=${librarian_lib})}" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Správa knihovny</span></a>
+                    </li>
+                    <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN', 'DISTRIBUTOR')">
+                        <a href="/book" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-book"></i> <span class="ms-1 d-none d-sm-inline">Přidání knih</span></a>
+                    </li>
+                    <li sec:authorize="hasRole('ADMIN')">
+                        <a href="/users" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Správa uživatelů</span></a>
+                    </li>
+                    <li sec:authorize="hasAnyRole('ADMIN', 'READER', 'LIBRARIAN')">
+                        <a href="/votes" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Hlasováni</span></a>
+                    </li>
+                    <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN')">
+                        <a href="/reservations/createLoan" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Výpůjčka</span></a>
+                    </li>
+                </ul>
+                <hr>
+                <div class="dropdown pb-4" sec:authorize="isAuthenticated()">
+                    <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fs-4 bi-person-circle"></i>
+                        <span class="d-none d-sm-inline mx-1" sec:authentication="name"></span>
                     </a>
-                    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
-                        <li sec:authorize="isAnonymous()">
-                            <a href="/login" class="nav-link px-0 align-middle text-light">
-                                <i class="fs-4 bi-unlock"></i> <span class="ms-1 d-none d-sm-inline">Přihlášní</span></a>
+                    <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+
+                        <li sec:authorize="hasRole('ADMIN')"><span class="dropdown-item">Administrátor</span> </li>
+                        <li sec:authorize="hasRole('LIBRARIAN')"><span class="dropdown-item">Knihovník</span> </li>
+                        <li sec:authorize="hasRole('READER')"><span class="dropdown-item">Čtenář</span> </li>
+                        <li sec:authorize="hasRole('DISTRIBUTOR')"><span class="dropdown-item">Distributor</span> </li>
+
+                        <li sec:authorize="hasRole('READER')"><a class="dropdown-item" href="/reservationSummary">Moje rezervace</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
                         </li>
-                        <li sec:authorize="isAnonymous()">
-                            <a href="/register" class="nav-link px-0 align-middle text-light">
-                                <i class="fs-4 bi-gear-fill"></i> <span class="ms-1 d-none d-sm-inline">Registrace</span></a>
-                        </li>
-                        <li sec:authorize="hasRole('ADMIN')">
-                            <a href="/libraries" class="nav-link px-0 align-middle text-light">
-                                <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Správa knihoven</span></a>
-                        </li>
-                        <li sec:authorize="hasRole('LIBRARIAN')">
-                            <a th:href="@{/library(library_id=${librarian_lib})}" class="nav-link px-0 align-middle text-light">
-                                <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Správa knihovny</span></a>
-                        </li>
-                        <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN')">
-                            <a href="/book" class="nav-link px-0 align-middle text-light">
-                                <i class="fs-4 bi-book"></i> <span class="ms-1 d-none d-sm-inline">Přidání knih</span></a>
-                        </li>
-                        <li sec:authorize="hasRole('ADMIN')">
-                            <a href="/users" class="nav-link px-0 align-middle text-light">
-                                <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Správa uživatelů</span></a>
-                        </li>
-                        <li sec:authorize="hasAnyRole('ADMIN', 'READER', 'LIBRARIAN')">
-                            <a href="/votes" class="nav-link px-0 align-middle text-light">
-                                <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Hlasováni</span></a>
-                        </li>
-                        <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN')">
-                            <a href="/reservations/createLoan" class="nav-link px-0 align-middle text-light">
-                                <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Výpůjčka</span></a>
-                        </li>
+                        <li><a class="dropdown-item" href="/logout">Odhlášení</a></li>
                     </ul>
-                    <hr>
-                    <div class="dropdown pb-4" sec:authorize="isAuthenticated()">
-                        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fs-4 bi-person-circle"></i>
-                            <span class="d-none d-sm-inline mx-1" sec:authentication="name"></span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-
-                            <li sec:authorize="hasRole('ADMIN')"><span class="dropdown-item">Administrátor</span> </li>
-                            <li sec:authorize="hasRole('LIBRARIAN')"><span class="dropdown-item">Knihovník</span> </li>
-                            <li sec:authorize="hasRole('READER')"><span class="dropdown-item">Čtenář</span> </li>
-
-                            <li sec:authorize="hasRole('READER')"><a class="dropdown-item" href="/reservationSummary">Moje rezervace</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="/logout">Odhlášení</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-auto col-xl-10 col-md-9 col-sm-9 col-10">
-                <div class="bg-light rounded mb-3 mt-3">
-                    <p th:if= "${message != ''}" th:text="${message}"></p>
-                    <form th:action="@{/}" class="row g-3">
-                        <div class="col-md-4 col-sm-6">
-                            <label class="form-check-label" for="book_name">Název knihy</label>
-                            <input type="text" class="form-control" id="book_name" th:name="book_name" th:value="${book_name}"/>
-                        </div>
-                        <div class="col-md-4 col-sm-6">
-                            <label class="form-check-label" for="library_name">Název knihovny</label>
-                            <input type="text" class="form-control" id="library_name" th:name="library_name" th:value="${library_name}"/>
-                        </div>
-                        <div class="col-md-4 col-sm-6">
-                            <label class="form-check-label" for="book_genre">Žánr</label>
-                            <input type="text" class="form-control" id="book_genre" th:name="book_genre" th:value="${book_genre}"/>
-                        </div>
-                        <div class="col-md-4 col-sm-6">
-                            <label class="form-check-label" for="author_name">Jméno autora</label>
-                            <input type="text" class="form-control" id="author_name" th:name="author_name" th:value="${author_name}"/>
-                        </div>
-                        <div class="col-md-4 col-sm-6">
-                            <label class="form-check-label" for="release_date">Rok vydání</label>
-                            <input type="number" class="form-control" min="1" ßmax="2021" id="release_date" th:name="release_date" th:value="${release_date}"/>
-                        </div>
-                        <div class="col-md-4 col-sm-6">
-                            <label class="form-check-label" for="isbn">ISBN</label>
-                            <input type="text" class="form-control" id="isbn" th:name="isbn" th:value="${isbn}"/>
-                        </div>
-                        <div class="col-md-4 col-sm-6">
-                            <label class="form-check-label" for="publisher">Vydavatel</label>
-                            <input type="text" class="form-control" id="publisher" th:name="publisher" th:value="${publisher}"/>
-                        </div>
-                        <div class="col-md-4 col-sm-6">
-                            <label class="form-check-label" for="rating_input">Hodnocení</label>
-                            <input type="number" class="form-control" id="rating_input" min="1" max="10" th:name="genre" th:value="${genre}"/>
-                        </div>
-                        <div class="col-md-4 col-sm-6 mt-4">
-                            <div class="form-check form-switch \">
-                                <label class="form-check-label" for="before_checkbox">pouze před zadaným datem </label>
-                                <input type="checkbox" class="form-check-input" id="before_checkbox" th:name="before" th:checked="${before}"/>
-                            </div>
-                            <div class="form-check form-switch">
-                                <label class="form-check-label" for="reserved_checkbox">pouze dostupné</label>
-                                <input type="checkbox" class="form-check-input" id="reserved_checkbox" th:name="available" th:checked="${available}"/>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <input class="form-control btn btn-secondary" type="submit" value="Filtrovat"/>
-                        </div>
-                    </form>
-                </div>
-                <div class="table-responsive">
-                    <table id="bookListing" class="table table-hover">
-                        <thead>
-                        <tr>
-                            <th>Jméno</th>
-                            <th>Datum vydáni</th>
-                            <th>Žánr</th>
-                            <th>Autoři</th>
-                            <th>ISBN</th>
-                            <th>Vydavatel</th>
-                            <th>Hodnocení</th>
-                            <th sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN')">Akce</th>
-                            <th>Rezervace</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="book : ${books}">
-                            <td th:text="${book.name}">Onions</td>
-                            <td th:text="${book.release}">2.41</td>
-                            <td th:text="${book.genre}">yes</td>
-                            <td>
-                                <p th:each="author_name : ${book.authors_names}" th:text="${author_name}"></p>
-                            </td>
-                            <td th:text="${book.isbn}"> AC12</td>
-                            <td th:text="${book.publisher}">Franz Josef</td>
-                            <td th:text="${book.rate}">Franz Josef</td>
-                            <td sec:authorize="hasRole('ADMIN')">
-                                <a th:href="${'/book/' + book.id}">
-                                    <button class="btn btn-info">
-                                        Edit
-                                    </button>
-                                </a>
-                                <a th:href="${'/book/' + book.id + '/delete'}">
-                                    <button class="btn btn-danger">
-                                        Smazat
-                                    </button>
-                                </a>
-                            </td>
-                            <td sec:authorize="hasRole('LIBRARIAN')" th:if="${book.libraryId == librarian_lib}">
-                                <a th:href="${'/book/' + book.id}">
-                                    <button class="btn btn-info">
-                                        Edit
-                                    </button>
-                                </a>
-                                <a th:href="${'/book/' + book.id + '/delete'}">
-                                    <button class="btn btn-danger">
-                                        Smazat
-                                    </button>
-                                </a>
-                            </td>
-                            <!--                        <td sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN')">
-                                                        th:href="@{/reservations(reservation_id=${book.id}, library_id=${library}, action=1)}"
-                                                        <a >
-                                                            <button class="btn btn-warning">Smazat</button>
-                                                        </a>
-                                                    </td> -->
-                            <td sec:authorize="hasRole('READER')">
-                                <a th:href="@{/reservations/create(book_id=${book.id})}">
-                                    <button class="btn btn-primary">Rezervovat</button>
-                                </a>
-                            </td>
-                            <td sec:authorize="isAnonymous()">
-                                <a th:href="@{/register(book_id=${book.id})}">
-                                    <button class="btn btn-primary">Rezervovat</button>
-                                </a>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
                 </div>
             </div>
         </div>
+        <div class="col-auto col-xl-10 col-md-9 col-sm-9 col-10">
+            <div class="bg-light rounded mb-3 mt-3">
+                <p th:if= "${message != ''}" th:text="${message}"></p>
+                <form th:action="@{/}" class="row g-3">
+                    <div class="col-md-4 col-sm-6">
+                        <label class="form-check-label" for="book_name">Název knihy</label>
+                        <input type="text" class="form-control" id="book_name" th:name="book_name" th:value="${book_name}"/>
+                    </div>
+                    <div class="col-md-4 col-sm-6">
+                        <label class="form-check-label" for="library_name">Název knihovny</label>
+                        <input type="text" class="form-control" id="library_name" th:name="library_name" th:value="${library_name}"/>
+                    </div>
+                    <div class="col-md-4 col-sm-6">
+                        <label class="form-check-label" for="book_genre">Žánr</label>
+                        <input type="text" class="form-control" id="book_genre" th:name="book_genre" th:value="${book_genre}"/>
+                    </div>
+                    <div class="col-md-4 col-sm-6">
+                        <label class="form-check-label" for="author_name">Jméno autora</label>
+                        <input type="text" class="form-control" id="author_name" th:name="author_name" th:value="${author_name}"/>
+                    </div>
+                    <div class="col-md-4 col-sm-6">
+                        <label class="form-check-label" for="release_date">Rok vydání</label>
+                        <input type="number" class="form-control" min="1" ßmax="2021" id="release_date" th:name="release_date" th:value="${release_date}"/>
+                    </div>
+                    <div class="col-md-4 col-sm-6">
+                        <label class="form-check-label" for="isbn">ISBN</label>
+                        <input type="text" class="form-control" id="isbn" th:name="isbn" th:value="${isbn}"/>
+                    </div>
+                    <div class="col-md-4 col-sm-6">
+                        <label class="form-check-label" for="publisher">Vydavatel</label>
+                        <input type="text" class="form-control" id="publisher" th:name="publisher" th:value="${publisher}"/>
+                    </div>
+                    <div class="col-md-4 col-sm-6">
+                        <label class="form-check-label" for="rating_input">Hodnocení</label>
+                        <input type="number" class="form-control" id="rating_input" min="1" max="10" th:name="genre" th:value="${genre}"/>
+                    </div>
+                    <div class="col-md-4 col-sm-6 mt-4">
+                        <div class="form-check form-switch \">
+                            <label class="form-check-label" for="before_checkbox">pouze před zadaným datem </label>
+                            <input type="checkbox" class="form-check-input" id="before_checkbox" th:name="before" th:checked="${before}"/>
+                        </div>
+                        <div class="form-check form-switch">
+                            <label class="form-check-label" for="reserved_checkbox">pouze dostupné</label>
+                            <input type="checkbox" class="form-check-input" id="reserved_checkbox" th:name="available" th:checked="${available}"/>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <input class="form-control btn btn-secondary" type="submit" value="Filtrovat"/>
+                    </div>
+                </form>
+            </div>
+            <div class="table-responsive">
+                <table id="bookListing" class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Jméno</th>
+                        <th>Datum vydáni</th>
+                        <th>Žánr</th>
+                        <th>Autoři</th>
+                        <th>ISBN</th>
+                        <th>Vydavatel</th>
+                        <th>Hodnocení</th>
+                        <th sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN')">Akce</th>
+                        <th>Rezervace</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="book : ${books}">
+                        <td th:text="${book.name}">Onions</td>
+                        <td th:text="${book.release}">2.41</td>
+                        <td th:text="${book.genre}">yes</td>
+                        <td>
+                            <p th:each="author_name : ${book.authors_names}" th:text="${author_name}"></p>
+                        </td>
+                        <td th:text="${book.isbn}"> AC12</td>
+                        <td th:text="${book.publisher}">Franz Josef</td>
+                        <td th:text="${book.rate}">Franz Josef</td>
+                        <td sec:authorize="hasRole('ADMIN')">
+                            <a th:href="${'/book/' + book.id}">
+                                <button class="btn btn-info">
+                                    Edit
+                                </button>
+                            </a>
+                            <a th:href="${'/book/' + book.id + '/delete'}">
+                                <button class="btn btn-danger">
+                                    Smazat
+                                </button>
+                            </a>
+                        </td>
+                        <td sec:authorize="hasRole('LIBRARIAN')" th:if="${book.libraryId == librarian_lib}">
+                            <a th:href="${'/book/' + book.id}">
+                                <button class="btn btn-info">
+                                    Edit
+                                </button>
+                            </a>
+                            <a th:href="${'/book/' + book.id + '/delete'}">
+                                <button class="btn btn-danger">
+                                    Smazat
+                                </button>
+                            </a>
+                        </td>
+                        <!--                        <td sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN')">
+                                                    th:href="@{/reservations(reservation_id=${book.id}, library_id=${library}, action=1)}"
+                                                    <a >
+                                                        <button class="btn btn-warning">Smazat</button>
+                                                    </a>
+                                                </td> -->
+                        <td sec:authorize="hasRole('READER')">
+                            <a th:href="@{/reservations/create(book_id=${book.id})}">
+                                <button class="btn btn-primary">Rezervovat</button>
+                            </a>
+                        </td>
+                        <td sec:authorize="isAnonymous()">
+                            <a th:href="@{/register(book_id=${book.id})}">
+                                <button class="btn btn-primary">Rezervovat</button>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
+</div>
 </body>
 <script>
     $(document).ready(function() {

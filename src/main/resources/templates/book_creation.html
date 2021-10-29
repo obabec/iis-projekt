@@ -80,6 +80,7 @@
                         <li sec:authorize="hasRole('ADMIN')"><span class="dropdown-item">Administrátor</span> </li>
                         <li sec:authorize="hasRole('LIBRARIAN')"><span class="dropdown-item">Knihovník</span> </li>
                         <li sec:authorize="hasRole('READER')"><span class="dropdown-item">Čtenář</span> </li>
+                        <li sec:authorize="hasRole('DISTRIBUTOR')"><span class="dropdown-item">Distributor</span> </li><li sec:authorize="hasRole('DISTRIBUTOR')"><span class="dropdown-item">Distributor</span> </li>
 
                         <li sec:authorize="hasRole('READER')"><a class="dropdown-item" href="#">Moje rezervace</a></li>
                         <li>
@@ -104,7 +105,7 @@
                         <input type="text" class="form-control" id="genre" th:name="genre" th:value="${book.genre}"/>
                     </div>
                     <div class="col-md-4 col-sm-6">
-                        <label class="form-check-label" for="release">Rok vydání</label>
+                        <label class="form-check-label" for="release">Datum vydání</label>
                         <input type="date" class="form-control" id="release" th:name="release" th:value="${book.release}"/>
                     </div>
                     <div class="col-md-4 col-sm-6">

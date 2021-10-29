@@ -33,7 +33,7 @@
                         <a href="/register" class="nav-link px-0 align-middle text-light">
                             <i class="fs-4 bi-gear-fill"></i> <span class="ms-1 d-none d-sm-inline">Registrace</span></a>
                     </li>
-                    <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN')">
+                    <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN', 'DISTRIBUTOR')">
                         <a href="/book" class="nav-link px-0 align-middle text-light">
                             <i class="fs-4 bi-book"></i> <span class="ms-1 d-none d-sm-inline">Přidání knih</span></a>
                     </li>
@@ -61,6 +61,7 @@
                         <li sec:authorize="hasRole('ADMIN')"><span class="dropdown-item">Administrátor</span> </li>
                         <li sec:authorize="hasRole('LIBRARIAN')"><span class="dropdown-item">Knihovník</span> </li>
                         <li sec:authorize="hasRole('READER')"><span class="dropdown-item">Čtenář</span> </li>
+                        <li sec:authorize="hasRole('DISTRIBUTOR')"><span class="dropdown-item">Distributor</span> </li>
 
                         <li sec:authorize="hasRole('READER')"><a class="dropdown-item" href="#">Moje rezervace</a></li>
                         <li>
