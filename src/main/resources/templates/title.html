@@ -1,7 +1,8 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Create title</title>
+    <title>IIS knihovna</title>
+    <link rel="shortcut icon" href="icons/favicon.ico" type="image/x-icon">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -27,29 +28,29 @@
                 </a>
                 <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                     <li sec:authorize="isAnonymous()">
-                        <a href="/login" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-unlock"></i> <span class="ms-1 d-none d-sm-inline">Login</span></a>
+                        <a href="/login" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-unlock"></i> <span class="ms-1 d-none d-sm-inline">Přihlášní</span></a>
                     </li>
                     <li sec:authorize="isAnonymous()">
-                        <a href="/register" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-gear-fill"></i> <span class="ms-1 d-none d-sm-inline">Register</span></a>
+                        <a href="/register" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-gear-fill"></i> <span class="ms-1 d-none d-sm-inline">Registrace</span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="/" class="nav-link align-middle px-0">
-                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Sprava knih</span>
+                        <a href="/" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Správa knih</span>
                         </a>
                     </li>
                     <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN')">
-                        <a href="/libraries" class="nav-link px-0 align-middle">
-                            <iß class="fs-4 bi-building"></iß> <span class="ms-1 d-none d-sm-inline">Sprava knihoven</span></a>
+                        <a href="/libraries" class="nav-link px-0 align-middle text-light">
+                            <iß class="fs-4 bi-building"></iß> <span class="ms-1 d-none d-sm-inline">Správa knihoven</span></a>
                     </li>
                     <li sec:authorize="hasRole('ADMIN')">
-                        <a href="#" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Sprava uzivatelu</span></a>
+                        <a href="#" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Správa uživatelů</span></a>
                     </li>
                     <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN')">
-                        <a href="/reservations/createLoan" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Vypujcka</span></a>
+                        <a href="/reservations/createLoan" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Výpůjčka</span></a>
                     </li>
                 </ul>
                 <hr>
@@ -60,57 +61,47 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
 
-                        <li sec:authorize="hasRole('ADMIN')"><span class="dropdown-item">Administrator</span> </li>
-                        <li sec:authorize="hasRole('LIBRARIAN')"><span class="dropdown-item">Knihovnik</span> </li>
-                        <li sec:authorize="hasRole('READER')"><span class="dropdown-item">Ctenar</span> </li>
+                        <li sec:authorize="hasRole('ADMIN')"><span class="dropdown-item">Administrátor</span> </li>
+                        <li sec:authorize="hasRole('LIBRARIAN')"><span class="dropdown-item">Knihovník</span> </li>
+                        <li sec:authorize="hasRole('READER')"><span class="dropdown-item">Čtenář</span> </li>
+                        <li sec:authorize="hasRole('DISTRIBUTOR')"><span class="dropdown-item">Distributor</span> </li>
 
-                        <li sec:authorize="hasRole('READER')"><a class="dropdown-item" href="#">My reservations</a></li>
+                        <li sec:authorize="hasRole('READER')"><a class="dropdown-item" href="#">Moje rezervace</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="/logout">Sign out</a></li>
+                        <li><a class="dropdown-item" href="/logout">Odhlášení</a></li>
                     </ul>
                 </div>
             </div>
         </div>
-        <div class="col py-3">
-            <form method="POST" th:action="${book.id == 0 ?'/title':'/title/' + book.id}" th:object="${book}">
-                <div class="row">
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" placeholder="Jmeno knihy" th:name="name" th:value="${book.name}"/>
-                    </div>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" placeholder="Žánr" th:name="genre" th:value="${book.genre}"/>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-4">
-                        <select class="author_search" th:name="authors" multiple="multiple">
-                            <option th:each="user : ${possible_authors}" th:value="${user.id}" th:text="${user.name + ' ' + user.surname}"/>
-                        </select>
-                    </div>
-                    <div class="col-sm-3">
-                        <input type="date" class="form-control" th:name="release" th:value="${book.release}"/>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-2">
-                        <input type="text" class="form-control" placeholder="ISBN" th:name="isbn" th:value="${book.isbn}"/>
-                    </div>
-                    <div class="col-sm-3">
-                        <input type="text" class="form-control" placeholder="vydavatel" th:name="publisher" th:value="${book.publisher}"/>
-                    </div>
-                    <div class="col-sm-2">
-                        <input type="number" id="rating_input" min="1" max="10" th:name="rate" th:value="${book.rate}"/>
-                        <label class="form-check-label" for="rating_input">
-                            rating
-                        </label>
-                    </div>
-                </div>
-                <div class="col">
-                    <input class="form-control" type="submit"/>
-                </div>
-            </form>
+        <div class="container mx-auto col-auto col-lg-4 col-md-6 col-sm-7 row align-items-center">
+            <div class="container bg-light rounded p-3">
+                <h2 class="fw-bold mb-4 text-uppercase text-center">Titul</h2>
+                <form method="POST" th:action="${book.id == 0 ?'/book':'/book/' + book.id}" th:object="${book}">
+                    <label for="name" class="form-label">Název</label>
+                    <input type="text" class="form-control" id="name" th:name="name" th:value="${book.name}"/>
+                    <label for="libraryId" class="form-label mt-2">Knihovny</label>
+                    <select class="library_search form-control" id="libraryId" th:name="libraryId">
+                        <option th:each="library : ${libraries}" th:value="${library.id}" th:text="${library.name}"/>
+                    </select>
+                    <label for="genre" class="form-label mt-2">Žánr</label>
+                    <input type="text" class="form-control " id="genre" th:name="genre" th:value="${book.genre}"/>
+                    <label for="authors" class="form-label mt-2">Autoři</label>
+                    <select class="author_search form-control" id="authors" th:name="authors" multiple="multiple">
+                        <option th:each="user : ${possible_authors}" th:value="${user.id}" th:text="${user.name + ' ' + user.surname}"/>
+                    </select>
+                    <label for="release" class="form-label mt-2">Datum vydání</label>
+                    <input type="date" class="form-control" id="release" th:name="release" th:value="${book.release}"/>
+                    <label for="isbn" class="form-label mt-2">ISBN</label>
+                    <input type="text" class="form-control" id="isbn" th:name="isbn" th:value="${book.isbn}"/>
+                    <label for="publisher" class="form-label mt-2">vydavatel</label>
+                    <input type="text" class="form-control" id="publisher" th:name="publisher" th:value="${book.publisher}"/>
+                    <label class="form-check-label mt-2" for="rate">hodnocení</label>
+                    <input type="number" class="form-control" min="1" max="10" id="rate" th:name="rate" th:value="${book.rate}"/>
+                    <input class="form-control btn btn-primary my-3" type="submit" value="Odeslat"/>
+                </form>
+            </div>
         </div>
     </div>
 </div>
@@ -120,6 +111,9 @@
 /*<![CDATA[*/
     // In your Javascript (external .js resource or <script> tag)
     $(document).ready(function() {
+        $('.library_search').select2();
+        $('.library_search').val('[[${chosen_library.getId()}]]')
+        $('.library_search').trigger('change');
 
         $('.author_search').select2();
         $('.author_search').val([[${chosen_authors}]])
