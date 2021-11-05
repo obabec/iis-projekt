@@ -1,7 +1,8 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Getting Started: Serving Web Content</title>
+    <title>IIS knihovna</title>
+    <link rel="shortcut icon" href="icons/favicon.ico" type="image/x-icon">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -33,6 +34,14 @@
                         <a href="/register" class="nav-link px-0 align-middle text-light">
                             <i class="fs-4 bi-gear-fill"></i> <span class="ms-1 d-none d-sm-inline">Registrace</span></a>
                     </li>
+                    <li sec:authorize="hasAnyRole('ADMIN', 'DISTRIBUTOR')">
+                        <a href="/title" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-book"></i> <span class="ms-1 d-none d-sm-inline">Přidání titulu</span></a>
+                    </li>
+                    <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN', 'DISTRIBUTOR')">
+                        <a href="/titles" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-cart"></i> <span class="ms-1 d-none d-sm-inline">Dostupné tituly</span></a>
+                    </li>
                     <li sec:authorize="hasRole('ADMIN')">
                         <a href="/libraries" class="nav-link px-0 align-middle text-light">
                             <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Správa knihoven</span></a>
@@ -43,7 +52,7 @@
                     </li>
                     <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN', 'DISTRIBUTOR')">
                         <a href="/book" class="nav-link px-0 align-middle text-light">
-                            <i class="fs-4 bi-book"></i> <span class="ms-1 d-none d-sm-inline">Přidání knih</span></a>
+                            <i class="fs-4 bi-book"></i> <span class="ms-1 d-none d-sm-inline">Přidání knihy</span></a>
                     </li>
                     <li sec:authorize="hasRole('ADMIN')">
                         <a href="/users" class="nav-link px-0 align-middle text-light">
@@ -68,6 +77,7 @@
                         <li sec:authorize="hasRole('DISTRIBUTOR')"><span class="dropdown-item">Distributor</span> </li>
 
                         <li sec:authorize="hasRole('READER')"><a class="dropdown-item" href="/reservationSummary">Moje rezervace</a></li>
+                        <li><a href="/userUpdate" class="dropdown-item">Profil</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
@@ -78,7 +88,6 @@
         </div>
         <div class="col-auto col-xl-10 col-md-9 col-sm-9 col-10">
             <div class="bg-light rounded mb-3 mt-3">
-                <p th:if= "${message != ''}" th:text="${message}"></p>
                 <form th:action="@{/orders}" class="row g-3">
                     <div class="col-5">
                         <label class="form-check-label" for="title">Titul</label>
@@ -87,7 +96,7 @@
                         </select>
                     </div>
                     <div class="col-5">
-                        <label class="form-check-label" for="library">Knihona</label>
+                        <label class="form-check-label" for="library">Knihovna</label>
                         <select class="library_search form-select" id="library" th:name="library">
                             <option th:each="lib : ${possible_libraries}" th:value="${lib.id}" th:text="${lib.name}"/>
                         </select>
@@ -106,7 +115,7 @@
                         <th>Kniha</th>
                         <th>Knihovna</th>
                         <th>Počet</th>
-                        <th>Akce</th>
+                        <th sec:authorize="hasRole('DISTRIBUTOR')">Akce</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -114,10 +123,10 @@
                         <td th:text="${order.titleName}">Kolumbo</td>
                         <td th:text="${order.libraryName}">VUT KNIHOVNA</td>
                         <td th:text="${order.count}">yes</td>
-                        <td>
+                        <td sec:authorize="hasRole('DISTRIBUTOR')">
                             <a th:href="${'/order/' + order.id + '/fulfill'}">
                             <button class="btn btn-primary">
-                                Fulfill
+                                Odeslat
                             </button>
                             </a>
                         </td>

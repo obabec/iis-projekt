@@ -40,9 +40,17 @@
                             <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Knihy</span>
                         </a>
                     </li>
-                    <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN')">
+                    <li sec:authorize="hasAnyRole('ADMIN')">
                         <a href="/libraries" class="nav-link px-0 align-middle text-light">
                             <iß class="fs-4 bi-building"></iß> <span class="ms-1 d-none d-sm-inline">Správa knihoven</span></a>
+                    </li>
+                    <li sec:authorize="hasAnyRole('ADMIN', 'DISTRIBUTOR')">
+                        <a href="/title" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-book"></i> <span class="ms-1 d-none d-sm-inline">Přidání titulu</span></a>
+                    </li>
+                    <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN', 'DISTRIBUTOR')">
+                        <a href="/titles" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-cart"></i> <span class="ms-1 d-none d-sm-inline">Dostupné tituly</span></a>
                     </li>
                     <li sec:authorize="hasRole('ADMIN')">
                         <a href="/users" class="nav-link px-0 align-middle text-light">
@@ -50,28 +58,16 @@
                     </li>
                     <li sec:authorize="hasAnyRole('ADMIN', 'READER', 'LIBRARIAN')">
                         <a href="/votes" class="nav-link px-0 align-middle text-light">
-                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline"> Hlasováni</span></a>
+                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Hlasováni</span></a>
                     </li>
                     <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN')">
                         <a href="/reservations/createLoan" class="nav-link px-0 align-middle text-light">
                             <i class="fs-4 bi-journal-check"></i> <span class="ms-1 d-none d-sm-inline">Výpůjčky</span></a>
                     </li>
-                    <li sec:authorize="hasAnyRole('ADMIN', 'DISTRIBUTOR')">
+                    <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN', 'DISTRIBUTOR')">
                         <a href="/orders" class="nav-link px-0 align-middle text-light">
                             <i class="fs-4 bi-list-check"></i> <span class="ms-1 d-none d-sm-inline">Objednávky</span></a>
                     </li>
-                    <!--<li>
-                        <a href="#submenu2" data-bs-toggle="collapse" class="nav-link px-0 align-middle text-light ">
-                            <i class="fs-4 bi-bootstrap"></i> <span class="ms-1 d-none d-sm-inline">Bootstrap</span></a>
-                        <ul class="collapse nav flex-column ms-1" id="submenu2" data-bs-parent="#menu">
-                            <li class="w-100">
-                                <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Item</span> 1</a>
-                            </li>
-                            <li>
-                                <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Item</span> 2</a>
-                            </li>
-                        </ul>
-                    </li> -->
                 </ul>
                 <hr>
                 <div class="dropdown pb-4" sec:authorize="isAuthenticated()">
@@ -87,6 +83,7 @@
                         <li sec:authorize="hasRole('DISTRIBUTOR')"><span class="dropdown-item">Distributor</span> </li>
 
                         <li sec:authorize="hasRole('READER')"><a class="dropdown-item" href="/reservationSummary">Moje rezervace</a></li>
+                        <li><a href="/userUpdate" class="dropdown-item">Profil</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
@@ -98,7 +95,7 @@
 
         <div class="mx-auto col-xl-10 col-md-9 col-sm-8 col-10 row align-items-center">
             <div class="rounded bg-light p-3">
-                <h2 class="fw-bold mb-4 text-uppercase text-center">Kniha</h2>
+                <h2 class="fw-bold mb-4 text-uppercase text-center">Vytvořit Knihu</h2>
                 <form method="POST" th:action="${book.id == 0 ?'/book':'/book/' + book.id}" th:object="${book}" class="row g-3">
                     <div class="col-md-4 col-sm-6">
                         <label class="form-check-label" for="book_name">Název knihy</label>

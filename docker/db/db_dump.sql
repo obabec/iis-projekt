@@ -698,7 +698,7 @@ CREATE UNIQUE INDEX votes_id_uindex ON public.votes USING btree (id);
 --
 
 ALTER TABLE ONLY public.authorship
-    ADD CONSTRAINT author FOREIGN KEY (author_id) REFERENCES public.author(id);
+    ADD CONSTRAINT author FOREIGN KEY (author_id) REFERENCES public.author(id) ON DELETE CASCADE;
 
 
 --
@@ -706,7 +706,7 @@ ALTER TABLE ONLY public.authorship
 --
 
 ALTER TABLE ONLY public.blocking
-    ADD CONSTRAINT book FOREIGN KEY (book_id) REFERENCES public.book(id);
+    ADD CONSTRAINT book FOREIGN KEY (book_id) REFERENCES public.book(id) ON DELETE CASCADE;
 
 
 --
@@ -714,7 +714,7 @@ ALTER TABLE ONLY public.blocking
 --
 
 ALTER TABLE ONLY public.authorship
-    ADD CONSTRAINT book FOREIGN KEY (book_id) REFERENCES public.book(id);
+    ADD CONSTRAINT book FOREIGN KEY (book_id) REFERENCES public.book(id) ON DELETE CASCADE;
 
 
 --
@@ -746,7 +746,7 @@ ALTER TABLE ONLY public.votes
 --
 
 ALTER TABLE ONLY public.blocking
-    ADD CONSTRAINT person FOREIGN KEY (person_id) REFERENCES public.person(id);
+    ADD CONSTRAINT person FOREIGN KEY (person_id) REFERENCES public.person(id) ON DELETE CASCADE;
 
 
 --

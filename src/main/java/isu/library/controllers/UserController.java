@@ -4,6 +4,9 @@ import isu.library.model.entity.Person;
 import isu.library.model.service.library.LibraryService;
 import isu.library.model.service.user.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -29,8 +32,13 @@ public class UserController {
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping("/users")
-    public String userManagement(ModelMap modelMap) {
+    public String userManagement(Authentication authentication, ModelMap modelMap) {
         modelMap.put("users", personService.findPersonByUsernameNotNull());
+        if (authentication != null && ((UserDetails)authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
+            String username = ((UserDetails)authentication.getPrincipal()).getUsername();
+            Person user = personService.findPersonByUsername(username).get();
+            modelMap.put("librarian_lib", user.getLibraryId());
+        }
         return "users";
     }
 
@@ -44,7 +52,18 @@ public class UserController {
 
     @GetMapping("/userUpdate")
     public String update(@RequestParam(name="user_id", required = true, defaultValue = "") Integer userId,
+                         Authentication authentication,
                              ModelMap modelMap) {
+        if(userId == null){
+            String username = ((UserDetails)authentication.getPrincipal()).getUsername();
+            Person user = personService.findPersonByUsername(username).get();
+            userId = user.getId();
+        }
+        if (authentication != null && ((UserDetails)authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
+            String username = ((UserDetails)authentication.getPrincipal()).getUsername();
+            Person user = personService.findPersonByUsername(username).get();
+            modelMap.put("librarian_lib", user.getLibraryId());
+        }
         Optional<Person> person = personService.findPersonById(userId);
         if (person.isEmpty()) {
             modelMap.put("users", personService.findPersonByUsernameNotNull());

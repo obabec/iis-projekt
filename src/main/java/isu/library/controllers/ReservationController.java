@@ -89,6 +89,7 @@ public class ReservationController {
         if (authentication != null && ((UserDetails)authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
             String username = ((UserDetails)authentication.getPrincipal()).getUsername();
             Person user = personService.findPersonByUsername(username).get();
+            modelMap.put("librarian_lib", user.getLibraryId());
             if (!user.getLibraryId().equals(libraryId)) {
                 return "home";
             }

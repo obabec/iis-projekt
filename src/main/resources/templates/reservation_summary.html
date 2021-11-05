@@ -37,13 +37,17 @@
                         <a href="/libraries" class="nav-link px-0 align-middle text-light">
                             <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Správa knihoven</span></a>
                     </li>
-                    <li sec:authorize="hasAnyRole('LIBRARIAN', 'ADMIN')">
-                        <a th:href="@{/library(library_id=${library})}" class="nav-link px-0 align-middle text-light">
-                            <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Správa knihovny</span></a>
-                    </li>
                     <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN', 'DISTRIBUTOR')">
                         <a href="/book" class="nav-link px-0 align-middle text-light">
-                            <i class="fs-4 bi-book"></i> <span class="ms-1 d-none d-sm-inline">Přidání knih</span></a>
+                            <i class="fs-4 bi-book"></i> <span class="ms-1 d-none d-sm-inline">Přidání knihy</span></a>
+                    </li>
+                    <li sec:authorize="hasAnyRole('ADMIN', 'DISTRIBUTOR')">
+                        <a href="/title" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-book"></i> <span class="ms-1 d-none d-sm-inline">Přidání titulu</span></a>
+                    </li>
+                    <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN', 'DISTRIBUTOR')">
+                        <a href="/titles" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-cart"></i> <span class="ms-1 d-none d-sm-inline">Dostupné tituly</span></a>
                     </li>
                     <li sec:authorize="hasRole('ADMIN')">
                         <a href="/users" class="nav-link px-0 align-middle text-light">
@@ -72,6 +76,7 @@
                         <li sec:authorize="hasRole('DISTRIBUTOR')"><span class="dropdown-item">Distributor</span> </li>
 
                         <li sec:authorize="hasRole('READER')"><a class="dropdown-item" href="/reservationSummary">Moje rezervace</a></li>
+                        <li><a href="/userUpdate" class="dropdown-item">Profil</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>

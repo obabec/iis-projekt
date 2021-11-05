@@ -32,25 +32,29 @@
                         <a href="/register" class="nav-link px-0 align-middle text-light">
                             <i class="fs-4 bi-gear-fill"></i> <span class="ms-1 d-none d-sm-inline">Registrace</span></a>
                     </li>
+                    <li sec:authorize="hasAnyRole('ADMIN', 'DISTRIBUTOR')">
+                        <a href="/title" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-book"></i> <span class="ms-1 d-none d-sm-inline">Přidání titulu</span></a>
+                    </li>
                     <li sec:authorize="hasRole('ADMIN')">
                         <a href="/libraries" class="nav-link px-0 align-middle text-light">
                             <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Správa knihoven</span></a>
                     </li>
-                    <li sec:authorize="hasAnyRole('LIBRARIAN', 'ADMIN')">
-                        <a th:href="@{/library(library_id=${librarian_lib})}" class="nav-link px-0 align-middle text-light">
+                    <li sec:authorize="hasRole('LIBRARIAN')">
+                        <a th:href="@{/library(library_id=${librarians_library})}" class="nav-link px-0 align-middle text-light">
                             <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Správa knihovny</span></a>
                     </li>
                     <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN', 'DISTRIBUTOR')">
                         <a href="/book" class="nav-link px-0 align-middle text-light">
-                            <i class="fs-4 bi-book"></i> <span class="ms-1 d-none d-sm-inline">Přidání knih</span></a>
+                            <i class="fs-4 bi-book"></i> <span class="ms-1 d-none d-sm-inline">Přidání knihy</span></a>
                     </li>
                     <li sec:authorize="hasRole('ADMIN')">
                         <a href="/users" class="nav-link px-0 align-middle text-light">
                             <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Správa uživatelů</span></a>
                     </li>
                     <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN')">
-                        <a href="/reservations/createLoan" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Vypujcka</span></a>
+                        <a href="/reservations/createLoan" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-journal-check"></i> <span class="ms-1 d-none d-sm-inline">Výpůjčky</span></a>
                     </li>
                 </ul>
                 <hr>
@@ -64,6 +68,7 @@
                         <li sec:authorize="hasRole('DISTRIBUTOR')"><span class="dropdown-item">Distributor</span> </li>
 
                         <li sec:authorize="hasRole('READER')"><a class="dropdown-item" href="/reservationSummary">Moje rezervace</a></li>
+                        <li><a href="/userUpdate" class="dropdown-item">Profil</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
@@ -74,7 +79,6 @@
         </div>
         <div class="col-auto col-xl-10 col-md-9 col-sm-9 col-10">
             <div class="bg-light rounded mb-3 mt-3">
-                <p th:if= "${message != ''}" th:text="${message}"></p>
                 <form th:action="@{/titles}" class="row g-3">
                     <div class="col-md-4 col-sm-6">
                         <label class="form-check-label" for="book_name">Název knihy</label>
@@ -102,7 +106,7 @@
                     </div>
                     <div class="col-md-4 col-sm-6">
                         <label class="form-check-label" for="rating_input">Hodnocení</label>
-                        <input type="number" class="form-control" id="rating_input" min="1" max="10" th:name="genre" th:value="${genre}"/>
+                        <input type="number" class="form-control" id="rating_input" min="1" max="10" th:name="rate" th:value="${rate}"/>
                     </div>
                     <div class="col-md-4 col-sm-6 mt-4">
                         <div class="form-check form-switch \">
@@ -129,7 +133,8 @@
                         <th>ISBN</th>
                         <th>Vydavatel</th>
                         <th>Hodnocení</th>
-                        <th>Akce</th>
+                        <th sec:authorize="hasAnyRole('DISTRIBUTOR', 'ADMIN')">Akce</th>
+                        <th sec:authorize="hasRole('LIBRARIAN')">Objednat</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -143,9 +148,9 @@
                         <td th:text="${book.isbn}"> AC12</td>
                         <td th:text="${book.publisher}">Franz Josef</td>
                         <td th:text="${book.rate}">Franz Josef</td>
-                        <td>
+                        <td sec:authorize="hasAnyRole('DISTRIBUTOR', 'ADMIN')">
                             <a th:href="${'/title/' + book.id}">
-                                <button class="btn btn-success">
+                                <button class="btn btn-info">
                                     Upravit
                                 </button>
                             </a>
@@ -154,6 +159,14 @@
                                     Smazat
                                 </button>
                             </a>
+                        </td>
+                        <td sec:authorize="hasRole('LIBRARIAN')">
+                            <form th:action="@{'/order/' + ${book.id}}">
+                                <div class="col-md-4 col-2">
+                                    <input type="number" class="form-control" value="10" th:name="count"/>
+                                    <input class="form-control btn btn-secondary" type="submit" value="Objednat"/>
+                                </div>
+                            </form>
                         </td>
                     </tr>
                     </tbody>
