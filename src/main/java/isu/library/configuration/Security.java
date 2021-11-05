@@ -36,9 +36,9 @@ public class Security extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
                 .antMatchers("/").permitAll()
                 .antMatchers(HttpMethod.GET, "/book").permitAll()
-                .antMatchers(HttpMethod.POST, "/book").hasAnyRole("ADMIN", "LIBRARIAN")
+                .antMatchers(HttpMethod.POST, "/book").hasAnyRole("ADMIN", "LIBRARIAN", "DISTRIBUTOR")
                 .antMatchers(HttpMethod.GET, "/book/*").permitAll()
-                .antMatchers(HttpMethod.POST, "/book/*").hasAnyRole("ADMIN", "LIBRARIAN")
+                .antMatchers(HttpMethod.POST, "/book/*").hasAnyRole("ADMIN", "LIBRARIAN", "DISTRIBUTOR")
                 .antMatchers(HttpMethod.GET, "/libraries").hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, "/reservationSummary").authenticated()
                 .antMatchers( "/userUpdate").hasRole("ADMIN")
@@ -50,6 +50,7 @@ public class Security extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/deleteLibrary").hasRole("ADMIN")
                 .antMatchers("/library").hasAnyRole("ADMIN", "LIBRARIAN")
                 .antMatchers("/reservations").hasAnyRole("ADMIN", "LIBRARIAN")
+                .antMatchers("/orders").hasAnyRole("ADMIN", "DISTRIBUTOR")
                 .and().formLogin().loginPage("/login").permitAll()
                 .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET")).logoutSuccessUrl("/").invalidateHttpSession(true).deleteCookies("JSESSIONID").permitAll();
     }

@@ -498,6 +498,7 @@ COPY public.person (id, name, surname, birth_date, role, username, password, lib
 2	Tomas1	Korbar2	1970-01-01	LIBRARIAN	libr	$2a$10$GRQmNECbcOX.e1IvtwgnOelX6O4VVS7sXxfYsySOeqN/Gy6ZZ5hNG	1
 3	Tomas1	Korbar2	1970-01-01	LIBRARIAN	libr2	$2a$10$GRQmNECbcOX.e1IvtwgnOelX6O4VVS7sXxfYsySOeqN/Gy6ZZ5hNG	1
 4	Tomas1	Korbar2	1970-01-01	READER	reader	$2a$10$GRQmNECbcOX.e1IvtwgnOelX6O4VVS7sXxfYsySOeqN/Gy6ZZ5hNG	1
+5	Tomas1	Korbar2	1970-01-01	DISTRIBUTOR	distributor	$2a$10$GRQmNECbcOX.e1IvtwgnOelX6O4VVS7sXxfYsySOeqN/Gy6ZZ5hNG	1
 \.
 
 
