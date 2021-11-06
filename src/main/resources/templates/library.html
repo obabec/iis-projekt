@@ -38,7 +38,7 @@
                         </a>
                     </li>
                     <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN')">
-                        <a th:href="@{/reservations(library_id=${library.id})}" class="nav-link px-0 align-middle text-light">
+                        <a th:href="/libraries" class="nav-link px-0 align-middle text-light">
                             <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Správa knihoven</span></a>
                     </li>
                     <li sec:authorize="hasAnyRole('ADMIN', 'DISTRIBUTOR')">

@@ -91,21 +91,15 @@
                 <div class="container bg-light rounded p-3">
                     <h2 class="fw-bold mb-4 text-uppercase text-center">Vytvořit půjčku</h2>
                     <form th:action="@{/reservations/createLoan}" method="POST" th:object="${reservation}">
-                        <div class="col-7 mb-3">
                             <label for="books" class="form-label">Kniha</label>
                             <select class="book_search form-select" id="books" th:name="readers" th:field="*{bookId}">
                                 <option th:each="book : ${availableBooks}" th:value="${book.id}" th:text="${book.id + ' - ' + book.name}"/>
                             </select>
-                        </div>
-                        <div class="col-7 mb-3">
                             <label for="readers" class="form-label">Čtenář</label>
                             <select class="reader_search form-select" id="readers" th:name="readers" th:field="*{personId}">
                                 <option th:each="user : ${readers}" th:value="${user.id}" th:text="${user.name + ' ' + user.surname + ' ' + user.birthDate}"/>
                             </select>
-                        </div>
-                        <div class="col-4 mb-3">
-                            <input class="form-control btn btn-primary mb-2" value="Vytvořit" type="submit"/>
-                        </div>
+                            <input class="form-control btn btn-primary mb-2 my-3" value="Vytvořit" type="submit"/>
                         <p th:if= "${message != ''}" th:text="${message}"></p>
                 </form>
             </div>
