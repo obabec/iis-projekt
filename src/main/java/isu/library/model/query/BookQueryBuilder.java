@@ -103,7 +103,7 @@ public class BookQueryBuilder {
     public BookQueryBuilder filterByReleaseAbove(int year) {
         LocalDate ld = LocalDate.of(year, 1, 1);
         addWhereOrAnd();
-        this.query += "b.release <>= '" + Date.valueOf(ld) + "'";
+        this.query += "b.release >= '" + Date.valueOf(ld) + "'";
         return this;
     }
 

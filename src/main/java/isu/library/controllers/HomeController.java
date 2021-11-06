@@ -52,6 +52,7 @@ public class HomeController {
                        @RequestParam(name="publisher", required = false, defaultValue = "") String publisher,
                        @RequestParam(name="genre", required = false, defaultValue = "") String genre,
                        @RequestParam(name="message", required = false, defaultValue = "") String message,
+                       @RequestParam(name="rate", required = false, defaultValue = "-1") Integer rating,
                        Authentication authentication,
                        ModelMap modelMap) {
 
@@ -61,30 +62,35 @@ public class HomeController {
             modelMap.put("librarian_lib", user.getLibraryId());
         }
         BookQueryBuilder builder = new BookQueryBuilder();
+        if (!authorName.isEmpty()) {
+            builder = builder.filterByAuthor(authorName);
+            modelMap.put("author_name", authorName);
+        }
+
+        if (rating != -1) {
+            builder = builder.filterByRate(rating);
+            modelMap.put("rate", rating);
+        }
         if (!releaseDate.isEmpty()) {
             if (before.equals("on")) {
                 modelMap.put("before", before);
-                builder.filterByReleaseUnder(Integer.parseInt(releaseDate));
+                builder = builder.filterByReleaseUnder(Integer.parseInt(releaseDate));
             } else {
-                builder.filterByReleaseAbove(Integer.parseInt(releaseDate));
+                builder = builder.filterByReleaseAbove(Integer.parseInt(releaseDate));
             }
             modelMap.put("release_date", releaseDate);
         }
         if (!isbn.isEmpty()) {
-            builder.filterByIsbn(isbn);
+            builder = builder.filterByIsbn(isbn);
             modelMap.put("isbn", isbn);
         }
         if (!publisher.isEmpty()) {
-            builder.filterByPublisher(publisher);
+            builder = builder.filterByPublisher(publisher);
             modelMap.put("publisher", publisher);
         }
         if (!genre.isEmpty()) {
-            builder.filterByGenre(genre);
+            builder = builder.filterByGenre(genre);
             modelMap.put("genre", genre);
-        }
-        if (!authorName.isEmpty()) {
-            builder = builder.filterByAuthor(authorName);
-            modelMap.put("author_name", authorName);
         }
         if (!bookName.isEmpty()) {
             builder = builder.filterByName(bookName);
