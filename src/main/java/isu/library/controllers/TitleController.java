@@ -50,22 +50,22 @@ public class TitleController {
         if (!releaseDate.isEmpty()) {
             if (before.equals("on")) {
                 modelMap.put("before", before);
-                builder.filterByReleaseUnder(Integer.parseInt(releaseDate));
+                builder = builder.filterByReleaseUnder(Integer.parseInt(releaseDate));
             } else {
-                builder.filterByReleaseAbove(Integer.parseInt(releaseDate));
+                builder = builder.filterByReleaseAbove(Integer.parseInt(releaseDate));
             }
             modelMap.put("release_date", releaseDate);
         }
         if (!isbn.isEmpty()) {
-            builder.filterByIsbn(isbn);
+            builder = builder.filterByIsbn(isbn);
             modelMap.put("isbn", isbn);
         }
         if (!publisher.isEmpty()) {
-            builder.filterByPublisher(publisher);
+            builder = builder.filterByPublisher(publisher);
             modelMap.put("publisher", publisher);
         }
         if (rate != null) {
-            builder.filterByRate(rate);
+            builder = builder.filterByRate(rate);
             modelMap.put("rate", rate);
         }
         if (!authorName.isEmpty()) {

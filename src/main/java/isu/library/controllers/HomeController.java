@@ -50,7 +50,6 @@ public class HomeController {
                        @RequestParam(name="release_date", required = false, defaultValue = "") String releaseDate,
                        @RequestParam(name="isbn", required = false, defaultValue = "") String isbn,
                        @RequestParam(name="publisher", required = false, defaultValue = "") String publisher,
-                       @RequestParam(name="genre", required = false, defaultValue = "") String genre,
                        @RequestParam(name="message", required = false, defaultValue = "") String message,
                        @RequestParam(name="rate", required = false, defaultValue = "-1") Integer rating,
                        Authentication authentication,
@@ -87,10 +86,6 @@ public class HomeController {
         if (!publisher.isEmpty()) {
             builder = builder.filterByPublisher(publisher);
             modelMap.put("publisher", publisher);
-        }
-        if (!genre.isEmpty()) {
-            builder = builder.filterByGenre(genre);
-            modelMap.put("genre", genre);
         }
         if (!bookName.isEmpty()) {
             builder = builder.filterByName(bookName);
