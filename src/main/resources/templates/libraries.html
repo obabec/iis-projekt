@@ -116,7 +116,6 @@
                 <table id="libraryListing" class="table table-hover">
                     <thead>
                     <tr>
-                        <th>Id</th>
                         <th>Název</th>
                         <th>Tag</th>
                         <th>Město</th>
@@ -125,7 +124,6 @@
                     </thead>
                     <tbody>
                     <tr th:each="library : ${libraries}">
-                        <td th:text="${library.id}">Onions</td>
                         <td th:text="${library.name}">Onions</td>
                         <td th:text="${library.tag}">2.41</td>
                         <td th:text="${library.city}">yes</td>

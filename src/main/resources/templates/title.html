@@ -84,17 +84,8 @@
             <div class="container bg-light rounded p-3">
                 <h2 class="fw-bold mb-4 text-uppercase text-center">Titul</h2>
                 <form method="POST" th:action="${book.id == 0 ?'/title':'/title/' + book.id}" th:object="${book}">
-                    <!--<p>TODO: smazat sekce JS co to hazi error:
-                        $('.author_search').select2();
-                        $('.author_search').val([[${chosen_authors}]])
-                        $('.author_search').trigger('change');
-                    </p> -->
                     <label for="name" class="form-label">Název</label>
                     <input type="text" class="form-control" id="name" th:name="name" th:value="${book.name}"/>
-                    <!--<label for="libraryId" class="form-label mt-2">Knihovny</label>
-                    <select class="library_search form-select" id="libraryId" th:name="libraryId">
-                        <option th:each="library : ${libraries}" th:value="${library.id}" th:text="${library.name}"/>
-                    </select>-->
                     <label for="genre" class="form-label mt-2">Žánr</label>
                     <input type="text" class="form-control " id="genre" th:name="genre" th:value="${book.genre}"/>
                     <label for="authors" class="form-label mt-2">Autoři</label>
