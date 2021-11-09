@@ -66,15 +66,15 @@ public class ReservationController {
         Optional<Reservation> res = reservationService.findReservationByBookIdAndPersonId(bookId, personId);
         // kokotina jak vrata
         if (res.isPresent() && (res.get().getDateTo().toLocalDate().isAfter(LocalDate.now()) || res.get().getDateTo().toLocalDate().isEqual(LocalDate.now()))) {
-            return "redirect:/?message='Rezervace na knihu jiz existuje!'";
+            return "redirect:/?message=Rezervace na knihu jiz existuje!";
         } else {
             Optional<Reservation> latestRes = reservationService.findReservationByLatestDate(bookId);
             if (latestRes.isEmpty()) {
                 reservationService.saveNewReservation(bookId, personId, null);
-                return "redirect:/?message='Rezervace byla vytvorena'";
+                return "redirect:/?message=Rezervace byla vytvorena";
             } else {
                 reservationService.saveNewReservation(bookId, personId, latestRes.get().getDateTo().toLocalDate().plusDays(1));
-                return "redirect:/?message='Kniha je aktualne rezervovana, pridavame vas do fronty cekatelu.'";
+                return "redirect:/?message=Kniha je aktualne rezervovana, pridavame vas do fronty cekatelu.";
             }
         }
     }
@@ -89,6 +89,7 @@ public class ReservationController {
         if (authentication != null && ((UserDetails)authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
             String username = ((UserDetails)authentication.getPrincipal()).getUsername();
             Person user = personService.findPersonByUsername(username).get();
+            modelMap.put("librarian_lib", user.getLibraryId());
             if (!user.getLibraryId().equals(libraryId)) {
                 return "home";
             }

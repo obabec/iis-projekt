@@ -28,7 +28,7 @@
                 <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                     <li sec:authorize="isAnonymous()">
                         <a href="/login" class="nav-link px-0 align-middle text-light">
-                            <i class="fs-4 bi-unlock"></i> <span class="ms-1 d-none d-sm-inline">Přihlášní</span></a>
+                            <i class="fs-4 bi-unlock"></i> <span class="ms-1 d-none d-sm-inline">Přihlášení</span></a>
                     </li>
                     <li sec:authorize="isAnonymous()">
                         <a href="/register" class="nav-link px-0 align-middle text-light">
@@ -36,7 +36,7 @@
                     </li>
                     <li class="nav-item">
                         <a href="/" class="nav-link px-0 align-middle text-light">
-                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Správa knih</span>
+                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Knihy</span>
                         </a>
                     </li>
                     <li sec:authorize="hasRole('ADMIN')">
@@ -45,7 +45,15 @@
                     </li>
                     <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN', 'DISTRIBUTOR')">
                         <a href="/book" class="nav-link px-0 align-middle text-light">
-                            <i class="fs-4 bi-book"></i> <span class="ms-1 d-none d-sm-inline">Přidání knih</span></a>
+                            <i class="fs-4 bi-book"></i> <span class="ms-1 d-none d-sm-inline">Přidání knihy</span></a>
+                    </li>
+                    <li sec:authorize="hasAnyRole('ADMIN', 'DISTRIBUTOR')">
+                        <a href="/title" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-book"></i> <span class="ms-1 d-none d-sm-inline">Přidání titulu</span></a>
+                    </li>
+                    <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN', 'DISTRIBUTOR')">
+                        <a href="/titles" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-cart"></i> <span class="ms-1 d-none d-sm-inline">Dostupné tituly</span></a>
                     </li>
                     <li sec:authorize="hasRole('ADMIN')">
                         <a href="/users" class="nav-link px-0 align-middle text-light">
@@ -53,7 +61,7 @@
                     </li>
                     <li sec:authorize="hasAnyRole('ADMIN', 'READER', 'LIBRARIAN')">
                         <a href="/votes" class="nav-link px-0 align-middle text-light">
-                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Hlasováni</span></a>
+                            <i class="fs-4 bi-hand-thumbs-up"></i> <span class="ms-1 d-none d-sm-inline">Hlasováni</span></a>
                     </li>
                 </ul>
                 <hr>
@@ -69,7 +77,8 @@
                         <li sec:authorize="hasRole('READER')"><span class="dropdown-item">Čtenář</span> </li>
                         <li sec:authorize="hasRole('DISTRIBUTOR')"><span class="dropdown-item">Distributor</span> </li><li sec:authorize="hasRole('DISTRIBUTOR')"><span class="dropdown-item">Distributor</span> </li>
 
-                        <li sec:authorize="hasRole('READER')"><a class="dropdown-item" href="#">Moje rezervace</a></li>
+                        <li sec:authorize="hasRole('READER')"><a class="dropdown-item" href="/reservationSummary">Moje rezervace</a></li>
+                        <li><a href="/userUpdate" class="dropdown-item">Profil</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
@@ -82,21 +91,15 @@
                 <div class="container bg-light rounded p-3">
                     <h2 class="fw-bold mb-4 text-uppercase text-center">Vytvořit půjčku</h2>
                     <form th:action="@{/reservations/createLoan}" method="POST" th:object="${reservation}">
-                        <div class="col-7 mb-3">
                             <label for="books" class="form-label">Kniha</label>
                             <select class="book_search form-select" id="books" th:name="readers" th:field="*{bookId}">
                                 <option th:each="book : ${availableBooks}" th:value="${book.id}" th:text="${book.id + ' - ' + book.name}"/>
                             </select>
-                        </div>
-                        <div class="col-7 mb-3">
                             <label for="readers" class="form-label">Čtenář</label>
                             <select class="reader_search form-select" id="readers" th:name="readers" th:field="*{personId}">
                                 <option th:each="user : ${readers}" th:value="${user.id}" th:text="${user.name + ' ' + user.surname + ' ' + user.birthDate}"/>
                             </select>
-                        </div>
-                        <div class="col-4 mb-3">
-                            <input class="form-control btn btn-primary mb-2" value="Vytvořit" type="submit"/>
-                        </div>
+                            <input class="form-control btn btn-primary mb-2 my-3" value="Vytvořit" type="submit"/>
                         <p th:if= "${message != ''}" th:text="${message}"></p>
                 </form>
             </div>
