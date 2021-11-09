@@ -60,7 +60,6 @@
             <div class="container bg-light rounded p-3">
                 <h2 class="fw-bold mb-4 text-uppercase text-center">Registrace</h2>
                 <form th:action="@{/register}" method="POST">
-                    <input type="hidden" th:value="${book_id}" th:name="book_id">
                     <label for="registerUsername" class="form-label">Jméno</label>
                     <input type="text" id="registerUsername" name="username" class="form-control" th:name="name"/>
                     <label for="surname" class="form-label">Příjmení</label>

@@ -539,7 +539,7 @@ SELECT pg_catalog.setval('public.authorship_id_seq', 2, true);
 SELECT pg_catalog.setval('public.blocking_id_seq', 4, true);
 SELECT pg_catalog.setval('public.book_id_seq', 2, true);
 SELECT pg_catalog.setval('public.book_order_id_seq', 1, false);
-SELECT pg_catalog.setval('public.hibernate_sequence', 1, false);
+SELECT pg_catalog.setval('public.hibernate_sequence', 5, true);
 SELECT pg_catalog.setval('public.library_id_seq', 2, true);
 SELECT pg_catalog.setval('public.person_id_seq', 5, true);
 SELECT pg_catalog.setval('public.user_vote_id_seq', 1, true);

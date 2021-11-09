@@ -5,8 +5,6 @@
     <link rel="shortcut icon" href="icons/favicon.ico" type="image/x-icon">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -16,7 +14,6 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css" id="bootstrap-data">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
-
 </head>
 <body>
 <div class="container-fluid">
@@ -36,7 +33,7 @@
                             <i class="fs-4 bi-gear-fill"></i> <span class="ms-1 d-none d-sm-inline">Registrace</span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="/" class="nav-link align-middle px-0 text-light">
+                        <a href="/" class="nav-link px-0 align-middle text-light">
                             <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Knihy</span>
                         </a>
                     </li>
@@ -56,21 +53,29 @@
                         <a href="/titles" class="nav-link px-0 align-middle text-light">
                             <i class="fs-4 bi-cart"></i> <span class="ms-1 d-none d-sm-inline">Dostupné tituly</span></a>
                     </li>
+                    <li sec:authorize="hasRole('LIBRARIAN')">
+                        <a th:href="@{/library(library_id=${librarian_lib})}" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Správa knihovny</span></a>
+                    </li>
+                    <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN', 'DISTRIBUTOR')">
+                        <a href="/book" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-book"></i> <span class="ms-1 d-none d-sm-inline">Přidat knihu</span></a>
+                    </li>
                     <li sec:authorize="hasRole('ADMIN')">
                         <a href="/users" class="nav-link px-0 align-middle text-light">
                             <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Správa uživatelů</span></a>
                     </li>
                     <li sec:authorize="hasAnyRole('ADMIN', 'READER', 'LIBRARIAN')">
                         <a href="/votes" class="nav-link px-0 align-middle text-light">
-                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Hlasováni</span></a>
+                            <i class="fs-4 bi-hand-thumbs-up"></i> <span class="ms-1 d-none d-sm-inline">Hlasováni</span></a>
                     </li>
                     <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN')">
                         <a href="/reservations/createLoan" class="nav-link px-0 align-middle text-light">
                             <i class="fs-4 bi-journal-check"></i> <span class="ms-1 d-none d-sm-inline">Výpůjčky</span></a>
                     </li>
-                    <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN', 'DISTRIBUTOR')">
-                        <a href="/orders" class="nav-link px-0 align-middle text-light">
-                            <i class="fs-4 bi-list-check"></i> <span class="ms-1 d-none d-sm-inline">Objednávky</span></a>
+                    <li sec:authorize="hasAnyRole('ADMIN', 'DISTRIBUTOR')">
+                        <a href="/author" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-person-plus"></i> <span class="ms-1 d-none d-sm-inline">Přidat autora</span></a>
                     </li>
                 </ul>
                 <hr>
@@ -96,71 +101,41 @@
                 </div>
             </div>
         </div>
-
-        <div class="mx-auto col-xl-10 col-md-9 col-sm-8 col-10 row align-items-center">
-            <div class="rounded bg-light p-3">
-                <h2 class="fw-bold mb-4 text-uppercase text-center">Vytvořit Knihu</h2>
-                <form method="POST" th:action="${book.id == 0 ?'/book':'/book/' + book.id}" th:object="${book}" class="row g-3">
-                    <div class="col-md-4 col-sm-6">
-                        <label class="form-check-label" for="book_name">Název knihy</label>
-                        <input type="text" class="form-control" id="book_name" th:name="name" th:value="${book.name}"/>
-                    </div>
-                    <div class="col-md-4 col-sm-6">
-                        <label class="form-check-label" for="genre">Žánr</label>
-                        <input type="text" class="form-control" id="genre" th:name="genre" th:value="${book.genre}"/>
-                    </div>
-                    <div class="col-md-4 col-sm-6">
-                        <label class="form-check-label" for="release">Datum vydání</label>
-                        <input type="date" class="form-control" id="release" th:name="release" th:value="${book.release}"/>
-                    </div>
-                    <div class="col-md-4 col-sm-6">
-                        <label class="form-check-label" for="isbn">ISBN</label>
-                        <input type="text" class="form-control" id="isbn" th:name="isbn" th:value="${book.isbn}"/>
-                    </div>
-                    <div class="col-md-4 col-sm-6">
-                        <label class="form-check-label" for="publisher">Vydavatel</label>
-                        <input type="text" class="form-control" id="publisher" th:name="publisher" th:value="${book.publisher}"/>
-                    </div>
-                    <div class="col-md-4 col-sm-6">
-                        <label class="form-check-label" for="rate">Hodnocení</label>
-                        <input type="number" class="form-control" min="1" max="10" id="rate" th:name="rate" th:value="${book.rate}"/>
-                    </div>
-                    <div class="col-4">
-                        <label class="form-check-label" for="genre">Autoři</label>
-                        <select class="author_search form-select" th:name="authors" multiple="multiple">
-                            <option th:each="user : ${possible_authors}" th:value="${user.id}" th:text="${user.name + ' ' + user.surname}"/>
-                        </select>
-                    </div>
-                    <div class="col-4">
-                        <label class="form-check-label" for="libraryId">Knihovna: </label>
-                        <select class="library_search form-select" id="libraryId" th:name="libraryId">
-                            <option th:each="library : ${libraries}" th:value="${library.id}" th:text="${library.name}"/>
-                        </select>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3 mt-4">
-                            <input class="form-control btn btn-primary" type="submit" value="Odeslat"/>
-                        </div>
-                    </div>
-                </form>
+        <div class="col-auto col-xl-10 col-md-9 col-sm-9 col-10">
+            <h2 class="fw-bold mb-4 text-uppercase text-center">Autoři</h2>
+            <div class="table-responsive">
+                <table id="userListing" class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Jméno</th>
+                        <th>Příjmení</th>
+                        <th>Akce</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="author : ${authors}">
+                        <td th:text="${author.name}">Onions</td>
+                        <td th:text="${author.surname}">Onions</td>
+                        <td>
+                            <a th:href="@{/author(author_id=${author.id})}">
+                                <button class="btn btn-secondary">Upravit</button>
+                            </a>
+                            <a th:href="@{/authorDelete(author_id=${author.id})}">
+                                <button class="btn btn-danger">Smazat</button>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 </div>
-
+<!-- <p th:text="${bookName}"></p> -->
 </body>
-<script th:inline="javascript">
-/*<![CDATA[*/
-    // In your Javascript (external .js resource or <script> tag)
+<script>
     $(document).ready(function() {
-        $('.library_search').select2();
-        $('.library_search').val('[[${chosen_library.getId()}]]')
-        $('.library_search').trigger('change');
-
-        $('.author_search').select2();
-        $('.author_search').val([[${chosen_authors}]])
-        $('.author_search').trigger('change');
+        $('#userListing').DataTable({searching: false});
     });
-/*]]>*/
 </script>
 </html>

@@ -44,9 +44,13 @@
                         <a href="/titles" class="nav-link px-0 align-middle text-light">
                             <i class="fs-4 bi-cart"></i> <span class="ms-1 d-none d-sm-inline">Dostupné tituly</span></a>
                     </li>
-                    <li sec:authorize="hasAnyRole('ADMIN')">
+                    <li sec:authorize="hasRole('ADMIN')">
                         <a href="/libraries" class="nav-link px-0 align-middle text-light">
-                            <iß class="fs-4 bi-building"></iß> <span class="ms-1 d-none d-sm-inline">Správa knihoven</span></a>
+                            <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Správa knihoven</span></a>
+                    </li>
+                    <li sec:authorize="hasRole('ADMIN')">
+                        <a href=/library class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Přidat knihovnu</span></a>
                     </li>
                     <li sec:authorize="hasRole('ADMIN')">
                         <a href="#" class="nav-link px-0 align-middle text-light">
