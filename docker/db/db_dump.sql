@@ -531,72 +531,18 @@ COPY public.votes (id, book_name, library_id, vote_amount) FROM stdin;
 
 
 --
--- Name: author_id_seq; Type: SEQUENCE SET; Schema: public; Owner: compose-postgres
+-- Name: *_id_seq; Type: SEQUENCE SET; Schema: public; Owner: compose-postgres
 --
 
 SELECT pg_catalog.setval('public.author_id_seq', 1, true);
-
-
---
--- Name: authorship_id_seq; Type: SEQUENCE SET; Schema: public; Owner: compose-postgres
---
-
 SELECT pg_catalog.setval('public.authorship_id_seq', 2, true);
-
-
---
--- Name: blocking_id_seq; Type: SEQUENCE SET; Schema: public; Owner: compose-postgres
---
-
 SELECT pg_catalog.setval('public.blocking_id_seq', 4, true);
-
-
---
--- Name: book_id_seq; Type: SEQUENCE SET; Schema: public; Owner: compose-postgres
---
-
 SELECT pg_catalog.setval('public.book_id_seq', 2, true);
-
-
---
--- Name: book_order_id_seq; Type: SEQUENCE SET; Schema: public; Owner: compose-postgres
---
-
 SELECT pg_catalog.setval('public.book_order_id_seq', 1, false);
-
-
---
--- Name: hibernate_sequence; Type: SEQUENCE SET; Schema: public; Owner: compose-postgres
---
-
-SELECT pg_catalog.setval('public.hibernate_sequence', 1, true);
-
-
---
--- Name: library_id_seq; Type: SEQUENCE SET; Schema: public; Owner: compose-postgres
---
-
-SELECT pg_catalog.setval('public.library_id_seq', 1, false);
-
-
---
--- Name: person_id_seq; Type: SEQUENCE SET; Schema: public; Owner: compose-postgres
---
-
-SELECT pg_catalog.setval('public.person_id_seq', 1, true);
-
-
---
--- Name: user_vote_id_seq; Type: SEQUENCE SET; Schema: public; Owner: compose-postgres
---
-
+SELECT pg_catalog.setval('public.hibernate_sequence', 5, true);
+SELECT pg_catalog.setval('public.library_id_seq', 2, true);
+SELECT pg_catalog.setval('public.person_id_seq', 5, true);
 SELECT pg_catalog.setval('public.user_vote_id_seq', 1, true);
-
-
---
--- Name: votes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: compose-postgres
---
-
 SELECT pg_catalog.setval('public.votes_id_seq', 11, true);
 
 

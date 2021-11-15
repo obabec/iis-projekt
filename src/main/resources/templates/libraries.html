@@ -30,16 +30,20 @@
                         </a>
                     </li>
                     <li sec:authorize="isAnonymous()">
+                        <a href="/login" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-unlock"></i> <span class="ms-1 d-none d-sm-inline">Přihlášení</span></a>
+                    </li>
+                    <li sec:authorize="isAnonymous()">
                         <a href="/register" class="nav-link px-0 align-middle text-light">
                             <i class="fs-4 bi-gear-fill"></i> <span class="ms-1 d-none d-sm-inline">Registrace</span></a>
                     </li>
                     <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN', 'DISTRIBUTOR')">
                         <a href="/book" class="nav-link px-0 align-middle text-light">
-                            <i class="fs-4 bi-book"></i> <span class="ms-1 d-none d-sm-inline">Přidání knihy</span></a>
+                            <i class="fs-4 bi-book"></i> <span class="ms-1 d-none d-sm-inline">Přidat knihu</span></a>
                     </li>
                     <li sec:authorize="hasAnyRole('ADMIN', 'DISTRIBUTOR')">
                         <a href="/title" class="nav-link px-0 align-middle text-light">
-                            <i class="fs-4 bi-book"></i> <span class="ms-1 d-none d-sm-inline">Přidání titulu</span></a>
+                            <i class="fs-4 bi-book"></i> <span class="ms-1 d-none d-sm-inline">Přidat titul</span></a>
                     </li>
                     <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN', 'DISTRIBUTOR')">
                         <a href="/titles" class="nav-link px-0 align-middle text-light">
@@ -86,6 +90,7 @@
             </div>
         </div>
         <div class="col-auto col-xl-10 col-md-9 col-sm-9 col-10">
+            <h2 class="fw-bold mb-4 text-uppercase text-center">Knihovny</h2>
             <div class="bg-light rounded mb-3 mt-3">
                 <form th:action="@{/libraries}" class="row g-3">
                     <div class="row">
@@ -106,17 +111,11 @@
                         <input class="form-control btn btn-secondary" type="submit" value="Filtrovat"/>
                     </div>
                 </form>
-                <div class="col-md-3 ml-0 mt-4">
-                    <a sec:authorize="hasRole('ADMIN')" th:href="@{/library}">
-                        <button class="form-control btn btn-primary">Přidat novou knihovnu</button>
-                    </a>
-                </div>
             </div>
             <div class="table-responsive">
                 <table id="libraryListing" class="table table-hover">
                     <thead>
                     <tr>
-                        <th>Id</th>
                         <th>Název</th>
                         <th>Tag</th>
                         <th>Město</th>
@@ -125,7 +124,6 @@
                     </thead>
                     <tbody>
                     <tr th:each="library : ${libraries}">
-                        <td th:text="${library.id}">Onions</td>
                         <td th:text="${library.name}">Onions</td>
                         <td th:text="${library.tag}">2.41</td>
                         <td th:text="${library.city}">yes</td>

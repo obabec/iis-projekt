@@ -41,9 +41,13 @@
                         <a href="/libraries" class="nav-link px-0 align-middle text-light">
                             <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Správa knihoven</span></a>
                     </li>
+                    <li sec:authorize="hasRole('ADMIN')">
+                        <a href=/library class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Přidat knihovnu</span></a>
+                    </li>
                     <li sec:authorize="hasAnyRole('ADMIN', 'DISTRIBUTOR')">
                         <a href="/title" class="nav-link px-0 align-middle text-light">
-                            <i class="fs-4 bi-book"></i> <span class="ms-1 d-none d-sm-inline">Přidání titulu</span></a>
+                            <i class="fs-4 bi-book"></i> <span class="ms-1 d-none d-sm-inline">Přidat titul</span></a>
                     </li>
                     <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN', 'DISTRIBUTOR')">
                         <a href="/titles" class="nav-link px-0 align-middle text-light">
@@ -55,7 +59,7 @@
                     </li>
                     <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN', 'DISTRIBUTOR')">
                         <a href="/book" class="nav-link px-0 align-middle text-light">
-                            <i class="fs-4 bi-book"></i> <span class="ms-1 d-none d-sm-inline">Přidání knihy</span></a>
+                            <i class="fs-4 bi-book"></i> <span class="ms-1 d-none d-sm-inline">Přidat knihu</span></a>
                     </li>
                     <li sec:authorize="hasRole('ADMIN')">
                         <a href="/users" class="nav-link px-0 align-middle text-light">
@@ -95,37 +99,58 @@
         </div>
         <div class="container mx-auto col-auto col-lg-4 col-md-6 col-sm-7 row align-items-center">
             <div class="container bg-light rounded p-3">
-            <!--th:action="${book.id == 0 ?'/book':'/book/' + book.id}"-->
                 <h2 class="fw-bold mb-4 text-uppercase text-center">Uživatel</h2>
-                <form th:action="@{/userUpdate}" method="POST" th:object="${user}">
-                    <input type="hidden" class="form-control" placeholder="Id" th:value="${user.id}" th:field="*{id}">
-                    <label for="name" class="form-label mt-2">Jméno</label>
-                    <input type="text" class="form-control" id="name" th:name="name" th:value="${user.name}"/>
-                    <label for="surname" class="form-label mt-2">Příjmení</label>
-                    <input type="text" class="form-control" id="surname" th:name="surname" th:value="${user.surname}"/>
-                    <label for="birthDate" class="form-label mt-2">Datum Narození</label>
-                    <input type="date" class="form-control" id="birthDate" th:name="birthDate" th:value="${user.birthDate}"/>
-                    <label for="role" class="form-label mt-2">Role</label>
-                    <select class="role_search form-select" name="state" id="role" th:name="role">
-                        <option th:each="role : ${roles}" th:value="${role}" th:text="${role}" th:selected="${user.role == role}"/>
-                    </select>
-                    <label for="username" class="form-label mt-2">Uživatelské jméno</label>
-                    <input type="text" class="form-control" id="username" th:name="username" th:value="${user.username}"/>
-                    <label for="password" class="form-label mt-2">Heslo</label>
-                    <input type="text" class="form-control" id="password" th:name="password"/>
-                    <div th:if="${user.libraryId != null}">
-                        <label for="libraryId" class="form-label mt-2">Kihovny</label>
-                        <select class="library_search form-select" name="state" id="libraryId" th:name="libraryId">
-                            <option th:each="library : ${libraries}" th:value="${library.id}" th:text="${library.name}" th:selected="${library.id == user.libraryId}"/>
+                <form id="userForm" th:action="@{/userUpdate}" method="POST" th:object="${user}">
+                    <div sec:authorize="hasRole('ADMIN')">
+                        <label for="name" class="form-label mt-2">Jméno</label>
+                        <input type="text" class="form-control" id="name" th:name="name" th:value="${user.name}"/>
+                        <label for="surname" class="form-label mt-2">Příjmení</label>
+                        <input type="text" class="form-control" id="surname" th:name="surname" th:value="${user.surname}"/>
+                        <label for="birthDate" class="form-label mt-2">Datum Narození</label>
+                        <input type="date" class="form-control" id="birthDate" th:name="birthDate" th:value="${user.birthDate}"/>
+                        <label for="role" class="form-label mt-2">Role</label>
+                        <select  class="role_search form-select" name="state" id="role" th:name="role">
+                            <option th:each="role : ${roles}" th:value="${role}" th:text="${role}" th:selected="${user.role == role}"/>
                         </select>
+                        <label for="username" class="form-label mt-2">Uživatelské jméno</label>
+                        <input type="text" class="form-control" id="username" th:name="username" th:value="${user.username}"/>
+                        <label for="password" class="form-label mt-2">Heslo</label>
+                        <input type="text" class="form-control" id="password" th:name="password"/>
+                        <div th:if="${user.libraryId != null}">
+                            <label for="libraryId" class="form-label mt-2">Kihovny</label>
+                            <select class="library_search form-select" name="state" id="libraryId" th:name="libraryId">
+                                <option th:each="library : ${libraries}" th:value="${library.id}" th:text="${library.name}" th:selected="${library.id == user.libraryId}"/>
+                            </select>
+                        </div>
+                        <input class="form-control btn btn-primary my-3" type="submit" value="Odeslat"/>
                     </div>
-                    <input sec:authorize="hasRole('ADMIN')" class="form-control btn btn-primary my-3" type="submit" value="Odeslat"/>
+                    <div sec:authorize="!hasRole('ADMIN')">
+                        <label for="name" class="form-label mt-2">Jméno</label>
+                        <input disabled type="text" class="form-control" th:name="name" th:value="${user.name}"/>
+                        <label for="surname" class="form-label mt-2">Příjmení</label>
+                        <input disabled type="text" class="form-control" th:name="surname" th:value="${user.surname}"/>
+                        <label for="birthDate" class="form-label mt-2">Datum Narození</label>
+                        <input disabled type="date" class="form-control" th:name="birthDate" th:value="${user.birthDate}"/>
+                        <label for="role" class="form-label mt-2">Role</label>
+                        <select disabled  class="role_search form-select" name="state" th:name="role">
+                            <option th:each="role : ${roles}" th:value="${role}" th:text="${role}" th:selected="${user.role == role}"/>
+                        </select>
+                        <label for="username" class="form-label mt-2">Uživatelské jméno</label>
+                        <input disabled type="text" class="form-control" th:name="username" th:value="${user.username}"/>
+                        <label for="password" class="form-label mt-2">Heslo</label>
+                        <input disabled type="text" class="form-control" th:name="password"/>
+                        <div th:if="${user.libraryId != null}">
+                            <label for="libraryId" class="form-label mt-2">Kihovny</label>
+                            <select disabled class="library_search form-select" name="state" th:name="libraryId">
+                                <option th:each="library : ${libraries}" th:value="${library.id}" th:text="${library.name}" th:selected="${library.id == user.libraryId}"/>
+                            </select>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
-<!-- <p th:text="${bookName}"></p> -->
 </body>
 <script>
 </script>
