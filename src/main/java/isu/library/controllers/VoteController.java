@@ -38,6 +38,9 @@ public class VoteController {
                                ModelMap modelMap) {
         String username = ((UserDetails)authentication.getPrincipal()).getUsername();
         Person person = personService.findPersonByUsername(username).get();
+        if (authentication != null && ((UserDetails)authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
+            modelMap.put("librarian_lib", person.getLibraryId());
+        }
 
         if (voteId != -1) {
             Iterable<Vote> uv = voteService.findVotes(person.getId(), libraryId);

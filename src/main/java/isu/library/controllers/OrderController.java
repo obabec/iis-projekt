@@ -3,18 +3,23 @@ package isu.library.controllers;
 import isu.library.model.entity.Authorship;
 import isu.library.model.entity.Book;
 import isu.library.model.entity.BookOrder;
+import isu.library.model.entity.Person;
 import isu.library.model.service.AuthorService;
+import isu.library.model.service.user.PersonService;
 import isu.library.model.service.AuthorshipService;
 import isu.library.model.service.BookOrderService;
 import isu.library.model.service.BookService;
 import isu.library.model.service.library.LibraryService;
 import isu.library.model.service.vote.VoteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.security.core.Authentication;
 
 import java.util.ArrayList;
 
@@ -36,11 +41,21 @@ public class OrderController {
     @Autowired
     private VoteService voteService;
 
+    @Autowired
+    private PersonService personService;
+
     @GetMapping("/orders")
     public String getOrders(@RequestParam(name="library", required = false, defaultValue = "") String libraryId,
                             @RequestParam(name="title", required = false, defaultValue = "") String titleId,
+                            Authentication authentication,
                             ModelMap model) {
         ArrayList<BookOrder> orders = new ArrayList<>();
+
+        if (authentication != null && ((UserDetails)authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
+            String username = ((UserDetails)authentication.getPrincipal()).getUsername();
+            Person user = personService.findPersonByUsername(username).get();
+            model.put("librarian_lib", user.getLibraryId());
+        }
 
         if (libraryId.isEmpty() && titleId.isEmpty()) {
             bookOrderService.findAll().forEach(ord -> orders.add(ord));
@@ -60,10 +75,16 @@ public class OrderController {
         return "orders";
     }
 
-    @GetMapping("/order")
-    public String createOrder(@RequestParam(name="library", required = true, defaultValue = "") Integer libraryId,
-                              @RequestParam(name="title", required = true, defaultValue = "") Integer titleId,
-                              @RequestParam(name="count", required = true, defaultValue = "") Integer count) {
+    @GetMapping("/order/{title}")
+    public String createOrder(@RequestParam(name="count", required = true, defaultValue = "") Integer count,
+                              @PathVariable("title") int titleId,
+                              Authentication authentication) {
+        if (authentication == null || !authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN")))
+            return "redirect:/forbidden";
+
+        String username = ((UserDetails)authentication.getPrincipal()).getUsername();
+        Person user = personService.findPersonByUsername(username).get();
+        int libraryId = user.getLibraryId();
         bookOrderService.addBookOrder(libraryId, titleId, count);
         return "redirect:/orders";
     }

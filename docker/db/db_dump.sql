@@ -498,6 +498,7 @@ COPY public.person (id, name, surname, birth_date, role, username, password, lib
 2	Tomas1	Korbar2	1970-01-01	LIBRARIAN	libr	$2a$10$GRQmNECbcOX.e1IvtwgnOelX6O4VVS7sXxfYsySOeqN/Gy6ZZ5hNG	1
 3	Tomas1	Korbar2	1970-01-01	LIBRARIAN	libr2	$2a$10$GRQmNECbcOX.e1IvtwgnOelX6O4VVS7sXxfYsySOeqN/Gy6ZZ5hNG	1
 4	Tomas1	Korbar2	1970-01-01	READER	reader	$2a$10$GRQmNECbcOX.e1IvtwgnOelX6O4VVS7sXxfYsySOeqN/Gy6ZZ5hNG	1
+5	Tomas1	Korbar2	1970-01-01	DISTRIBUTOR	distributor	$2a$10$GRQmNECbcOX.e1IvtwgnOelX6O4VVS7sXxfYsySOeqN/Gy6ZZ5hNG	1
 \.
 
 
@@ -530,72 +531,18 @@ COPY public.votes (id, book_name, library_id, vote_amount) FROM stdin;
 
 
 --
--- Name: author_id_seq; Type: SEQUENCE SET; Schema: public; Owner: compose-postgres
+-- Name: *_id_seq; Type: SEQUENCE SET; Schema: public; Owner: compose-postgres
 --
 
 SELECT pg_catalog.setval('public.author_id_seq', 1, true);
-
-
---
--- Name: authorship_id_seq; Type: SEQUENCE SET; Schema: public; Owner: compose-postgres
---
-
 SELECT pg_catalog.setval('public.authorship_id_seq', 2, true);
-
-
---
--- Name: blocking_id_seq; Type: SEQUENCE SET; Schema: public; Owner: compose-postgres
---
-
 SELECT pg_catalog.setval('public.blocking_id_seq', 4, true);
-
-
---
--- Name: book_id_seq; Type: SEQUENCE SET; Schema: public; Owner: compose-postgres
---
-
 SELECT pg_catalog.setval('public.book_id_seq', 2, true);
-
-
---
--- Name: book_order_id_seq; Type: SEQUENCE SET; Schema: public; Owner: compose-postgres
---
-
 SELECT pg_catalog.setval('public.book_order_id_seq', 1, false);
-
-
---
--- Name: hibernate_sequence; Type: SEQUENCE SET; Schema: public; Owner: compose-postgres
---
-
-SELECT pg_catalog.setval('public.hibernate_sequence', 1, true);
-
-
---
--- Name: library_id_seq; Type: SEQUENCE SET; Schema: public; Owner: compose-postgres
---
-
+SELECT pg_catalog.setval('public.hibernate_sequence', 5, true);
 SELECT pg_catalog.setval('public.library_id_seq', 2, true);
-
-
---
--- Name: person_id_seq; Type: SEQUENCE SET; Schema: public; Owner: compose-postgres
---
-
-SELECT pg_catalog.setval('public.person_id_seq', 4, true);
-
-
---
--- Name: user_vote_id_seq; Type: SEQUENCE SET; Schema: public; Owner: compose-postgres
---
-
+SELECT pg_catalog.setval('public.person_id_seq', 5, true);
 SELECT pg_catalog.setval('public.user_vote_id_seq', 1, true);
-
-
---
--- Name: votes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: compose-postgres
---
-
 SELECT pg_catalog.setval('public.votes_id_seq', 11, true);
 
 
@@ -697,7 +644,7 @@ CREATE UNIQUE INDEX votes_id_uindex ON public.votes USING btree (id);
 --
 
 ALTER TABLE ONLY public.authorship
-    ADD CONSTRAINT author FOREIGN KEY (author_id) REFERENCES public.author(id);
+    ADD CONSTRAINT author FOREIGN KEY (author_id) REFERENCES public.author(id) ON DELETE CASCADE;
 
 
 --
@@ -705,7 +652,7 @@ ALTER TABLE ONLY public.authorship
 --
 
 ALTER TABLE ONLY public.blocking
-    ADD CONSTRAINT book FOREIGN KEY (book_id) REFERENCES public.book(id);
+    ADD CONSTRAINT book FOREIGN KEY (book_id) REFERENCES public.book(id) ON DELETE CASCADE;
 
 
 --
@@ -713,7 +660,7 @@ ALTER TABLE ONLY public.blocking
 --
 
 ALTER TABLE ONLY public.authorship
-    ADD CONSTRAINT book FOREIGN KEY (book_id) REFERENCES public.book(id);
+    ADD CONSTRAINT book FOREIGN KEY (book_id) REFERENCES public.book(id) ON DELETE CASCADE;
 
 
 --
@@ -745,7 +692,7 @@ ALTER TABLE ONLY public.votes
 --
 
 ALTER TABLE ONLY public.blocking
-    ADD CONSTRAINT person FOREIGN KEY (person_id) REFERENCES public.person(id);
+    ADD CONSTRAINT person FOREIGN KEY (person_id) REFERENCES public.person(id) ON DELETE CASCADE;
 
 
 --

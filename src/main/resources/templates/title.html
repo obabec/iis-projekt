@@ -37,12 +37,20 @@
                     </li>
                     <li class="nav-item">
                         <a href="/" class="nav-link px-0 align-middle text-light">
-                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Správa knih</span>
+                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Knihy</span>
                         </a>
                     </li>
-                    <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN')">
+                    <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN', 'DISTRIBUTOR')">
+                        <a href="/titles" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-cart"></i> <span class="ms-1 d-none d-sm-inline">Dostupné tituly</span></a>
+                    </li>
+                    <li sec:authorize="hasRole('ADMIN')">
                         <a href="/libraries" class="nav-link px-0 align-middle text-light">
-                            <iß class="fs-4 bi-building"></iß> <span class="ms-1 d-none d-sm-inline">Správa knihoven</span></a>
+                            <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Správa knihoven</span></a>
+                    </li>
+                    <li sec:authorize="hasRole('ADMIN')">
+                        <a href=/library class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Přidat knihovnu</span></a>
                     </li>
                     <li sec:authorize="hasRole('ADMIN')">
                         <a href="#" class="nav-link px-0 align-middle text-light">
@@ -50,7 +58,7 @@
                     </li>
                     <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN')">
                         <a href="/reservations/createLoan" class="nav-link px-0 align-middle text-light">
-                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Výpůjčka</span></a>
+                            <i class="fs-4 bi-journal-check"></i> <span class="ms-1 d-none d-sm-inline">Výpůjčky</span></a>
                     </li>
                 </ul>
                 <hr>
@@ -66,7 +74,8 @@
                         <li sec:authorize="hasRole('READER')"><span class="dropdown-item">Čtenář</span> </li>
                         <li sec:authorize="hasRole('DISTRIBUTOR')"><span class="dropdown-item">Distributor</span> </li>
 
-                        <li sec:authorize="hasRole('READER')"><a class="dropdown-item" href="#">Moje rezervace</a></li>
+                        <li sec:authorize="hasRole('READER')"><a class="dropdown-item" href="/reservationSummary">Moje rezervace</a></li>
+                        <li><a href="/userUpdate" class="dropdown-item">Profil</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
@@ -78,13 +87,9 @@
         <div class="container mx-auto col-auto col-lg-4 col-md-6 col-sm-7 row align-items-center">
             <div class="container bg-light rounded p-3">
                 <h2 class="fw-bold mb-4 text-uppercase text-center">Titul</h2>
-                <form method="POST" th:action="${book.id == 0 ?'/book':'/book/' + book.id}" th:object="${book}">
+                <form method="POST" th:action="${book.id == 0 ?'/title':'/title/' + book.id}" th:object="${book}">
                     <label for="name" class="form-label">Název</label>
                     <input type="text" class="form-control" id="name" th:name="name" th:value="${book.name}"/>
-                    <label for="libraryId" class="form-label mt-2">Knihovny</label>
-                    <select class="library_search form-control" id="libraryId" th:name="libraryId">
-                        <option th:each="library : ${libraries}" th:value="${library.id}" th:text="${library.name}"/>
-                    </select>
                     <label for="genre" class="form-label mt-2">Žánr</label>
                     <input type="text" class="form-control " id="genre" th:name="genre" th:value="${book.genre}"/>
                     <label for="authors" class="form-label mt-2">Autoři</label>
@@ -111,13 +116,10 @@
 /*<![CDATA[*/
     // In your Javascript (external .js resource or <script> tag)
     $(document).ready(function() {
-        $('.library_search').select2();
-        $('.library_search').val('[[${chosen_library.getId()}]]')
-        $('.library_search').trigger('change');
-
         $('.author_search').select2();
         $('.author_search').val([[${chosen_authors}]])
         $('.author_search').trigger('change');
+
     });
 /*]]>*/
 </script>

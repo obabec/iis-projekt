@@ -36,13 +36,25 @@
                         <a href="/libraries" class="nav-link px-0 align-middle text-light">
                             <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Správa knihoven</span></a>
                     </li>
+                    <li sec:authorize="hasRole('ADMIN')">
+                        <a href=/library class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Přidat knihovnu</span></a>
+                    </li>
                     <li sec:authorize="hasRole('LIBRARIAN')">
                         <a th:href="@{/library(library_id=${librarian_lib})}" class="nav-link px-0 align-middle text-light">
                             <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Správa knihovny</span></a>
                     </li>
                     <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN', 'DISTRIBUTOR')">
                         <a href="/book" class="nav-link px-0 align-middle text-light">
-                            <i class="fs-4 bi-book"></i> <span class="ms-1 d-none d-sm-inline">Přidání knih</span></a>
+                            <i class="fs-4 bi-book"></i> <span class="ms-1 d-none d-sm-inline">Přidat knihu</span></a>
+                    </li>
+                    <li sec:authorize="hasAnyRole('ADMIN', 'DISTRIBUTOR')">
+                        <a href="/title" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-book"></i> <span class="ms-1 d-none d-sm-inline">Přidat titul</span></a>
+                    </li>
+                    <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN', 'DISTRIBUTOR')">
+                        <a href="/titles" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-cart"></i> <span class="ms-1 d-none d-sm-inline">Dostupné tituly</span></a>
                     </li>
                     <li sec:authorize="hasRole('ADMIN')">
                         <a href="/users" class="nav-link px-0 align-middle text-light">
@@ -50,11 +62,23 @@
                     </li>
                     <li sec:authorize="hasAnyRole('ADMIN', 'READER', 'LIBRARIAN')">
                         <a href="/votes" class="nav-link px-0 align-middle text-light">
-                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Hlasováni</span></a>
+                            <i class="fs-4 bi-hand-thumbs-up"></i> <span class="ms-1 d-none d-sm-inline">Hlasováni</span></a>
                     </li>
                     <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN')">
                         <a href="/reservations/createLoan" class="nav-link px-0 align-middle text-light">
-                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Výpůjčka</span></a>
+                            <i class="fs-4 bi-journal-check"></i> <span class="ms-1 d-none d-sm-inline">Výpůjčky</span></a>
+                    </li>
+                    <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN', 'DISTRIBUTOR')">
+                        <a href="/orders" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-list-check"></i> <span class="ms-1 d-none d-sm-inline">Objednávky</span></a>
+                    </li>
+                    <li sec:authorize="hasAnyRole('ADMIN', 'DISTRIBUTOR')">
+                        <a href="/authors" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Správa autorů</span></a>
+                    </li>
+                    <li sec:authorize="hasAnyRole('ADMIN', 'DISTRIBUTOR')">
+                        <a href="/author" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-person-plus"></i> <span class="ms-1 d-none d-sm-inline">Přidat autora</span></a>
                     </li>
                 </ul>
                 <hr>
@@ -71,6 +95,7 @@
                         <li sec:authorize="hasRole('DISTRIBUTOR')"><span class="dropdown-item">Distributor</span> </li>
 
                         <li sec:authorize="hasRole('READER')"><a class="dropdown-item" href="/reservationSummary">Moje rezervace</a></li>
+                        <li><a href="/userUpdate" class="dropdown-item">Profil</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
@@ -80,6 +105,7 @@
             </div>
         </div>
         <div class="col-auto col-xl-10 col-md-9 col-sm-9 col-10">
+            <h2 class="fw-bold mb-4 text-uppercase text-center">Knihy</h2>
             <div class="bg-light rounded mb-3 mt-3">
                 <p th:if= "${message != ''}" th:text="${message}"></p>
                 <form th:action="@{/}" class="row g-3">
@@ -142,7 +168,7 @@
                         <th>Vydavatel</th>
                         <th>Hodnocení</th>
                         <th sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN')">Akce</th>
-                        <th>Rezervace</th>
+                        <th sec:authorize="hasRole('READER') or isAnonymous()">Rezervace</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -159,7 +185,7 @@
                         <td sec:authorize="hasRole('ADMIN')">
                             <a th:href="${'/book/' + book.id}">
                                 <button class="btn btn-info">
-                                    Edit
+                                    Editovat
                                 </button>
                             </a>
                             <a th:href="${'/book/' + book.id + '/delete'}">
@@ -171,7 +197,7 @@
                         <td sec:authorize="hasRole('LIBRARIAN')" th:if="${book.libraryId == librarian_lib}">
                             <a th:href="${'/book/' + book.id}">
                                 <button class="btn btn-info">
-                                    Edit
+                                    Editovat
                                 </button>
                             </a>
                             <a th:href="${'/book/' + book.id + '/delete'}">
