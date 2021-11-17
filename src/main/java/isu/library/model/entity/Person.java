@@ -4,11 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
@@ -17,9 +13,7 @@ import java.sql.Date;
 @Setter
 @NoArgsConstructor
 public class Person {
-    private @Id
-    @GeneratedValue
-    int id;
+    private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(columnDefinition = "SERIAL") int id;
     private String name;
     private String surname;
     @Column(name = "birth_date")

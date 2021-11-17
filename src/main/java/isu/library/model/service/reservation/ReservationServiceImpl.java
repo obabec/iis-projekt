@@ -122,4 +122,9 @@ public class ReservationServiceImpl implements ReservationService {
     public void updateReservation(Reservation reservation) {
         reservationRepository.save(reservation);
     }
+
+    @Override
+    public void deleteByBookId(int bookId) {
+        reservationRepository.deleteByBookId(bookId);
+    }
 }

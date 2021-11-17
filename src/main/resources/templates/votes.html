@@ -26,7 +26,7 @@
                 <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                     <li sec:authorize="isAnonymous()">
                         <a href="/login" class="nav-link px-0 align-middle text-light">
-                            <i class="fs-4 bi-unlock"></i> <span class="ms-1 d-none d-sm-inline">Přihlášní</span></a>
+                            <i class="fs-4 bi-unlock"></i> <span class="ms-1 d-none d-sm-inline">Přihlášení</span></a>
                     </li>
                     <li sec:authorize="isAnonymous()">
                         <a href="/register" class="nav-link px-0 align-middle text-light">
@@ -71,7 +71,7 @@
                         <li sec:authorize="hasRole('READER')"><span class="dropdown-item">Čtenář</span> </li>
                         <li sec:authorize="hasRole('DISTRIBUTOR')"><span class="dropdown-item">Distributor</span> </li>
 
-                        <li sec:authorize="hasRole('READER')"><a class="dropdown-item" href="#">Moje rezervace</a></li>
+                        <li sec:authorize="hasRole('READER')"><a class="dropdown-item" href="/reservationSummary">Moje rezervace</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
