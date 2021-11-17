@@ -45,7 +45,7 @@
                             <iß class="fs-4 bi-building"></iß> <span class="ms-1 d-none d-sm-inline">Správa knihoven</span></a>
                     </li>
                     <li sec:authorize="hasRole('ADMIN')">
-                        <a href="#" class="nav-link px-0 align-middle text-light">
+                        <a href="/users" class="nav-link px-0 align-middle text-light">
                             <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Správa uzivatelu</span></a>
                     </li>
                     <li sec:authorize="hasAnyRole('ADMIN', 'READER', 'LIBRARIAN')">
@@ -98,37 +98,37 @@
                 <form method="POST" th:action="${book.id == 0 ?'/book':'/book/' + book.id}" th:object="${book}" class="row g-3">
                     <div class="col-md-4 col-sm-6">
                         <label class="form-check-label" for="book_name">Název knihy</label>
-                        <input type="text" class="form-control" id="book_name" th:name="name" th:value="${book.name}"/>
+                        <input type="text" class="form-control" id="book_name" th:name="name" th:value="${book.name}" required/>
                     </div>
                     <div class="col-md-4 col-sm-6">
                         <label class="form-check-label" for="genre">Žánr</label>
-                        <input type="text" class="form-control" id="genre" th:name="genre" th:value="${book.genre}"/>
+                        <input type="text" class="form-control" id="genre" th:name="genre" th:value="${book.genre}" required/>
                     </div>
                     <div class="col-md-4 col-sm-6">
                         <label class="form-check-label" for="release">Datum vydání</label>
-                        <input type="date" class="form-control" id="release" th:name="release" th:value="${book.release}"/>
+                        <input type="date" class="form-control" id="release" th:name="release" th:value="${book.release}" required/>
                     </div>
                     <div class="col-md-4 col-sm-6">
                         <label class="form-check-label" for="isbn">ISBN</label>
-                        <input type="text" class="form-control" id="isbn" th:name="isbn" th:value="${book.isbn}"/>
+                        <input type="text" class="form-control" id="isbn" th:name="isbn" th:value="${book.isbn}" required/>
                     </div>
                     <div class="col-md-4 col-sm-6">
                         <label class="form-check-label" for="publisher">Vydavatel</label>
-                        <input type="text" class="form-control" id="publisher" th:name="publisher" th:value="${book.publisher}"/>
+                        <input type="text" class="form-control" id="publisher" th:name="publisher" th:value="${book.publisher}" required/>
                     </div>
                     <div class="col-md-4 col-sm-6">
                         <label class="form-check-label" for="rate">Hodnocení</label>
-                        <input type="number" class="form-control" min="1" max="10" id="rate" th:name="rate" th:value="${book.rate}"/>
+                        <input type="number" class="form-control" min="1" max="10" id="rate" th:name="rate" th:value="${book.rate}" required/>
                     </div>
                     <div class="col-4">
                         <label class="form-check-label" for="genre">Autoři</label>
-                        <select class="author_search form-select" th:name="authors" multiple="multiple">
+                        <select class="author_search form-select" th:name="authors" multiple="multiple" required>
                             <option th:each="user : ${possible_authors}" th:value="${user.id}" th:text="${user.name + ' ' + user.surname}"/>
                         </select>
                     </div>
                     <div class="col-4">
                         <label class="form-check-label" for="libraryId">Knihovna: </label>
-                        <select class="library_search form-select" id="libraryId" th:name="libraryId">
+                        <select class="library_search form-select" id="libraryId" th:name="libraryId"  required>
                             <option th:each="library : ${libraries}" th:value="${library.id}" th:text="${library.name}"/>
                         </select>
                     </div>

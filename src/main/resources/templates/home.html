@@ -56,6 +56,10 @@
                         <a href="/reservations/createLoan" class="nav-link px-0 align-middle text-light">
                             <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Výpůjčka</span></a>
                     </li>
+                    <li sec:authorize="hasAnyRole('DISTRIBUTOR', 'ADMIN')">
+                        <a href="/titles" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Správa titul</span></a>
+                    </li>
                 </ul>
                 <hr>
                 <div class="dropdown pb-4" sec:authorize="isAuthenticated()">

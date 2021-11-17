@@ -25,6 +25,7 @@ public class VoteDatabaseGenerator {
 
     @EventListener(ApplicationReadyEvent.class)
     public void generateVotes() {
+        /*
         Iterable<Book> titles = bookService.findAllTitles();
         Iterable<Library> libraries = libraryService.findAll();
         for (Book b : titles) {
@@ -32,6 +33,7 @@ public class VoteDatabaseGenerator {
                 voteService.saveNewVote(b, library);
             }
         }
+        */
     }
 
 }

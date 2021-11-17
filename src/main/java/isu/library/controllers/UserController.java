@@ -50,7 +50,7 @@ public class UserController {
             modelMap.put("users", personService.findPersonByUsernameNotNull());
             return "users";
         }
-        List<String> roles = Arrays.asList("ADMIN", "LIBRARIAN", "READER");
+        List<String> roles = Arrays.asList("ADMIN", "LIBRARIAN", "READER", "DISTRIBUTOR");
         modelMap.put("libraries", libraryService.findAll());
         modelMap.put("user", person.get());
         modelMap.put("roles", roles);
