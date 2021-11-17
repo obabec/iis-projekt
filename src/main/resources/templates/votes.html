@@ -109,7 +109,7 @@
                     </thead>
                     <tbody>
                     <tr th:each="vote : ${votes}">
-                        <td th:text="${vote.bookName}">Onions</td>
+                        <td th:text="${vote.book.name}">Onions</td>
                         <td th:text="${{vote.library.name}}">Onions</td>
                         <td th:text="${{vote.voteAmount}}">Onions</td>
                         <td th:switch="${vote.enabled}" sec:authorize="hasRole('READER')">

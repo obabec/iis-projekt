@@ -8,6 +8,7 @@ import isu.library.model.query.BookQueryBuilder;
 import isu.library.model.service.AuthorService;
 import isu.library.model.service.AuthorshipService;
 import isu.library.model.service.BookService;
+import isu.library.model.service.library.LibraryService;
 import isu.library.model.service.user.PersonService;
 import isu.library.model.service.vote.VoteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ import java.util.ArrayList;
 public class HomeController {
     @Autowired
     private BookService bookService;
+
+    @Autowired
+    private LibraryService libraryService;
 
     @Autowired
     private PersonService personService;
@@ -119,6 +123,7 @@ public class HomeController {
                 b.getAuthors().add(author.getId());
                 b.getAuthors_names().add(author.getName() + " " + author.getSurname());
             }
+            b.setLibraryName(libraryService.findLibraryById(b.getLibraryId()).getName());
         }
 
         modelMap.put("books", books);

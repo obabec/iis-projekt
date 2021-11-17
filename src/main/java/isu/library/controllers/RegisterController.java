@@ -73,7 +73,7 @@ public class RegisterController {
                 } else {
                     reservationService.saveNewReservation(bookId, newUser.getId(), latestRes.get().getDateTo().toLocalDate().plusDays(1));
                 }
-                modelMap.put("message", "Account was successfully created, reservation for the book was created and" +
+                modelMap.put("message", "Account was successfully created, reservation for the book was created and " +
                         "bound to your new account.");
             } else {
                 modelMap.put("message", "Account was successfully created");

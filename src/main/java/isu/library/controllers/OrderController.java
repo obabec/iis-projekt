@@ -3,6 +3,7 @@ package isu.library.controllers;
 import isu.library.model.entity.Authorship;
 import isu.library.model.entity.Book;
 import isu.library.model.entity.BookOrder;
+import isu.library.model.entity.library.Library;
 import isu.library.model.service.AuthorService;
 import isu.library.model.service.AuthorshipService;
 import isu.library.model.service.BookOrderService;
@@ -78,7 +79,9 @@ public class OrderController {
             authorshipService.findAuthorshipByBookId(template.getId()).forEach(orig_auth -> authorshipService.addNewAuthorship(orig_auth.getAuthorId(), newBookId));
 
         }
-        voteService.saveNewVote(template.getName(), order.getLibraryId());
+        Library lib = new Library();
+        lib.setId(order.getLibraryId());
+        voteService.saveNewVote(template, lib);
         bookOrderService.removeById(orderId);
         return "redirect:/orders";
     }

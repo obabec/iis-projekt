@@ -340,7 +340,7 @@ ALTER SEQUENCE public.user_vote_id_seq OWNED BY public.user_vote.id;
 
 CREATE TABLE public.votes (
     id integer NOT NULL,
-    book_name character varying(255) NOT NULL,
+    book_id integer NOT NULL,
     library_id integer NOT NULL,
     vote_amount integer DEFAULT 0 NOT NULL
 );
@@ -506,7 +506,6 @@ COPY public.person (id, name, surname, birth_date, role, username, password, lib
 --
 
 COPY public.user_vote (id, vote_id, user_id) FROM stdin;
-1	1	4
 \.
 
 
@@ -514,18 +513,7 @@ COPY public.user_vote (id, vote_id, user_id) FROM stdin;
 -- Data for Name: votes; Type: TABLE DATA; Schema: public; Owner: compose-postgres
 --
 
-COPY public.votes (id, book_name, library_id, vote_amount) FROM stdin;
-1	Mikirova uzasna pout	1	1
-2	Mikirova uzasna pout	1	0
-3	Mikirova uzasna pout	1	0
-4	Mikirova uzasna pout	1	0
-5	Mikirova uzasna pout	1	0
-6	Mikirova uzasna pout	1	0
-7	Mikirova uzasna pout	1	0
-8	Mikirova uzasna pout	1	0
-9	Mikirova uzasna pout	1	0
-10	Mikirova uzasna pout	1	0
-11	Mikirova uzasna pout	1	0
+COPY public.votes (id, book_id, library_id, vote_amount) FROM stdin;
 \.
 
 
@@ -596,7 +584,7 @@ SELECT pg_catalog.setval('public.user_vote_id_seq', 1, true);
 -- Name: votes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: compose-postgres
 --
 
-SELECT pg_catalog.setval('public.votes_id_seq', 11, true);
+SELECT pg_catalog.setval('public.votes_id_seq', 1, false);
 
 
 --
@@ -737,7 +725,10 @@ ALTER TABLE ONLY public.book_order
 --
 
 ALTER TABLE ONLY public.votes
-    ADD CONSTRAINT library_fk FOREIGN KEY (library_id) REFERENCES public.library(id) ON DELETE CASCADE;
+    ADD CONSTRAINT library_fk FOREIGN KEY (library_id) REFERENCES public.library(id);
+
+ALTER TABLE ONLY public.votes
+    ADD CONSTRAINT book_fk FOREIGN KEY (book_id) REFERENCES public.book(id);
 
 
 --

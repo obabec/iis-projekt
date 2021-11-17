@@ -135,6 +135,7 @@
                     <thead>
                     <tr>
                         <th>Jméno</th>
+                        <th>Knihovna</th>
                         <th>Datum vydáni</th>
                         <th>Žánr</th>
                         <th>Autoři</th>
@@ -148,6 +149,7 @@
                     <tbody>
                     <tr th:each="book : ${books}">
                         <td th:text="${book.name}">Onions</td>
+                        <td th:text="${book.libraryName}"></td>
                         <td th:text="${book.release}">2.41</td>
                         <td th:text="${book.genre}">yes</td>
                         <td>
