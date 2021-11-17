@@ -5,12 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.SecondaryTable;
-import javax.persistence.SecondaryTables;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.sql.Date;
 
 @Getter
@@ -24,7 +19,7 @@ import java.sql.Date;
         @SecondaryTable(name = "person")
 })
 public class LibraryReservation {
-    @Id
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(columnDefinition = "SERIAL")
     private Integer id;
     @Column(name = "book_id", table = "book")
     private Integer bookId;

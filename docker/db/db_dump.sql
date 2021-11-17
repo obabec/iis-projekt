@@ -575,14 +575,14 @@ SELECT pg_catalog.setval('public.hibernate_sequence', 1, true);
 -- Name: library_id_seq; Type: SEQUENCE SET; Schema: public; Owner: compose-postgres
 --
 
-SELECT pg_catalog.setval('public.library_id_seq', 1, false);
+SELECT pg_catalog.setval('public.library_id_seq', 2, true);
 
 
 --
 -- Name: person_id_seq; Type: SEQUENCE SET; Schema: public; Owner: compose-postgres
 --
 
-SELECT pg_catalog.setval('public.person_id_seq', 1, true);
+SELECT pg_catalog.setval('public.person_id_seq', 4, true);
 
 
 --

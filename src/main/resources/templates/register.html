@@ -26,7 +26,7 @@
                 <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                     <li sec:authorize="isAnonymous()">
                         <a href="/login" class="nav-link px-0 align-middle text-light">
-                            <i class="fs-4 bi-unlock"></i> <span class="ms-1 d-none d-sm-inline">Přihlášní</span></a>
+                            <i class="fs-4 bi-unlock"></i> <span class="ms-1 d-none d-sm-inline">Přihlášení</span></a>
                     </li>
                     <li sec:authorize="isAnonymous()">
                         <a href="/register" class="nav-link px-0 align-middle text-light">
@@ -82,20 +82,20 @@
         <div class="container mx-auto col-auto col-lg-4 col-md-6 col-sm-7 row align-items-center">
             <div class="container bg-light rounded p-3">
                 <h2 class="fw-bold mb-4 text-uppercase text-center">Registrace</h2>
-                <form th:action="@{/register}" method="POST">
+                <form th:action="@{/register}" method="POST" name="registerForm" onsubmit="return validateRegisterForm()">
                     <input type="hidden" th:value="${book_id}" th:name="book_id">
                     <label for="registerUsername" class="form-label">Jméno</label>
-                    <input type="text" id="registerUsername" name="username" class="form-control" th:name="name"/>
+                    <input type="text" id="registerUsername" class="form-control" th:name="name" required/>
                     <label for="surname" class="form-label">Příjmení</label>
-                    <input type="text" id="surname" name="username" class="form-control" th:name="surname"/>
+                    <input type="text" id="surname" class="form-control" th:name="surname" required/>
                     <label for="registerDate" class="form-label">Datum Narození</label>
-                    <input type="date" id="registerDate" name="username" class="form-control" th:name="birthdate"/>
+                    <input type="date" id="registerDate" class="form-control" th:name="birthdate" required/>
                     <label for="registerLogin" class="form-label">Uživatelské jméno</label>
-                    <input type="text" id="registerLogin" name="username" class="form-control" th:name="username" />
+                    <input type="text" id="registerLogin" class="form-control" th:name="username" required/>
                     <label for="registerPassword" class="form-label">Heslo</label>
-                    <input type="password" id="registerPassword" class="form-control" th:name="password" >
+                    <input type="password" id="registerPassword" class="form-control" th:name="password" required>
                     <label for="confirmPassword" class="form-label">Heslo znovu</label>
-                    <input type="password" id="confirmPassword" class="form-control" th:name="password2" >
+                    <input type="password" id="confirmPassword" class="form-control" th:name="password2" required>
                     <input type="submit" class="form-control btn btn-primary my-3" value="Registrovat" />
                 </form>
                 <p th:text="${message}"></p>
@@ -105,5 +105,13 @@
 </div>
 </body>
 <script>
+    function validateRegisterForm() {
+      let pass1 = document.forms["registerForm"]["password"].value;
+      let pass2 = document.forms["registerForm"]["password2"].value;
+      if (pass1 != pass2) {
+        alert("Entered passwords must be matching");
+        return false;
+      }
+    }
 </script>
 </html>
