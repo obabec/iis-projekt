@@ -44,6 +44,19 @@ public class RegisterController {
                            @RequestParam(name="birthdate", required = true, defaultValue = "") String birthdate,
                            @RequestParam(name="book_id", required = false, defaultValue = "-1") Integer bookId,
                            ModelMap modelMap) {
+        if ((username == null || password == null || password2 == null || name == null || surname == null || birthdate == null) ||
+            username.length() == 0 || password.length() < 8 || name.length() == 0 || surname.length() == 0) {
+                modelMap.put("message", "Please enter all values");
+                return "register";
+        } else {
+            try{
+                Date.valueOf(birthdate);
+            } catch (Exception e) {
+                modelMap.put("message", "Please enter all values");
+                return "register";
+            }
+        }
+
         if (password.equals(password2)) {
             Person newUser = new Person(name, surname, Date.valueOf(birthdate), "READER", username, bCryptPasswordEncoder.encode(password), null);
             try {

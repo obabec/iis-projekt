@@ -5,6 +5,7 @@ import isu.library.model.entity.library.Library;
 import isu.library.model.entity.Person;
 import isu.library.model.service.*;
 import isu.library.model.service.library.LibraryService;
+import isu.library.model.service.reservation.ReservationService;
 import isu.library.model.service.user.PersonService;
 import isu.library.model.service.vote.VoteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,9 @@ public class BookController {
 
     @Autowired
     private VoteService voteService;
+
+    @Autowired
+    private ReservationService reservationService;
 
     @PostMapping("/book")
     public String book_creation(@ModelAttribute(value="book") Book book, ModelMap modelMap) {
@@ -83,6 +87,8 @@ public class BookController {
                 return "redirect:/forbidden";
             }
         }
+        authorshipService.removeAuthorshipsByBookId(bookId);
+        reservationService.deleteByBookId(bookId);
         bookService.removeById(bookId);
         return "redirect:/";
     }

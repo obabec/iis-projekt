@@ -22,4 +22,5 @@ public interface ReservationService {
     Iterable<Reservation> findReservationsByBookIdAndDateFromGreaterThan(Integer bookId, Date startDate);
     Optional<Reservation> findReservationById(Integer id);
     void updateReservation(Reservation reservation);
+    void deleteByBookId(int bookId);
 }

@@ -118,7 +118,9 @@
                             <a th:if="${reservation.extendPossible == true}" th:href="@{/reservationExtend(reservation_id=${reservation.id})}">
                                 <button class="btn btn-primary">Prodloužit</button>
                             </a>
-
+                            <a th:href="@{/reservations/delete(reservation_id=${reservation.id})}">
+                                <button class="btn btn-danger">Zrušit</button>
+                            </a>
                             <button th:if="${reservation.extendPossible == false}" class="btn btn-warning" disabled>Nelze prodloužit</button>
                         </td>
                     </tr>

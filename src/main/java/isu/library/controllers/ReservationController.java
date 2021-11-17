@@ -57,6 +57,31 @@ public class ReservationController {
         return "redirect:/reservationSummary";
     }
 
+    @GetMapping("/reservations/delete")
+    public String deleteReservation(@RequestParam(name="reservation_id", required = true, defaultValue = "") Integer reservation_id,
+                                    Authentication authentication,
+                                    ModelMap modelMap) {
+        if (reservation_id == null) {
+            return "redirect:/error";
+        }
+        Optional<Reservation> res = reservationService.findReservationById(reservation_id);
+        if (!res.isPresent()) {
+            return "redirect:/error";
+        }
+
+        if (!authentication.isAuthenticated()) {
+            return "redirect:/error";
+        } else if (!authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+            Person person = personService.findPersonByUsername(authentication.getName()).get();
+            if (person.getId() != res.get().getPersonId()){
+                return "redirect:/error";
+            }
+        }
+        reservationService.deleteReservation(reservation_id);
+        return "redirect:/reservationSummary";
+    }
+
+
     @GetMapping("/reservations/create")
     public String createReservation(@RequestParam(name="book_id", required = true, defaultValue = "") Integer bookId,
                                     Authentication authentication,
@@ -64,7 +89,7 @@ public class ReservationController {
         String username = ((UserDetails)authentication.getPrincipal()).getUsername();
         Integer personId = personService.findPersonByUsername(username).get().getId();
         Optional<Reservation> res = reservationService.findReservationByBookIdAndPersonId(bookId, personId);
-        // kokotina jak vrata
+
         if (res.isPresent() && (res.get().getDateTo().toLocalDate().isAfter(LocalDate.now()) || res.get().getDateTo().toLocalDate().isEqual(LocalDate.now()))) {
             return "redirect:/?message=Rezervace na knihu jiz existuje!";
         } else {
