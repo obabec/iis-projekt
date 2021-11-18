@@ -3,9 +3,8 @@ package isu.library.controllers;
 import isu.library.model.entity.Book;
 import isu.library.model.entity.Person;
 import isu.library.model.entity.library.Library;
-import isu.library.model.service.AuthorService;
-import isu.library.model.service.AuthorshipService;
-import isu.library.model.service.BookService;
+import isu.library.model.entity.Person;
+import isu.library.model.service.*;
 import isu.library.model.service.library.LibraryService;
 import isu.library.model.service.reservation.ReservationService;
 import isu.library.model.service.user.PersonService;
@@ -129,6 +128,11 @@ public class BookController {
         modelMap.put("chosen_library", libraryService.findLibraryById(found_book.getLibraryId()));
         modelMap.put("libraries", libraryService.findAll());
         modelMap.put("possible_authors", authorService.findAll());
+        if (authentication != null && ((UserDetails)authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
+            String username = ((UserDetails)authentication.getPrincipal()).getUsername();
+            Person user = personService.findPersonByUsername(username).get();
+            modelMap.put("librarian_lib", user.getLibraryId());
+        }
         ArrayList<String> chosen_authors = new ArrayList<>();
         for (Integer id : found_book.getAuthors()) {
             chosen_authors.add(String.valueOf(authorService.findAuthorById(id).get().getId()));

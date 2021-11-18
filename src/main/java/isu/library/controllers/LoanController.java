@@ -36,6 +36,7 @@ public class LoanController {
         if (authentication != null && ((UserDetails) authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
             String username = ((UserDetails) authentication.getPrincipal()).getUsername();
             Person user = personService.findPersonByUsername(username).get();
+            modelMap.put("librarian_lib", user.getLibraryId());
             // Osetreni refreshe - asi by to chtelo vymyslet lepe a udelat dotaz na databazi jestli je kniha aktualne dostupna
             if (!bookService.isBookAvailable(reservation.getBookId())) {
                 modelMap.put("readers", personService.findPersonsByRole("READER"));

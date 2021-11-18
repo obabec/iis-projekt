@@ -2,6 +2,7 @@ package isu.library.controllers;
 
 import isu.library.model.entity.Person;
 import isu.library.model.entity.library.Library;
+import isu.library.model.entity.Person;
 import isu.library.model.query.LibraryQueryBuilder;
 import isu.library.model.service.library.LibraryService;
 import isu.library.model.service.user.PersonService;
@@ -33,6 +34,11 @@ public class LibraryController {
                             @RequestParam(name = "library_city", required = true, defaultValue = "") String libraryCity,
                             ModelMap modelMap) {
         LibraryQueryBuilder builder = new LibraryQueryBuilder();
+        if (authentication != null && ((UserDetails)authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
+            String username = ((UserDetails)authentication.getPrincipal()).getUsername();
+            Person user = personService.findPersonByUsername(username).get();
+            modelMap.put("librarian_lib", user.getLibraryId());
+        }
         if (!libraryName.isEmpty()) {
             modelMap.put("lib_name", libraryName);
             builder = builder.findByName(libraryName);
