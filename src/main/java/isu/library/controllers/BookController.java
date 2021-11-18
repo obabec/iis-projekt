@@ -49,7 +49,6 @@ public class BookController {
     @PostMapping("/book")
     public String book_creation(@ModelAttribute(value="book") Book book, ModelMap modelMap) {
         int id = bookService.addNewBook(book.getLibraryId(), book.getName(), book.getRelease(), book.getIsbn(), book.getPublisher(), book.getGenre(), book.getRate());
-        voteService.saveNewVote(book.getName(), book.getLibraryId());
         for (Integer author_id: book.getAuthors()) {
             authorshipService.addNewAuthorship(author_id, id);
         }

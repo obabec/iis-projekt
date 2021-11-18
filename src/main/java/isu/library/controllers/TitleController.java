@@ -3,11 +3,14 @@ package isu.library.controllers;
 import isu.library.model.entity.Author;
 import isu.library.model.entity.Authorship;
 import isu.library.model.entity.Book;
+import isu.library.model.entity.library.Library;
 import isu.library.model.query.BookQueryBuilder;
 import isu.library.model.service.AuthorService;
 import isu.library.model.service.AuthorshipService;
 import isu.library.model.service.BookService;
+import isu.library.model.service.library.LibraryService;
 import isu.library.model.service.user.PersonService;
+import isu.library.model.service.vote.VoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -31,6 +34,12 @@ public class TitleController {
 
     @Autowired
     PersonService personService;
+
+    @Autowired
+    LibraryService libraryService;
+
+    @Autowired
+    VoteService voteService;
 
     @GetMapping("/titles")
     public String getTitles(@RequestParam(name="book_name", required = false, defaultValue = "") String bookName,
@@ -107,6 +116,10 @@ public class TitleController {
     @PostMapping("/title")
     public String book_creation(@ModelAttribute(value="book") Book book, ModelMap modelMap) {
         int id = bookService.addNewBook(book.getName(), book.getRelease(), book.getIsbn(), book.getPublisher(), book.getGenre(), book.getRate());
+        book.setId(id);
+        for (Library lib : libraryService.findAll()) {
+            voteService.saveNewVote(book, lib);
+        }
         for (Integer author_id: book.getAuthors()) {
             authorshipService.addNewAuthorship(author_id, id);
         }

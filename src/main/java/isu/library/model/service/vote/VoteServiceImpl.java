@@ -1,5 +1,6 @@
 package isu.library.model.service.vote;
 
+import isu.library.model.entity.Book;
 import isu.library.model.entity.library.Library;
 import isu.library.model.entity.vote.Vote;
 import isu.library.model.repository.LibraryRepository;
@@ -42,17 +43,8 @@ public class VoteServiceImpl implements VoteService {
     }
 
     @Override
-    public void saveNewVote(String name, Integer libraryId) {
-        List<String> names = StreamSupport.stream(voteRepository.findVotesByLibraryId(libraryId).spliterator(), false).map(Vote::getBookName).collect(Collectors.toList());
-        Optional<Library> library = libraryRepository.findById(libraryId);
-        if (!names.contains(name)) {
-            library.ifPresent(value -> voteRepository.save(new Vote(name, value, 0)));
-        }
-    }
-
-    @Override
-    public void saveNewVote(String name, Library library) {
-        voteRepository.save(new Vote(name, library, 0));
+    public void saveNewVote(Book book, Library library) {
+        voteRepository.save(new Vote(book, library, 0));
     }
 
     @Override

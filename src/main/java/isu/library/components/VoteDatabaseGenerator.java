@@ -25,11 +25,10 @@ public class VoteDatabaseGenerator {
 
     @EventListener(ApplicationReadyEvent.class)
     public void generateVotes() {
+        Iterable<Book> titles = bookService.findAllTitles();
         Iterable<Library> libraries = libraryService.findAll();
-
-        for (Library library : libraries) {
-            Iterable<String> books = bookService.findBooksByLibraryId(library.getId());
-            for (String b : books) {
+        for (Book b : titles) {
+            for (Library library : libraries) {
                 voteService.saveNewVote(b, library);
             }
         }

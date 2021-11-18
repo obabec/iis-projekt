@@ -99,7 +99,8 @@ public class OrderController {
             authorshipService.findAuthorshipByBookId(template.getId()).forEach(orig_auth -> authorshipService.addNewAuthorship(orig_auth.getAuthorId(), newBookId));
 
         }
-        voteService.saveNewVote(template.getName(), order.getLibraryId());
+
+        voteService.saveNewVote(template, libraryService.findLibraryById(order.getLibraryId()));
         bookOrderService.removeById(orderId);
         return "redirect:/orders";
     }
