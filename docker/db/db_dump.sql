@@ -340,7 +340,7 @@ ALTER SEQUENCE public.user_vote_id_seq OWNED BY public.user_vote.id;
 
 CREATE TABLE public.votes (
     id integer NOT NULL,
-    book_name character varying(255) NOT NULL,
+    book_id integer NOT NULL,
     library_id integer NOT NULL,
     vote_amount integer DEFAULT 0 NOT NULL
 );
@@ -514,7 +514,7 @@ COPY public.user_vote (id, vote_id, user_id) FROM stdin;
 -- Data for Name: votes; Type: TABLE DATA; Schema: public; Owner: compose-postgres
 --
 
-COPY public.votes (id, book_name, library_id, vote_amount) FROM stdin;
+COPY public.votes (id, book_id, library_id, vote_amount) FROM stdin;
 \.
 
 
@@ -673,6 +673,9 @@ ALTER TABLE ONLY public.book_order
 
 ALTER TABLE ONLY public.votes
     ADD CONSTRAINT library_fk FOREIGN KEY (library_id) REFERENCES public.library(id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY public.votes
+    ADD CONSTRAINT book_fk FOREIGN KEY (book_id) REFERENCES public.book(id);
 
 
 --
