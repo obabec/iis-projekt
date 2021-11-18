@@ -66,7 +66,7 @@
                     <label for="surname" class="form-label">Příjmení</label>
                     <input type="text" id="surname" class="form-control" th:name="surname" required/>
                     <label for="registerDate" class="form-label">Datum Narození</label>
-                    <input type="date" id="registerDate" class="form-control" th:name="birthdate" required/>
+                    <input type="date" id="registerDate" class="form-control" th:name="birthdate" th:max="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" required/>
                     <label for="registerLogin" class="form-label">Uživatelské jméno</label>
                     <input type="text" id="registerLogin" class="form-control" th:name="username" required/>
                     <label for="registerPassword" class="form-label">Heslo</label>

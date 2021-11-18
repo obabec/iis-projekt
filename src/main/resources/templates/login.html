@@ -59,12 +59,12 @@
         <div class="container mx-auto col-auto col-lg-4 col-md-6 col-sm-7 row align-items-center">
             <div class="container bg-light rounded p-3">
                     <p th:if= "${message != ''}" th:text="${message}"></p>
-                    <h2 class="fw-bold mb-4 text-uppercase text-center">Příhlášení</h2>
+                    <h2 class="fw-bold mb-4 text-uppercase text-center">Přihlášení</h2>
                     <form th:action="@{/login}" method="POST" onsubmit="">
                         <label for="username" class="form-label">Jméno</label>
-                        <input type="text" id="username" name="username" class="form-control" th:name="username"/>
+                        <input type="text" id="username" name="username" class="form-control" th:name="username" maxlength="50" required/>
                         <label for="username" class="form-label">Heslo</label>
-                        <input type="password" id="password" class="form-control mb-5" th:name="password">
+                        <input type="password" id="password" class="form-control mb-5" th:name="password" required>
                         <input type="submit" class="form-control btn btn-primary mb-2" value="Přihlásit" />
                     </form>
                 </div>

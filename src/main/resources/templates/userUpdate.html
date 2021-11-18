@@ -102,22 +102,23 @@
                 <h2 class="fw-bold mb-4 text-uppercase text-center">Uživatel</h2>
                 <form id="userForm" th:action="@{/userUpdate}" method="POST" th:object="${user}">
                     <div sec:authorize="hasRole('ADMIN')">
+                        <input type="hidden" th:name="id" th:value="${user.id}"/>
                         <label for="name" class="form-label mt-2">Jméno</label>
-                        <input type="text" class="form-control" id="name" th:name="name" th:value="${user.name}"/>
+                        <input type="text" class="form-control" id="name" th:name="name" th:value="${user.name}" required/>
                         <label for="surname" class="form-label mt-2">Příjmení</label>
-                        <input type="text" class="form-control" id="surname" th:name="surname" th:value="${user.surname}"/>
+                        <input type="text" class="form-control" id="surname" th:name="surname" th:value="${user.surname}" required/>
                         <label for="birthDate" class="form-label mt-2">Datum Narození</label>
-                        <input type="date" class="form-control" id="birthDate" th:name="birthDate" th:value="${user.birthDate}"/>
+                        <input type="date" class="form-control" id="birthDate" th:name="birthDate" th:value="${user.birthDate}" th:max="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" required/>
                         <label for="role" class="form-label mt-2">Role</label>
-                        <select  class="role_search form-select" name="state" id="role" th:name="role">
+                        <select  class="role_search form-select" name="state" id="role" th:name="role" required>
                             <option th:each="role : ${roles}" th:value="${role}" th:text="${role}" th:selected="${user.role == role}"/>
                         </select>
                         <label for="username" class="form-label mt-2">Uživatelské jméno</label>
-                        <input type="text" class="form-control" id="username" th:name="username" th:value="${user.username}"/>
+                        <input type="text" class="form-control" id="username" th:name="username" th:value="${user.username}" required/>
                         <label for="password" class="form-label mt-2">Heslo</label>
                         <input type="text" class="form-control" id="password" th:name="password"/>
                         <div th:if="${user.libraryId != null}">
-                            <label for="libraryId" class="form-label mt-2">Kihovny</label>
+                            <label for="libraryId" class="form-label mt-2">Knihovny</label>
                             <select class="library_search form-select" name="state" id="libraryId" th:name="libraryId">
                                 <option th:each="library : ${libraries}" th:value="${library.id}" th:text="${library.name}" th:selected="${library.id == user.libraryId}"/>
                             </select>

@@ -96,15 +96,15 @@
                     <div class="row">
                         <div class="col-md-4 col-sm-6">
                             <label class="form-check-label" for="library_name">Název knihovny</label>
-                            <input type="text" class="form-control" id="library_name" th:name="library_name" th:value="${lib_name}"/>
+                            <input type="text" class="form-control" id="library_name" th:name="library_name" th:value="${lib_name}" maxlength="50"/>
                         </div>
                         <div class="col-md-4 col-sm-6">
                             <label class="form-check-label" for="library_tag">Tag</label>
-                            <input type="text" class="form-control" id="library_tag" th:name="library_tag" th:value="${lib_tag}"/>
+                            <input type="text" class="form-control" id="library_tag" th:name="library_tag" th:value="${lib_tag}" maxlength="5"/>
                         </div>
                         <div class="col-md-4 col-sm-6">
                             <label class="form-check-label" for="library_city">Město</label>
-                            <input type="text" class="form-control" id="library_city" th:name="library_city" th:value="${lib_city}"/>
+                            <input type="text" class="form-control" id="library_city" th:name="library_city" th:value="${lib_city}" maxlength="50"/>
                         </div>
                     </div>
                     <div class="col-md-3">

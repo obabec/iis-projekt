@@ -13,7 +13,7 @@ import java.util.Optional;
 public class AuthorServiceImpl implements AuthorService{
 
     @Autowired
-    private AuthorRepository repository;
+    AuthorRepository repository;
 
     @Override
     public Optional<Author> findAuthorById(int id) {
@@ -23,5 +23,19 @@ public class AuthorServiceImpl implements AuthorService{
     @Override
     public Iterable<Author> findAll() {
         return repository.findAll();
+    }
+
+    @Override
+    public void addAuthor(Author author) {
+        if (author.getId() == 0) {
+            repository.save(new Author(author));
+        } else {
+            repository.save(author);
+        }
+    }
+
+    @Override
+    public void removeAuthor(int authorId) {
+        repository.deleteById(authorId);
     }
 }

@@ -8,7 +8,7 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "person")
+@Table(name = "author")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,4 +17,9 @@ public class Author {
     private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(columnDefinition = "SERIAL") int id;
     private String name;
     private String surname;
+
+    public Author(Author author) {
+        name = author.getName();
+        surname = author.getSurname();
+    }
 }

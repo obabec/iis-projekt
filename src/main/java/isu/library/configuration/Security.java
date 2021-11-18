@@ -56,7 +56,7 @@ public class Security extends WebSecurityConfigurerAdapter {
                 .antMatchers("/title").hasAnyRole("ADMIN", "DISTRIBUTOR")
                 .antMatchers("/author").hasAnyRole("ADMIN", "DISTRIBUTOR")
                 .antMatchers("/authors").hasAnyRole("ADMIN", "DISTRIBUTOR")
-                .and().formLogin().loginPage("/login").permitAll()
+                .and().formLogin().loginPage("/login").permitAll().failureUrl("/login?error=1")
                 .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET")).logoutSuccessUrl("/").invalidateHttpSession(true).deleteCookies("JSESSIONID").permitAll();
     }
 

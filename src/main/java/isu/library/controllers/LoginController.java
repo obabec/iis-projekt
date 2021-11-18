@@ -12,7 +12,7 @@ public class LoginController {
     @GetMapping("/login")
     public String login(@RequestParam(name="error", required = false, defaultValue = "") String error, ModelMap modelMap) {
         if(error.length() != 0) {
-            modelMap.put("message", "Špatné přihlašovaní údaje");
+            modelMap.put("message", "Špatné přihlašovací údaje");
         }
         return "login";
     }
