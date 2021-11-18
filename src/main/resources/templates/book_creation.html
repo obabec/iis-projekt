@@ -111,7 +111,7 @@
                     </div>
                     <div class="col-md-4 col-sm-6">
                         <label class="form-check-label" for="release">Datum vydání</label>
-                        <input type="date" class="form-control" id="release" th:name="release" th:value="${book.release}" required/>
+                        <input type="date" class="form-control" id="release" th:name="release" th:value="${book.release}" th:max="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" required/>
                     </div>
                     <div class="col-md-4 col-sm-6">
                         <label class="form-check-label" for="isbn">ISBN</label>

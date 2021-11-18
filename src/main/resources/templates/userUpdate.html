@@ -108,7 +108,7 @@
                         <label for="surname" class="form-label mt-2">Příjmení</label>
                         <input type="text" class="form-control" id="surname" th:name="surname" th:value="${user.surname}" required/>
                         <label for="birthDate" class="form-label mt-2">Datum Narození</label>
-                        <input type="date" class="form-control" id="birthDate" th:name="birthDate" th:value="${user.birthDate}" required/>
+                        <input type="date" class="form-control" id="birthDate" th:name="birthDate" th:value="${user.birthDate}" th:max="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" required/>
                         <label for="role" class="form-label mt-2">Role</label>
                         <select  class="role_search form-select" name="state" id="role" th:name="role" required>
                             <option th:each="role : ${roles}" th:value="${role}" th:text="${role}" th:selected="${user.role == role}"/>

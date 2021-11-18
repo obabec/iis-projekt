@@ -97,7 +97,7 @@
                         <option th:each="user : ${possible_authors}" th:value="${user.id}" th:text="${user.name + ' ' + user.surname}"/>
                     </select>
                     <label for="release" class="form-label mt-2">Datum vydání</label>
-                    <input type="date" class="form-control" id="release" th:name="release" th:value="${book.release}" required/>
+                    <input type="date" class="form-control" id="release" th:name="release" th:value="${book.release}" th:max="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" required/>
                     <label for="isbn" class="form-label mt-2">ISBN</label>
                     <input type="text" class="form-control" id="isbn" th:name="isbn" th:value="${book.isbn}" maxlength="13" required/>
                     <label for="publisher" class="form-label mt-2">vydavatel</label>
