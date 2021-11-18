@@ -137,7 +137,7 @@ CREATE TABLE public.book (
     library_id integer,
     name character varying(50),
     release date,
-    isbn character(13),
+    isbn character varying(13),
     publisher character varying(50),
     genre character varying(30),
     rate smallint
@@ -225,7 +225,7 @@ ALTER TABLE public.hibernate_sequence OWNER TO "compose-postgres";
 CREATE TABLE public.library (
     id integer NOT NULL,
     name character varying(50),
-    tag character(5),
+    tag character varying(5),
     street character varying(255),
     city character varying(50),
     street_number character varying(20),
@@ -507,7 +507,6 @@ COPY public.person (id, name, surname, birth_date, role, username, password, lib
 --
 
 COPY public.user_vote (id, vote_id, user_id) FROM stdin;
-1	1	4
 \.
 
 
@@ -516,17 +515,6 @@ COPY public.user_vote (id, vote_id, user_id) FROM stdin;
 --
 
 COPY public.votes (id, book_name, library_id, vote_amount) FROM stdin;
-1	Mikirova uzasna pout	1	1
-2	Mikirova uzasna pout	1	0
-3	Mikirova uzasna pout	1	0
-4	Mikirova uzasna pout	1	0
-5	Mikirova uzasna pout	1	0
-6	Mikirova uzasna pout	1	0
-7	Mikirova uzasna pout	1	0
-8	Mikirova uzasna pout	1	0
-9	Mikirova uzasna pout	1	0
-10	Mikirova uzasna pout	1	0
-11	Mikirova uzasna pout	1	0
 \.
 
 
@@ -542,8 +530,8 @@ SELECT pg_catalog.setval('public.book_order_id_seq', 1, false);
 SELECT pg_catalog.setval('public.hibernate_sequence', 5, true);
 SELECT pg_catalog.setval('public.library_id_seq', 2, true);
 SELECT pg_catalog.setval('public.person_id_seq', 5, true);
-SELECT pg_catalog.setval('public.user_vote_id_seq', 1, true);
-SELECT pg_catalog.setval('public.votes_id_seq', 11, true);
+SELECT pg_catalog.setval('public.user_vote_id_seq', 1, false);
+SELECT pg_catalog.setval('public.votes_id_seq', 1, false);
 
 
 --

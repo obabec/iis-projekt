@@ -111,19 +111,19 @@
                 <form th:action="@{/}" class="row g-3">
                     <div class="col-md-4 col-sm-6">
                         <label class="form-check-label" for="book_name">Název knihy</label>
-                        <input type="text" class="form-control" id="book_name" th:name="book_name" th:value="${book_name}"/>
+                        <input type="text" class="form-control" id="book_name" th:name="book_name" th:value="${book_name}" maxlength="50"/>
                     </div>
                     <div class="col-md-4 col-sm-6">
                         <label class="form-check-label" for="library_name">Název knihovny</label>
-                        <input type="text" class="form-control" id="library_name" th:name="library_name" th:value="${library_name}"/>
+                        <input type="text" class="form-control" id="library_name" th:name="library_name" th:value="${library_name}" maxlength="50"/>
                     </div>
                     <div class="col-md-4 col-sm-6">
                         <label class="form-check-label" for="book_genre">Žánr</label>
-                        <input type="text" class="form-control" id="book_genre" th:name="book_genre" th:value="${book_genre}"/>
+                        <input type="text" class="form-control" id="book_genre" th:name="book_genre" th:value="${book_genre}" maxlength="30"/>
                     </div>
                     <div class="col-md-4 col-sm-6">
                         <label class="form-check-label" for="author_name">Jméno autora</label>
-                        <input type="text" class="form-control" id="author_name" th:name="author_name" th:value="${author_name}"/>
+                        <input type="text" class="form-control" id="author_name" th:name="author_name" th:value="${author_name}" maxlength="150"/>
                     </div>
                     <div class="col-md-4 col-sm-6">
                         <label class="form-check-label" for="release_date">Rok vydání</label>
@@ -131,11 +131,11 @@
                     </div>
                     <div class="col-md-4 col-sm-6">
                         <label class="form-check-label" for="isbn">ISBN</label>
-                        <input type="text" class="form-control" id="isbn" th:name="isbn" th:value="${isbn}"/>
+                        <input type="text" class="form-control" id="isbn" th:name="isbn" th:value="${isbn}" maxlength="13"/>
                     </div>
                     <div class="col-md-4 col-sm-6">
                         <label class="form-check-label" for="publisher">Vydavatel</label>
-                        <input type="text" class="form-control" id="publisher" th:name="publisher" th:value="${publisher}"/>
+                        <input type="text" class="form-control" id="publisher" th:name="publisher" th:value="${publisher}" maxlength="50"/>
                     </div>
                     <div class="col-md-4 col-sm-6">
                         <label class="form-check-label" for="rating_input">Hodnocení</label>

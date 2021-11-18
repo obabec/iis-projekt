@@ -89,21 +89,21 @@
                 <h2 class="fw-bold mb-4 text-uppercase text-center">Titul</h2>
                 <form method="POST" th:action="${book.id == 0 ?'/title':'/title/' + book.id}" th:object="${book}">
                     <label for="name" class="form-label">Název</label>
-                    <input type="text" class="form-control" id="name" th:name="name" th:value="${book.name}"/>
+                    <input type="text" class="form-control" id="name" th:name="name" th:value="${book.name}" maxlength="50" required/>
                     <label for="genre" class="form-label mt-2">Žánr</label>
-                    <input type="text" class="form-control " id="genre" th:name="genre" th:value="${book.genre}"/>
+                    <input type="text" class="form-control " id="genre" th:name="genre" th:value="${book.genre}" maxlength="30" required/>
                     <label for="authors" class="form-label mt-2">Autoři</label>
-                    <select class="author_search form-control" id="authors" th:name="authors" multiple="multiple">
+                    <select class="author_search form-control" id="authors" th:name="authors" multiple="multiple" required>
                         <option th:each="user : ${possible_authors}" th:value="${user.id}" th:text="${user.name + ' ' + user.surname}"/>
                     </select>
                     <label for="release" class="form-label mt-2">Datum vydání</label>
-                    <input type="date" class="form-control" id="release" th:name="release" th:value="${book.release}"/>
+                    <input type="date" class="form-control" id="release" th:name="release" th:value="${book.release}" required/>
                     <label for="isbn" class="form-label mt-2">ISBN</label>
-                    <input type="text" class="form-control" id="isbn" th:name="isbn" th:value="${book.isbn}"/>
+                    <input type="text" class="form-control" id="isbn" th:name="isbn" th:value="${book.isbn}" maxlength="13" required/>
                     <label for="publisher" class="form-label mt-2">vydavatel</label>
-                    <input type="text" class="form-control" id="publisher" th:name="publisher" th:value="${book.publisher}"/>
+                    <input type="text" class="form-control" id="publisher" th:name="publisher" th:value="${book.publisher}" maxlength="50" required/>
                     <label class="form-check-label mt-2" for="rate">hodnocení</label>
-                    <input type="number" class="form-control" min="1" max="10" id="rate" th:name="rate" th:value="${book.rate}"/>
+                    <input type="number" class="form-control" min="1" max="10" id="rate" th:name="rate" th:value="${book.rate}" required/>
                     <input class="form-control btn btn-primary my-3" type="submit" value="Odeslat"/>
                 </form>
             </div>
