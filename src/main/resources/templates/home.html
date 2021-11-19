@@ -110,7 +110,6 @@
         <div class="col-auto col-md-10 ">
             <h2 class="fw-bold mb-4 text-uppercase text-center">Knihy</h2>
             <div class="bg-light rounded mb-3 mt-3">
-                <p th:if= "${message != ''}" th:text="${message}"></p>
                 <form th:action="@{/}" class="row g-3">
                     <div class="col-md-4 col-sm-6">
                         <label class="form-check-label" for="book_name">Název knihy</label>
@@ -158,6 +157,7 @@
                         <input class="form-control btn btn-secondary" type="submit" value="Filtrovat"/>
                     </div>
                 </form>
+                <p th:if= "${message != ''}" th:text="${message}"></p>
             </div>
             <div class="table-responsive">
                 <table id="bookListing" class="table table-hover">
