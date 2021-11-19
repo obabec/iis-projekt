@@ -2,7 +2,6 @@ package isu.library.controllers;
 
 import isu.library.model.entity.Person;
 import isu.library.model.entity.library.Library;
-import isu.library.model.entity.Person;
 import isu.library.model.query.LibraryQueryBuilder;
 import isu.library.model.service.library.LibraryService;
 import isu.library.model.service.user.PersonService;
@@ -32,6 +31,7 @@ public class LibraryController {
     public String libraries(@RequestParam(name = "library_name", required = true, defaultValue = "") String libraryName,
                             @RequestParam(name = "library_tag", required = true, defaultValue = "") String libraryTag,
                             @RequestParam(name = "library_city", required = true, defaultValue = "") String libraryCity,
+                            Authentication authentication,
                             ModelMap modelMap) {
         LibraryQueryBuilder builder = new LibraryQueryBuilder();
         if (authentication != null && ((UserDetails)authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {

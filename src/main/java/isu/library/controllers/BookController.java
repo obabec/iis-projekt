@@ -3,8 +3,9 @@ package isu.library.controllers;
 import isu.library.model.entity.Book;
 import isu.library.model.entity.Person;
 import isu.library.model.entity.library.Library;
-import isu.library.model.entity.Person;
-import isu.library.model.service.*;
+import isu.library.model.service.AuthorService;
+import isu.library.model.service.AuthorshipService;
+import isu.library.model.service.BookService;
 import isu.library.model.service.library.LibraryService;
 import isu.library.model.service.reservation.ReservationService;
 import isu.library.model.service.user.PersonService;
@@ -57,10 +58,15 @@ public class BookController {
     }
 
     @PostMapping("/book/{id}")
-    public String bookUpdate(@ModelAttribute(value = "book") Book book, @PathVariable("id") int bookId, ModelMap modelMap) {
+    public String bookUpdate(@ModelAttribute(value = "book") Book book, @PathVariable("id") int bookId, Authentication authentication, ModelMap modelMap) {
         modelMap.put("libraries", libraryService.findAll());
         modelMap.put("chosen_library", libraryService.findLibraryById(book.getLibraryId()));
         modelMap.put("possible_authors", authorService.findAll());
+        if (authentication != null && ((UserDetails)authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
+            String username = ((UserDetails)authentication.getPrincipal()).getUsername();
+            Person user = personService.findPersonByUsername(username).get();
+            modelMap.put("librarian_lib", user.getLibraryId());
+        }
         ArrayList<String> chosen_authors = new ArrayList<>();
         for (Integer id : book.getAuthors()) {
             chosen_authors.add(String.valueOf(authorService.findAuthorById(id).get().getId()));
@@ -116,11 +122,16 @@ public class BookController {
         modelMap.put("possible_authors", authorService.findAll());
         modelMap.put("chosen_authors", new ArrayList<String>());
         modelMap.put("book", book);
+        if (authentication != null && ((UserDetails)authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
+            String username = ((UserDetails)authentication.getPrincipal()).getUsername();
+            Person user = personService.findPersonByUsername(username).get();
+            modelMap.put("librarian_lib", user.getLibraryId());
+        }
         return "book_creation";
     }
 
     @GetMapping("/book/{id}")
-    public String bookCreation(@PathVariable("id") int bookId, ModelMap modelMap) {
+    public String bookCreation(@PathVariable("id") int bookId, Authentication authentication, ModelMap modelMap) {
         Book found_book = bookService.findById(bookId);
         found_book.setAuthors(new ArrayList<>());
         authorshipService.findAuthorshipByBookId(bookId).forEach(a -> found_book.getAuthors().add(authorService.findAuthorById(a.getAuthorId()).get().getId()));
@@ -133,6 +144,7 @@ public class BookController {
             Person user = personService.findPersonByUsername(username).get();
             modelMap.put("librarian_lib", user.getLibraryId());
         }
+
         ArrayList<String> chosen_authors = new ArrayList<>();
         for (Integer id : found_book.getAuthors()) {
             chosen_authors.add(String.valueOf(authorService.findAuthorById(id).get().getId()));
