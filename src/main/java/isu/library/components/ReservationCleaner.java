@@ -31,7 +31,7 @@ public class ReservationCleaner {
             if (res.getBorrowed()) {
                 res.setBorrowed(null);
                 reservationRepository.save(res);
-            } else if (!res.getBorrowed()){
+            } else if (!res.getBorrowed()) {
                 reservationRepository.deleteById(res.getId());
             }
         }

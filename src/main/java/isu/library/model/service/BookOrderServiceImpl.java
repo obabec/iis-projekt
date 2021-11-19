@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Transactional
 @Service
-public class BookOrderServiceImpl implements BookOrderService{
+public class BookOrderServiceImpl implements BookOrderService {
 
     @Autowired
     BookOrderRepository repository;

@@ -21,7 +21,10 @@ import java.util.ArrayList;
 @NoArgsConstructor
 public class Book {
 
-    private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(columnDefinition = "SERIAL") int id;
+    private @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(columnDefinition = "SERIAL")
+    int id;
     @Column(name = "library_id")
     private Integer libraryId;
     private String name;

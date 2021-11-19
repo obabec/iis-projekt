@@ -10,12 +10,13 @@ import java.util.Optional;
 
 @Repository("personRepository")
 public interface PersonRepository extends CrudRepository<Person, Integer> {
-    @Query(value = "SELECT p.surname FROM person p INNER JOIN authorship a ON a.person_id = p.id WHERE a.book_id = :bookId", nativeQuery = true)
-    Iterable<String> findAuthorsForBook(@Param("bookId") Integer bookId);
-
     Optional<Person> findPersonByUsername(String username);
+
     Iterable<Person> findPersonByUsernameNotNull();
+
     void deleteById(Integer id);
+
     Optional<Person> findPersonById(Integer id);
+
     Iterable<Person> findPersonByRole(String role);
 }

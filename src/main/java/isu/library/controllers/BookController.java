@@ -1,9 +1,11 @@
 package isu.library.controllers;
 
 import isu.library.model.entity.Book;
-import isu.library.model.entity.library.Library;
 import isu.library.model.entity.Person;
-import isu.library.model.service.*;
+import isu.library.model.entity.library.Library;
+import isu.library.model.service.AuthorService;
+import isu.library.model.service.AuthorshipService;
+import isu.library.model.service.BookService;
 import isu.library.model.service.library.LibraryService;
 import isu.library.model.service.reservation.ReservationService;
 import isu.library.model.service.user.PersonService;
@@ -47,27 +49,27 @@ public class BookController {
     private ReservationService reservationService;
 
     @PostMapping("/book")
-    public String book_creation(@ModelAttribute(value="book") Book book, ModelMap modelMap) {
+    public String bookCreation(@ModelAttribute(value = "book") Book book, ModelMap modelMap) {
         int id = bookService.addNewBook(book.getLibraryId(), book.getName(), book.getRelease(), book.getIsbn(), book.getPublisher(), book.getGenre(), book.getRate());
-        for (Integer author_id: book.getAuthors()) {
+        for (Integer author_id : book.getAuthors()) {
             authorshipService.addNewAuthorship(author_id, id);
         }
         return "redirect:/book/" + id;
     }
 
     @PostMapping("/book/{id}")
-    public String book_update(@ModelAttribute(value="book") Book book, @PathVariable("id") int bookId, ModelMap modelMap) {
+    public String bookUpdate(@ModelAttribute(value = "book") Book book, @PathVariable("id") int bookId, ModelMap modelMap) {
         modelMap.put("libraries", libraryService.findAll());
         modelMap.put("chosen_library", libraryService.findLibraryById(book.getLibraryId()));
         modelMap.put("possible_authors", authorService.findAll());
         ArrayList<String> chosen_authors = new ArrayList<>();
-        for (Integer id: book.getAuthors()) {
+        for (Integer id : book.getAuthors()) {
             chosen_authors.add(String.valueOf(authorService.findAuthorById(id).get().getId()));
         }
         modelMap.put("chosen_authors", chosen_authors);
         book.setId(bookId);
         authorshipService.removeAuthorshipsByBookId(bookId);
-        for (Integer author_id: book.getAuthors()) {
+        for (Integer author_id : book.getAuthors()) {
             authorshipService.addNewAuthorship(author_id, bookId);
         }
         modelMap.put("book", book);
@@ -76,7 +78,7 @@ public class BookController {
     }
 
     @GetMapping("/book/{id}/delete")
-    public String book_delete(@PathVariable("id") int bookId, ModelMap modelMap, Authentication authentication) {
+    public String bookDelete(@PathVariable("id") int bookId, ModelMap modelMap, Authentication authentication) {
         if (authentication != null) {
             if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
                 if (personService.findPersonByUsername(authentication.getName()).get().getLibraryId() != bookService.findById(bookId).getLibraryId()) {
@@ -93,12 +95,12 @@ public class BookController {
     }
 
     @GetMapping("/book")
-    public String book_creation(@RequestParam(name="library_id", required = false, defaultValue = "") Integer realLibraryId,
-                                Authentication authentication,
-                                ModelMap modelMap) {
+    public String bookCreation(@RequestParam(name = "library_id", required = false, defaultValue = "") Integer realLibraryId,
+                               Authentication authentication,
+                               ModelMap modelMap) {
         Book book = new Book();
-        if (authentication != null && ((UserDetails)authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
-            String username = ((UserDetails)authentication.getPrincipal()).getUsername();
+        if (authentication != null && ((UserDetails) authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
+            String username = ((UserDetails) authentication.getPrincipal()).getUsername();
             Person user = personService.findPersonByUsername(username).get();
             realLibraryId = user.getLibraryId();
         }
@@ -106,7 +108,7 @@ public class BookController {
             modelMap.put("chosen_library", libraryService.findLibraryById(realLibraryId));
             modelMap.put("libraries", Collections.singletonList(libraryService.findLibraryById(realLibraryId)));
         } else {
-            for (Library l: libraryService.findAll()) {
+            for (Library l : libraryService.findAll()) {
                 modelMap.put("chosen_library", l);
                 break;
             }
@@ -119,7 +121,7 @@ public class BookController {
     }
 
     @GetMapping("/book/{id}")
-    public String book_creation(@PathVariable("id") int bookId, ModelMap modelMap) {
+    public String bookCreation(@PathVariable("id") int bookId, ModelMap modelMap) {
         Book found_book = bookService.findById(bookId);
         found_book.setAuthors(new ArrayList<>());
         authorshipService.findAuthorshipByBookId(bookId).forEach(a -> found_book.getAuthors().add(authorService.findAuthorById(a.getAuthorId()).get().getId()));
@@ -128,7 +130,7 @@ public class BookController {
         modelMap.put("libraries", libraryService.findAll());
         modelMap.put("possible_authors", authorService.findAll());
         ArrayList<String> chosen_authors = new ArrayList<>();
-        for (Integer id: found_book.getAuthors()) {
+        for (Integer id : found_book.getAuthors()) {
             chosen_authors.add(String.valueOf(authorService.findAuthorById(id).get().getId()));
         }
 

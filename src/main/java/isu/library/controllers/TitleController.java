@@ -16,7 +16,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 
@@ -42,14 +46,14 @@ public class TitleController {
     VoteService voteService;
 
     @GetMapping("/titles")
-    public String getTitles(@RequestParam(name="book_name", required = false, defaultValue = "") String bookName,
-                            @RequestParam(name="book_genre", required = false, defaultValue = "") String bookGenre,
-                            @RequestParam(name="author_name", required = false, defaultValue = "") String authorName,
-                            @RequestParam(name="before", required = false, defaultValue = "off") String before,
-                            @RequestParam(name="release_date", required = false, defaultValue = "") String releaseDate,
-                            @RequestParam(name="isbn", required = false, defaultValue = "") String isbn,
-                            @RequestParam(name="publisher", required = false, defaultValue = "") String publisher,
-                            @RequestParam(name="rate", required = false, defaultValue = "") Integer rate,
+    public String getTitles(@RequestParam(name = "book_name", required = false, defaultValue = "") String bookName,
+                            @RequestParam(name = "book_genre", required = false, defaultValue = "") String bookGenre,
+                            @RequestParam(name = "author_name", required = false, defaultValue = "") String authorName,
+                            @RequestParam(name = "before", required = false, defaultValue = "off") String before,
+                            @RequestParam(name = "release_date", required = false, defaultValue = "") String releaseDate,
+                            @RequestParam(name = "isbn", required = false, defaultValue = "") String isbn,
+                            @RequestParam(name = "publisher", required = false, defaultValue = "") String publisher,
+                            @RequestParam(name = "rate", required = false, defaultValue = "") Integer rate,
                             Authentication authentication,
                             ModelMap modelMap) {
         BookQueryBuilder builder = new BookQueryBuilder();
@@ -89,23 +93,27 @@ public class TitleController {
             builder = builder.filterByGenre(bookGenre);
             modelMap.put("book_genre", bookGenre);
         }
-        builder.filterTitles();
+        builder = builder.filterTitles();
+        filterBooks(modelMap, builder, bookService, authorshipService, authorService);
+        return "titles";
+    }
+
+    static void filterBooks(ModelMap modelMap, BookQueryBuilder builder, BookService bookService, AuthorshipService authorshipService, AuthorService authorService) {
         Iterable<Book> books = bookService.executeQuery(builder.getQuery());
-        for (Book b: books) {
+        for (Book b : books) {
             b.setAuthors(new ArrayList<Integer>());
             b.setAuthors_names(new ArrayList<String>());
-            for (Authorship authorship: authorshipService.findAuthorshipByBookId(b.getId())) {
+            for (Authorship authorship : authorshipService.findAuthorshipByBookId(b.getId())) {
                 Author author = authorService.findAuthorById(authorship.getAuthorId()).get();
                 b.getAuthors().add(author.getId());
                 b.getAuthors_names().add(author.getName() + " " + author.getSurname());
             }
         }
         modelMap.put("books", books);
-        return "titles";
     }
 
     @GetMapping("/title")
-    public String title_creation(ModelMap modelMap) {
+    public String titleCreation(ModelMap modelMap) {
         Book book = new Book();
         modelMap.put("book", book);
         modelMap.put("possible_authors", authorService.findAll());
@@ -114,20 +122,20 @@ public class TitleController {
     }
 
     @PostMapping("/title")
-    public String book_creation(@ModelAttribute(value="book") Book book, ModelMap modelMap) {
+    public String titleCreation(@ModelAttribute(value = "book") Book book, ModelMap modelMap) {
         int id = bookService.addNewBook(book.getName(), book.getRelease(), book.getIsbn(), book.getPublisher(), book.getGenre(), book.getRate());
         book.setId(id);
         for (Library lib : libraryService.findAll()) {
             voteService.saveNewVote(book, lib);
         }
-        for (Integer author_id: book.getAuthors()) {
+        for (Integer author_id : book.getAuthors()) {
             authorshipService.addNewAuthorship(author_id, id);
         }
         return "redirect:/title/" + id;
     }
 
     @GetMapping("/title/{id}")
-    public String title_information(@PathVariable("id") int bookId, ModelMap modelMap) {
+    public String titleInformation(@PathVariable("id") int bookId, ModelMap modelMap) {
         Book found_book = bookService.findById(bookId);
         if (found_book.getLibraryId() != null) {
             return "redirect:/error";
@@ -137,7 +145,7 @@ public class TitleController {
         modelMap.put("book", found_book);
         modelMap.put("possible_authors", authorService.findAll());
         ArrayList<String> chosen_authors = new ArrayList<>();
-        for (Integer id: found_book.getAuthors()) {
+        for (Integer id : found_book.getAuthors()) {
             chosen_authors.add(String.valueOf(authorService.findAuthorById(id).get().getId()));
         }
 
@@ -146,22 +154,22 @@ public class TitleController {
     }
 
     @GetMapping("/title/{id}/delete")
-    public String title_delete(@PathVariable("id") int bookId, ModelMap modelMap) {
+    public String titleDelete(@PathVariable("id") int bookId, ModelMap modelMap) {
         bookService.removeById(bookId);
         return "redirect:/titles";
     }
 
     @PostMapping("/title/{id}")
-    public String title_edit(@ModelAttribute(value="book") Book book, @PathVariable("id") int bookId, ModelMap modelMap){
+    public String titleEdit(@ModelAttribute(value = "book") Book book, @PathVariable("id") int bookId, ModelMap modelMap) {
         modelMap.put("possible_authors", authorService.findAll());
         ArrayList<String> chosen_authors = new ArrayList<>();
-        for (Integer id: book.getAuthors()) {
+        for (Integer id : book.getAuthors()) {
             chosen_authors.add(String.valueOf(authorService.findAuthorById(id).get().getId()));
         }
         modelMap.put("chosen_authors", chosen_authors);
         book.setId(bookId);
         authorshipService.removeAuthorshipsByBookId(bookId);
-        for (Integer author_id: book.getAuthors()) {
+        for (Integer author_id : book.getAuthors()) {
             authorshipService.addNewAuthorship(author_id, bookId);
         }
         modelMap.put("book", book);

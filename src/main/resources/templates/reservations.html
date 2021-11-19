@@ -116,13 +116,13 @@
                     </thead>
                     <tbody>
                     <tr th:each="reservation : ${reservations}">
-                        <td th:text="${reservation.bookName}">Onions</td>
-                        <td th:text="${reservation.isbn}">Onions</td>
+                        <td th:text="${reservation.book.name}">Onions</td>
+                        <td th:text="${reservation.book.isbn}">Onions</td>
                         <td th:text="${{reservation.dateFrom}}">Onions</td>
                         <td th:text="${{reservation.dateTo}}">Onions</td>
-                        <td th:text="${reservation.name}">2.41</td>
-                        <td th:text="${reservation.surname}">yes</td>
-                        <td th:text="${reservation.birthDate}">yes</td>
+                        <td th:text="${reservation.person.name}">2.41</td>
+                        <td th:text="${reservation.person.surname}">yes</td>
+                        <td th:text="${reservation.person.birthDate}">yes</td>
                         <td th:switch="${reservation.borrowed}">
                             <span th:case="false">Rezervováno</span>
                             <span th:case="*">Vypůjčeno</span>

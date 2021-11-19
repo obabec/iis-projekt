@@ -3,6 +3,7 @@ package isu.library.model.service.reservation;
 import isu.library.model.entity.library.LibraryReservation;
 import isu.library.model.entity.reservation.Reservation;
 import isu.library.model.entity.reservation.UserReservation;
+import isu.library.model.repository.LibraryReservationRepository;
 import isu.library.model.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,11 +19,12 @@ import java.util.Optional;
 @Service("reservationService")
 public class ReservationServiceImpl implements ReservationService {
 
-    @Autowired
-    private ReservationRepository reservationRepository;
-
     @PersistenceContext
     EntityManager entityManager;
+    @Autowired
+    private ReservationRepository reservationRepository;
+    @Autowired
+    private LibraryReservationRepository libraryReservationRepository;
 
     @Override
     public Iterable<Reservation> findAll() {
@@ -30,14 +32,8 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public void addNewReservation(Integer bookId, Integer personId, Date dateFrom, Date dateTo, boolean borrow) {
-        Reservation r = new Reservation(bookId, personId, dateFrom, dateTo, borrow);
-        reservationRepository.save(r);
-    }
-
-    @Override
     public Iterable<LibraryReservation> findAllReservationsInLibrary(Integer libraryId) {
-        Iterable<LibraryReservation> lr = entityManager.createNativeQuery("SELECT r.id, r.book_id, r.date_from, r.date_to, b.name, b.isbn, p.name, p.surname, p.birth_date, r.is_borrowed FROM blocking r INNER JOIN book b ON b.id = r.book_id INNER JOIN person p ON p.id = r.person_id WHERE b.library_id =" + libraryId, LibraryReservation.class).getResultList();
+        Iterable<LibraryReservation> lr = libraryReservationRepository.findAllByBookLibraryId(libraryId);
         return lr;
     }
 
@@ -94,7 +90,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public int saveNewLoan(Integer bookId, Integer personId, LocalDate dateFrom) {
-        Reservation res = new Reservation(bookId, personId, Date.valueOf(dateFrom), Date.valueOf(dateFrom.plusDays(14)), false);
+        Reservation res = new Reservation(bookId, personId, Date.valueOf(dateFrom), Date.valueOf(dateFrom.plusDays(14)), true);
         try {
             reservationRepository.save(res);
             return res.getId();
@@ -115,7 +111,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public Optional<Reservation> findReservationById(Integer id) {
-        return  reservationRepository.findReservationById(id);
+        return reservationRepository.findReservationById(id);
     }
 
     @Override

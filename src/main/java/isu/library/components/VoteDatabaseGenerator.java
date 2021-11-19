@@ -2,7 +2,6 @@ package isu.library.components;
 
 import isu.library.model.entity.Book;
 import isu.library.model.entity.library.Library;
-import isu.library.model.entity.vote.Vote;
 import isu.library.model.service.BookService;
 import isu.library.model.service.library.LibraryService;
 import isu.library.model.service.vote.VoteService;

@@ -10,17 +10,28 @@ import java.util.Optional;
 
 public interface ReservationService {
     Iterable<Reservation> findAll();
-    void addNewReservation(Integer bookId, Integer personId, Date dateFrom, Date dateTo, boolean borrow);
+
     Iterable<LibraryReservation> findAllReservationsInLibrary(Integer libraryId);
+
     void deleteReservation(Integer reservationId);
+
     void switchToBorrow(Integer reservationId);
+
     Iterable<UserReservation> findAllUserReservations(Integer personId);
+
     Optional<Reservation> findReservationByBookIdAndPersonId(Integer bookId, Integer personId);
+
     void saveNewReservation(Integer bookId, Integer personId, LocalDate dateFrom);
+
     int saveNewLoan(Integer bookId, Integer personId, LocalDate dateFrom);
+
     Optional<Reservation> findReservationByLatestDate(Integer bookId);
+
     Iterable<Reservation> findReservationsByBookIdAndDateFromGreaterThan(Integer bookId, Date startDate);
+
     Optional<Reservation> findReservationById(Integer id);
+
     void updateReservation(Reservation reservation);
+
     void deleteByBookId(int bookId);
 }

@@ -19,7 +19,9 @@ import javax.persistence.Table;
 @Setter
 public class Authorship {
     private @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(columnDefinition = "SERIAL") int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(columnDefinition = "SERIAL")
+    int id;
     @Column(name = "book_id")
     private Integer bookId;
     @Column(name = "author_id")

@@ -2,7 +2,6 @@ package isu.library.model.service.vote;
 
 import isu.library.model.entity.vote.UserVote;
 import isu.library.model.repository.vote.UserVoteRepository;
-import isu.library.model.repository.vote.VoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -13,12 +13,11 @@ import java.util.List;
 
 @Transactional
 @Service("libraryService")
-public class LibraryServiceImpl implements LibraryService{
-    @Autowired
-    private LibraryRepository libraryRepository;
-
+public class LibraryServiceImpl implements LibraryService {
     @PersistenceContext
     EntityManager entityManager;
+    @Autowired
+    private LibraryRepository libraryRepository;
 
     @Override
     public Iterable<Library> findAll() {
@@ -45,11 +44,6 @@ public class LibraryServiceImpl implements LibraryService{
     @Override
     public void deleteLibraryById(Integer id) {
         libraryRepository.deleteLibraryById(id);
-    }
-
-    @Override
-    public void deleteLibraryByName(String name) {
-        libraryRepository.deleteLibraryByName(name);
     }
 
     @Override

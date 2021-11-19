@@ -10,7 +10,7 @@ import javax.transaction.Transactional;
 
 @Transactional
 @Service
-public class AuthoshipServiceImpl implements AuthorshipService{
+public class AuthoshipServiceImpl implements AuthorshipService {
 
     @Autowired
     AuthorshipRepository repository;

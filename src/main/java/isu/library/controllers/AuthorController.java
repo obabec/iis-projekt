@@ -33,7 +33,7 @@ public class AuthorController {
     }
 
     @PostMapping("/author")
-    public String updateAuthor(@ModelAttribute(value="author") Author author,  ModelMap modelMap) {
+    public String updateAuthor(@ModelAttribute(value = "author") Author author, ModelMap modelMap) {
         authorService.addAuthor(author);
         return "redirect:/authors";
     }
