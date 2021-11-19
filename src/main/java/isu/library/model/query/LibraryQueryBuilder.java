@@ -4,6 +4,10 @@ public class LibraryQueryBuilder {
     private String guery;
     private boolean whereComplete = false;
 
+    public LibraryQueryBuilder() {
+        this.guery = "SELECT * FROM library l";
+    }
+
     private void addWhereOrAnd() {
         if (whereComplete) {
             this.guery += " AND ";
@@ -11,10 +15,6 @@ public class LibraryQueryBuilder {
             this.guery += " WHERE ";
             whereComplete = true;
         }
-    }
-
-    public LibraryQueryBuilder() {
-        this.guery = "SELECT * FROM library l";
     }
 
     public LibraryQueryBuilder findByName(String libraryName) {
@@ -35,7 +35,7 @@ public class LibraryQueryBuilder {
         return this;
     }
 
-    public String getGuery() {
+    public String getQuery() {
         return guery;
     }
 }

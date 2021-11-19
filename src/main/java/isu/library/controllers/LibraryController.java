@@ -1,7 +1,7 @@
 package isu.library.controllers;
 
-import isu.library.model.entity.library.Library;
 import isu.library.model.entity.Person;
+import isu.library.model.entity.library.Library;
 import isu.library.model.query.LibraryQueryBuilder;
 import isu.library.model.service.library.LibraryService;
 import isu.library.model.service.user.PersonService;
@@ -28,9 +28,9 @@ public class LibraryController {
     private PersonService personService;
 
     @GetMapping("/libraries")
-    public String libraries(@RequestParam(name="library_name", required = true, defaultValue = "") String libraryName,
-                            @RequestParam(name="library_tag", required = true, defaultValue = "") String libraryTag,
-                            @RequestParam(name="library_city", required = true, defaultValue = "") String libraryCity,
+    public String libraries(@RequestParam(name = "library_name", required = true, defaultValue = "") String libraryName,
+                            @RequestParam(name = "library_tag", required = true, defaultValue = "") String libraryTag,
+                            @RequestParam(name = "library_city", required = true, defaultValue = "") String libraryCity,
                             ModelMap modelMap) {
         LibraryQueryBuilder builder = new LibraryQueryBuilder();
         if (!libraryName.isEmpty()) {
@@ -47,16 +47,16 @@ public class LibraryController {
             builder = builder.findByCity(libraryCity);
         }
 
-        modelMap.put("libraries", libraryService.executeQuery(builder.getGuery()));
+        modelMap.put("libraries", libraryService.executeQuery(builder.getQuery()));
         return "libraries";
     }
 
     @GetMapping("/library")
-    public String library(@RequestParam(name="library_id", required = false, defaultValue = "") Integer libraryId,
+    public String library(@RequestParam(name = "library_id", required = false, defaultValue = "") Integer libraryId,
                           Authentication authentication,
                           ModelMap modelMap) {
-        if (authentication != null && ((UserDetails)authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
-            String username = ((UserDetails)authentication.getPrincipal()).getUsername();
+        if (authentication != null && ((UserDetails) authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
+            String username = ((UserDetails) authentication.getPrincipal()).getUsername();
             Person user = personService.findPersonByUsername(username).get();
             if (!user.getLibraryId().equals(libraryId)) {
                 return "home";
@@ -74,11 +74,11 @@ public class LibraryController {
     }
 
     @PostMapping("/library")
-    public String updateLibrary(@ModelAttribute(value="library") Library library,
+    public String updateLibrary(@ModelAttribute(value = "library") Library library,
                                 Authentication authentication,
                                 ModelMap modelMap) {
-        if (authentication != null && ((UserDetails)authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
-            String username = ((UserDetails)authentication.getPrincipal()).getUsername();
+        if (authentication != null && ((UserDetails) authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
+            String username = ((UserDetails) authentication.getPrincipal()).getUsername();
             Person user = personService.findPersonByUsername(username).get();
             if (!user.getLibraryId().equals(library.getId())) {
                 return "home";
@@ -95,10 +95,10 @@ public class LibraryController {
     }
 
     @GetMapping("/deleteLibrary")
-    public String deleteLibrary(@RequestParam(name="library_id", required = true, defaultValue = "") Integer libraryId,
+    public String deleteLibrary(@RequestParam(name = "library_id", required = true, defaultValue = "") Integer libraryId,
                                 Authentication authentication,
                                 ModelMap modelMap) {
-        if (authentication != null && ((UserDetails)authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
+        if (authentication != null && ((UserDetails) authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
             return "home";
         }
         libraryService.deleteLibraryById(libraryId);

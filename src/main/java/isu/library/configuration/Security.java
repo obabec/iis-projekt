@@ -33,7 +33,7 @@ public class Security extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-            .authorizeRequests()
+                .authorizeRequests()
                 .antMatchers("/").permitAll()
                 .antMatchers(HttpMethod.GET, "/book").permitAll()
                 .antMatchers(HttpMethod.POST, "/book").hasAnyRole("ADMIN", "LIBRARIAN", "DISTRIBUTOR")
@@ -41,10 +41,10 @@ public class Security extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/book/*").hasAnyRole("ADMIN", "LIBRARIAN", "DISTRIBUTOR")
                 .antMatchers(HttpMethod.GET, "/libraries").hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, "/reservationSummary").authenticated()
-                .antMatchers( HttpMethod.GET, "/userUpdate").hasAnyRole("ADMIN", "LIBRARIAN", "DISTRIBUTOR", "READER")
-                .antMatchers( HttpMethod.POST, "/userUpdate").hasRole("ADMIN")
-                .antMatchers( "/userDelete").hasRole("ADMIN")
-                .antMatchers( "/users").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/userUpdate").hasAnyRole("ADMIN", "LIBRARIAN", "DISTRIBUTOR", "READER")
+                .antMatchers(HttpMethod.POST, "/userUpdate").hasRole("ADMIN")
+                .antMatchers("/userDelete").hasRole("ADMIN")
+                .antMatchers("/users").hasRole("ADMIN")
                 .antMatchers("/reservation/createLoan").hasAnyRole("ADMIN", "LIBRARIAN")
                 .antMatchers(HttpMethod.GET, "/votes").authenticated()
                 .antMatchers(HttpMethod.GET, "/deleteVote").hasAnyRole("ADMIN", "LIBRARIAN")

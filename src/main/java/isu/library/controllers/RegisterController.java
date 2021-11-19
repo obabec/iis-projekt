@@ -2,8 +2,8 @@ package isu.library.controllers;
 
 import isu.library.model.entity.Person;
 import isu.library.model.entity.reservation.Reservation;
-import isu.library.model.service.user.MyUserDetailsService;
 import isu.library.model.service.reservation.ReservationService;
+import isu.library.model.service.user.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -28,7 +28,7 @@ public class RegisterController {
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping("/register")
-    public String register(@RequestParam(name="book_id", required = false, defaultValue = "-1") Integer bookId,
+    public String register(@RequestParam(name = "book_id", required = false, defaultValue = "-1") Integer bookId,
                            ModelMap modelMap) {
         modelMap.put("message", "");
         modelMap.put("book_id", bookId);
@@ -36,20 +36,20 @@ public class RegisterController {
     }
 
     @PostMapping("/register")
-    public String register(@RequestParam(name="username", required = true, defaultValue = "") String username,
-                           @RequestParam(name="password", required = true, defaultValue = "") String password,
-                           @RequestParam(name="password2", required = true, defaultValue = "") String password2,
-                           @RequestParam(name="name", required = true, defaultValue = "") String name,
-                           @RequestParam(name="surname", required = true, defaultValue = "") String surname,
-                           @RequestParam(name="birthdate", required = true, defaultValue = "") String birthdate,
-                           @RequestParam(name="book_id", required = false, defaultValue = "-1") Integer bookId,
+    public String register(@RequestParam(name = "username", required = true, defaultValue = "") String username,
+                           @RequestParam(name = "password", required = true, defaultValue = "") String password,
+                           @RequestParam(name = "password2", required = true, defaultValue = "") String password2,
+                           @RequestParam(name = "name", required = true, defaultValue = "") String name,
+                           @RequestParam(name = "surname", required = true, defaultValue = "") String surname,
+                           @RequestParam(name = "birthdate", required = true, defaultValue = "") String birthdate,
+                           @RequestParam(name = "book_id", required = false, defaultValue = "-1") Integer bookId,
                            ModelMap modelMap) {
         if ((username == null || password == null || password2 == null || name == null || surname == null || birthdate == null) ||
-            username.length() == 0 || password.length() < 8 || name.length() == 0 || surname.length() == 0) {
-                modelMap.put("message", "Please enter all values");
-                return "register";
+                username.length() == 0 || password.length() < 8 || name.length() == 0 || surname.length() == 0) {
+            modelMap.put("message", "Please enter all values");
+            return "register";
         } else {
-            try{
+            try {
                 Date.valueOf(birthdate);
             } catch (Exception e) {
                 modelMap.put("message", "Please enter all values");
@@ -66,7 +66,7 @@ public class RegisterController {
                 return "register";
             }
 
-            if (bookId != -1 ) {
+            if (bookId != -1) {
                 Optional<Reservation> latestRes = reservationService.findReservationByLatestDate(bookId);
                 if (latestRes.isEmpty()) {
                     reservationService.saveNewReservation(bookId, newUser.getId(), null);

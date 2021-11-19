@@ -23,19 +23,17 @@ import java.util.Optional;
 public class UserController {
 
     @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
     private PersonService personService;
-
     @Autowired
     private LibraryService libraryService;
-
-    @Autowired
-    BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping("/users")
     public String userManagement(Authentication authentication, ModelMap modelMap) {
         modelMap.put("users", personService.findPersonByUsernameNotNull());
-        if (authentication != null && ((UserDetails)authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
-            String username = ((UserDetails)authentication.getPrincipal()).getUsername();
+        if (authentication != null && ((UserDetails) authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
+            String username = ((UserDetails) authentication.getPrincipal()).getUsername();
             Person user = personService.findPersonByUsername(username).get();
             modelMap.put("librarian_lib", user.getLibraryId());
         }
@@ -43,24 +41,24 @@ public class UserController {
     }
 
     @GetMapping("/userDelete")
-    public String deleteUser(@RequestParam(name="user_id", required = true, defaultValue = "") Integer userId,
-            ModelMap modelMap) {
+    public String deleteUser(@RequestParam(name = "user_id", required = true, defaultValue = "") Integer userId,
+                             ModelMap modelMap) {
         personService.deleteById(userId);
         modelMap.put("users", personService.findPersonByUsernameNotNull());
         return "users";
     }
 
     @GetMapping("/userUpdate")
-    public String update(@RequestParam(name="user_id", required = true, defaultValue = "") Integer userId,
+    public String update(@RequestParam(name = "user_id", required = true, defaultValue = "") Integer userId,
                          Authentication authentication,
-                             ModelMap modelMap) {
-        if(userId == null){
-            String username = ((UserDetails)authentication.getPrincipal()).getUsername();
+                         ModelMap modelMap) {
+        if (userId == null) {
+            String username = ((UserDetails) authentication.getPrincipal()).getUsername();
             Person user = personService.findPersonByUsername(username).get();
             userId = user.getId();
         }
-        if (authentication != null && ((UserDetails)authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
-            String username = ((UserDetails)authentication.getPrincipal()).getUsername();
+        if (authentication != null && ((UserDetails) authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
+            String username = ((UserDetails) authentication.getPrincipal()).getUsername();
             Person user = personService.findPersonByUsername(username).get();
             modelMap.put("librarian_lib", user.getLibraryId());
         }
@@ -77,7 +75,7 @@ public class UserController {
     }
 
     @PostMapping("/userUpdate")
-    public String update(@ModelAttribute(value="user") Person person,
+    public String update(@ModelAttribute(value = "user") Person person,
                          ModelMap modelMap) {
         if (person.getPassword().isEmpty()) {
             person.setPassword(personService.findPersonById(person.getId()).get().getPassword());

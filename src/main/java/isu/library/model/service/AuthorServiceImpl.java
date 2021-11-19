@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Transactional
 @Service
-public class AuthorServiceImpl implements AuthorService{
+public class AuthorServiceImpl implements AuthorService {
 
     @Autowired
     AuthorRepository repository;

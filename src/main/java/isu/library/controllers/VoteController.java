@@ -1,7 +1,6 @@
 package isu.library.controllers;
 
 import isu.library.model.entity.Person;
-import isu.library.model.entity.vote.UserVote;
 import isu.library.model.entity.vote.Vote;
 import isu.library.model.service.library.LibraryService;
 import isu.library.model.service.user.PersonService;
@@ -32,13 +31,13 @@ public class VoteController {
     PersonService personService;
 
     @GetMapping("/votes")
-    public String votes(@RequestParam(name= "library_id", required = false, defaultValue = "-1") Integer libraryId,
-                               @RequestParam(name="vote_id", required = false, defaultValue = "-1") Integer voteId,
-                               Authentication authentication,
-                               ModelMap modelMap) {
-        String username = ((UserDetails)authentication.getPrincipal()).getUsername();
+    public String votes(@RequestParam(name = "library_id", required = false, defaultValue = "-1") Integer libraryId,
+                        @RequestParam(name = "vote_id", required = false, defaultValue = "-1") Integer voteId,
+                        Authentication authentication,
+                        ModelMap modelMap) {
+        String username = ((UserDetails) authentication.getPrincipal()).getUsername();
         Person person = personService.findPersonByUsername(username).get();
-        if (authentication != null && ((UserDetails)authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
+        if (authentication != null && ((UserDetails) authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
             modelMap.put("librarian_lib", person.getLibraryId());
         }
 
@@ -58,8 +57,8 @@ public class VoteController {
         }
 
         if (libraryId != -1) {
-            if (authentication != null && (((UserDetails)authentication.getPrincipal()).getAuthorities().contains(
-                    new SimpleGrantedAuthority("ROLE_LIBRARIAN")) || ((UserDetails)authentication.getPrincipal())
+            if (authentication != null && (((UserDetails) authentication.getPrincipal()).getAuthorities().contains(
+                    new SimpleGrantedAuthority("ROLE_LIBRARIAN")) || ((UserDetails) authentication.getPrincipal())
                     .getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN")))) {
                 modelMap.put("votes", voteService.findVotesInLibrary(libraryId));
             } else {
@@ -68,14 +67,14 @@ public class VoteController {
             modelMap.put("library_id", libraryId);
         }
         modelMap.put("libraries", libraryService.findAll());
-        return  "votes";
+        return "votes";
     }
 
     @GetMapping("/deleteVote")
-    public String deleteVote(@RequestParam(name= "library_id", required = false, defaultValue = "-1") Integer libraryId,
-                        @RequestParam(name="vote_id", required = false, defaultValue = "-1") Integer voteId,
-                        Authentication authentication,
-                        ModelMap modelMap) {
+    public String deleteVote(@RequestParam(name = "library_id", required = false, defaultValue = "-1") Integer libraryId,
+                             @RequestParam(name = "vote_id", required = false, defaultValue = "-1") Integer voteId,
+                             Authentication authentication,
+                             ModelMap modelMap) {
         if (voteId != -1) {
             voteService.deleteVote(voteId);
         }

@@ -8,6 +8,10 @@ public class BookQueryBuilder {
     private String query;
     private boolean whereComplete = false;
 
+    public BookQueryBuilder() {
+        this.query = "SELECT b.id, b.library_id, b.name, b.release, b.isbn, b.publisher, b.genre, b.rate FROM book b";
+    }
+
     private void addWhereOrAnd() {
         if (whereComplete) {
             this.query += " AND ";
@@ -15,10 +19,6 @@ public class BookQueryBuilder {
             this.query += " WHERE ";
             whereComplete = true;
         }
-    }
-
-    public BookQueryBuilder() {
-        this.query = "SELECT b.id, b.library_id, b.name, b.release, b.isbn, b.publisher, b.genre, b.rate FROM book b";
     }
 
     public BookQueryBuilder filterByAuthor(String authorName) {

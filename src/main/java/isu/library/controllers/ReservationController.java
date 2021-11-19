@@ -2,8 +2,8 @@ package isu.library.controllers;
 
 import isu.library.model.entity.Person;
 import isu.library.model.entity.reservation.Reservation;
-import isu.library.model.service.user.PersonService;
 import isu.library.model.service.reservation.ReservationService;
+import isu.library.model.service.user.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,19 +24,18 @@ import java.util.stream.StreamSupport;
 @Controller
 public class ReservationController {
 
+    private static final int RESERVATION_DURATION = 2;
     @Autowired
     ReservationService reservationService;
-
     @Autowired
     PersonService personService;
 
-    private static final int RESERVATION_DURATION = 2;
     @GetMapping("/reservationSummary")
     public String reservations(Authentication authentication,
                                ModelMap modelMap) {
 
-        if (authentication != null && ((UserDetails)authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_READER"))) {
-            String username = ((UserDetails)authentication.getPrincipal()).getUsername();
+        if (authentication != null && ((UserDetails) authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_READER"))) {
+            String username = ((UserDetails) authentication.getPrincipal()).getUsername();
             Person user = personService.findPersonByUsername(username).get();
             modelMap.put("reservations", reservationService.findAllUserReservations(user.getId()));
             return "reservation_summary";
@@ -46,7 +45,7 @@ public class ReservationController {
     }
 
     @GetMapping("/reservationExtend")
-    public String reservationExtend(@RequestParam(name="reservation_id", required = true, defaultValue = "") Integer reservationId,
+    public String reservationExtend(@RequestParam(name = "reservation_id", required = true, defaultValue = "") Integer reservationId,
                                     Authentication authentication,
                                     ModelMap modelMap) {
         Optional<Reservation> reservation = reservationService.findReservationById(reservationId);
@@ -58,7 +57,7 @@ public class ReservationController {
     }
 
     @GetMapping("/reservations/delete")
-    public String deleteReservation(@RequestParam(name="reservation_id", required = true, defaultValue = "") Integer reservation_id,
+    public String deleteReservation(@RequestParam(name = "reservation_id", required = true, defaultValue = "") Integer reservation_id,
                                     Authentication authentication,
                                     ModelMap modelMap) {
         if (reservation_id == null) {
@@ -73,7 +72,7 @@ public class ReservationController {
             return "redirect:/error";
         } else if (!authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
             Person person = personService.findPersonByUsername(authentication.getName()).get();
-            if (person.getId() != res.get().getPersonId()){
+            if (person.getId() != res.get().getPersonId()) {
                 return "redirect:/error";
             }
         }
@@ -83,10 +82,10 @@ public class ReservationController {
 
 
     @GetMapping("/reservations/create")
-    public String createReservation(@RequestParam(name="book_id", required = true, defaultValue = "") Integer bookId,
+    public String createReservation(@RequestParam(name = "book_id", required = true, defaultValue = "") Integer bookId,
                                     Authentication authentication,
                                     ModelMap modelMap) {
-        String username = ((UserDetails)authentication.getPrincipal()).getUsername();
+        String username = ((UserDetails) authentication.getPrincipal()).getUsername();
         Integer personId = personService.findPersonByUsername(username).get().getId();
         Optional<Reservation> res = reservationService.findReservationByBookIdAndPersonId(bookId, personId);
 
@@ -105,14 +104,14 @@ public class ReservationController {
     }
 
     @GetMapping("/reservations")
-    public String reservations(@RequestParam(name="library_id", required = true, defaultValue = "") Integer libraryId,
-                               @RequestParam(name="reservation_id", required = false, defaultValue = "") Integer reservationId,
-                               @RequestParam(name="action", required = false, defaultValue = "") Integer action,
+    public String reservations(@RequestParam(name = "library_id", required = true, defaultValue = "") Integer libraryId,
+                               @RequestParam(name = "reservation_id", required = false, defaultValue = "") Integer reservationId,
+                               @RequestParam(name = "action", required = false, defaultValue = "") Integer action,
                                Authentication authentication,
                                ModelMap modelMap) {
 
-        if (authentication != null && ((UserDetails)authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
-            String username = ((UserDetails)authentication.getPrincipal()).getUsername();
+        if (authentication != null && ((UserDetails) authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
+            String username = ((UserDetails) authentication.getPrincipal()).getUsername();
             Person user = personService.findPersonByUsername(username).get();
             modelMap.put("librarian_lib", user.getLibraryId());
             if (!user.getLibraryId().equals(libraryId)) {

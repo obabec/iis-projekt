@@ -30,10 +30,10 @@ public class LoanController {
     BookService bookService;
 
     @PostMapping("/reservations/createLoan")
-    public String createLoan(@ModelAttribute(value="reservation") Reservation reservation,
-                                ModelMap modelMap,
-                                Authentication authentication) {
-        if (authentication != null && ((UserDetails)authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
+    public String createLoan(@ModelAttribute(value = "reservation") Reservation reservation,
+                             ModelMap modelMap,
+                             Authentication authentication) {
+        if (authentication != null && ((UserDetails) authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
             String username = ((UserDetails) authentication.getPrincipal()).getUsername();
             Person user = personService.findPersonByUsername(username).get();
             // Osetreni refreshe - asi by to chtelo vymyslet lepe a udelat dotaz na databazi jestli je kniha aktualne dostupna
@@ -63,7 +63,7 @@ public class LoanController {
     @GetMapping("/reservations/createLoan")
     public String createLoanForm(Authentication authentication,
                                  ModelMap modelMap) {
-        if (authentication != null && ((UserDetails)authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
+        if (authentication != null && ((UserDetails) authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
             String username = ((UserDetails) authentication.getPrincipal()).getUsername();
             Person user = personService.findPersonByUsername(username).get();
             modelMap.put("availableBooks", bookService.findAvailableBooks(user.getLibraryId()));

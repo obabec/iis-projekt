@@ -16,15 +16,14 @@ import java.util.Optional;
 public class UserDetailsServiceImpl implements MyUserDetailsService {
 
     @Autowired
-    private PersonRepository usersRepository;
-
-    @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    private PersonRepository usersRepository;
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         Optional<Person> optionalUser = usersRepository.findPersonByUsername(userName);
-        if(optionalUser.isPresent()) {
+        if (optionalUser.isPresent()) {
             return User.builder()
                     .username(optionalUser.get().getUsername())
                     //change here to store encoded password in db

@@ -21,11 +21,8 @@ public class VoteServiceImpl implements VoteService {
     @Autowired
     private VoteRepository voteRepository;
 
-    @Autowired
-    private LibraryRepository libraryRepository;
-
     @Override
-    public Iterable findVotes(Integer userId, Integer libraryId) {
+    public Iterable<Vote> findVotes(Integer userId, Integer libraryId) {
         Iterable<Vote> allVotes = voteRepository.findVotesByLibraryId(libraryId);
         List<Integer> blockedVotes = StreamSupport.stream(voteRepository.findBlockedVotes(libraryId, userId).spliterator(), false)
                 .map(Vote::getId).collect(Collectors.toList());
@@ -35,11 +32,6 @@ public class VoteServiceImpl implements VoteService {
             }
         }
         return allVotes;
-    }
-
-    @Override
-    public Iterable<Vote> findAllVotes() {
-        return voteRepository.findAll();
     }
 
     @Override

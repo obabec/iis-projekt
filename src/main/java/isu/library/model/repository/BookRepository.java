@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 public interface BookRepository extends CrudRepository<Book, Integer> {
 
 
-    @Query(value="SELECT * FROM book b WHERE b.library_id IS NULL", nativeQuery = true)
+    @Query(value = "SELECT * FROM book b WHERE b.library_id IS NULL", nativeQuery = true)
     Iterable<Book> findAllTitles();
 
     @Query(value = "SELECT DISTINCT b.genre FROM Book b")
@@ -24,6 +24,7 @@ public interface BookRepository extends CrudRepository<Book, Integer> {
             "library_id IN (select id from library where name like CONCAT('%', :libraryName, '%'))" +
             "AND library_id IN (select id from library where name like CONCAT('%', :libraryName, '%'))", nativeQuery = true)
     Iterable<Book> findAvailableBookByName(@Param("bookName") String bookName, @Param("libraryName") String libraryName);
+
     // Hledani knihy dle autora - Working
     @Query(value = "SELECT b.id, b.name, b.release, b.isbn, b.publisher, b.genre, b.rate FROM book b " +
             "INNER JOIN authorship a ON b.id = a.book_id INNER JOIN author p ON a.author_id = p.id WHERE CONCAT(p.name, ' ', p.surname) " +
@@ -56,7 +57,7 @@ public interface BookRepository extends CrudRepository<Book, Integer> {
     @Query(value = "SELECT * FROM book b WHERE library_id IN (select id from library where name like CONCAT('%', :libraryName, '%'))", nativeQuery = true)
     Iterable<Book> findAllInLibrary(@Param("libraryName") String libraryName);
 
-    @Query(value="SELECT * FROM book b WHERE b.id = :id", nativeQuery = true)
+    @Query(value = "SELECT * FROM book b WHERE b.id = :id", nativeQuery = true)
     Book findById(@Param("id") int id);
 
 

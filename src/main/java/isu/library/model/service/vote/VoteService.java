@@ -6,9 +6,12 @@ import isu.library.model.entity.vote.Vote;
 
 public interface VoteService {
     Iterable<Vote> findVotes(Integer userId, Integer libraryId);
-    Iterable<Vote> findAllVotes();
+
     void saveNewVote(Book book, Library library);
+
     void incrementVote(Integer voteId);
+
     Iterable<Vote> findVotesInLibrary(Integer libraryId);
+
     void deleteVote(Integer voteId);
 }
