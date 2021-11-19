@@ -1,8 +1,13 @@
 package isu.library.controllers;
 
 import isu.library.model.entity.Author;
+import isu.library.model.entity.Person;
 import isu.library.model.service.AuthorService;
+import isu.library.model.service.user.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,11 +19,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class AuthorController {
 
     @Autowired
+    private PersonService personService;
+
+    @Autowired
     private AuthorService authorService;
 
     @GetMapping("/authors")
-    public String listAuthors(ModelMap modelMap) {
+    public String listAuthors(Authentication authentication, ModelMap modelMap) {
         modelMap.put("authors", authorService.findAll());
+        if (authentication != null && ((UserDetails)authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
+            String username = ((UserDetails)authentication.getPrincipal()).getUsername();
+            Person user = personService.findPersonByUsername(username).get();
+            modelMap.put("librarian_lib", user.getLibraryId());
+        }
         return "authors";
     }
 

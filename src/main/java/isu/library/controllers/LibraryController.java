@@ -31,8 +31,14 @@ public class LibraryController {
     public String libraries(@RequestParam(name = "library_name", required = true, defaultValue = "") String libraryName,
                             @RequestParam(name = "library_tag", required = true, defaultValue = "") String libraryTag,
                             @RequestParam(name = "library_city", required = true, defaultValue = "") String libraryCity,
+                            Authentication authentication,
                             ModelMap modelMap) {
         LibraryQueryBuilder builder = new LibraryQueryBuilder();
+        if (authentication != null && ((UserDetails)authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
+            String username = ((UserDetails)authentication.getPrincipal()).getUsername();
+            Person user = personService.findPersonByUsername(username).get();
+            modelMap.put("librarian_lib", user.getLibraryId());
+        }
         if (!libraryName.isEmpty()) {
             modelMap.put("lib_name", libraryName);
             builder = builder.findByName(libraryName);

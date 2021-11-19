@@ -21,33 +21,29 @@
 <body>
 <div class="container-fluid">
     <div class="row flex-nowrap">
-        <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
+        <div class="col-auto col-md-2 px-sm-2 px-0 bg-dark">
             <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
                 <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
                     <span class="fs-5 d-none d-sm-inline">Menu</span>
                 </a>
                 <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
-                    <li sec:authorize="isAnonymous()">
-                        <a href="/login" class="nav-link px-0 align-middle text-light">
-                            <i class="fs-4 bi-unlock"></i> <span class="ms-1 d-none d-sm-inline">Přihlášení</span></a>
-                    </li>
-                    <li sec:authorize="isAnonymous()">
-                        <a href="/register" class="nav-link px-0 align-middle text-light">
-                            <i class="fs-4 bi-gear-fill"></i> <span class="ms-1 d-none d-sm-inline">Registrace</span></a>
-                    </li>
                     <li class="nav-item">
-                        <a href="/" class="nav-link align-middle px-0 text-light">
-                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Knihy</span>
-                        </a>
+                        <a href="/" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Knihy</span></a>
                     </li>
                     <li sec:authorize="hasRole('ADMIN')">
                         <a href="/libraries" class="nav-link px-0 align-middle text-light">
                             <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Správa knihoven</span></a>
                     </li>
+                    <li sec:authorize="hasRole('LIBRARIAN')">
+                        <a th:href="@{/library(library_id=${librarian_lib})}" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Správa knihovny</span></a>
+                    </li>
                     <li sec:authorize="hasRole('ADMIN')">
                         <a href=/library class="nav-link px-0 align-middle text-light">
                             <i class="fs-4 bi-building"></i> <span class="ms-1 d-none d-sm-inline">Přidat knihovnu</span></a>
                     </li>
+                    <li class="mb-3"></li>
                     <li sec:authorize="hasAnyRole('ADMIN', 'DISTRIBUTOR')">
                         <a href="/title" class="nav-link px-0 align-middle text-light">
                             <i class="fs-4 bi-book"></i> <span class="ms-1 d-none d-sm-inline">Přidat titul</span></a>
@@ -56,15 +52,25 @@
                         <a href="/titles" class="nav-link px-0 align-middle text-light">
                             <i class="fs-4 bi-cart"></i> <span class="ms-1 d-none d-sm-inline">Dostupné tituly</span></a>
                     </li>
+                    <li class="mb-3"></li>
                     <li sec:authorize="hasRole('ADMIN')">
                         <a href="/users" class="nav-link px-0 align-middle text-light">
                             <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Správa uživatelů</span></a>
                     </li>
+                    <li sec:authorize="hasAnyRole('ADMIN', 'DISTRIBUTOR')">
+                        <a href="/authors" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Správa autorů</span></a>
+                    </li>
+                    <li sec:authorize="hasAnyRole('ADMIN', 'DISTRIBUTOR')">
+                        <a href="/author" class="nav-link px-0 align-middle text-light">
+                            <i class="fs-4 bi-person-plus"></i> <span class="ms-1 d-none d-sm-inline">Přidat autora</span></a>
+                    </li>
+                    <li class="mb-3"></li>
                     <li sec:authorize="hasAnyRole('ADMIN', 'READER', 'LIBRARIAN')">
                         <a href="/votes" class="nav-link px-0 align-middle text-light">
-                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Hlasováni</span></a>
+                            <i class="fs-4 bi-hand-thumbs-up"></i> <span class="ms-1 d-none d-sm-inline">Hlasováni</span></a>
                     </li>
-                    <li sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN')">
+                    <li sec:authorize="hasAnyRole('LIBRARIAN')">
                         <a href="/reservations/createLoan" class="nav-link px-0 align-middle text-light">
                             <i class="fs-4 bi-journal-check"></i> <span class="ms-1 d-none d-sm-inline">Výpůjčky</span></a>
                     </li>
@@ -97,7 +103,7 @@
             </div>
         </div>
 
-        <div class="mx-auto col-xl-10 col-md-9 col-sm-8 col-10 row align-items-center">
+        <div class="mx-auto col-md-10 col-sm-8 col-10 row align-items-center">
             <div class="rounded bg-light p-3">
                 <h2 class="fw-bold mb-4 text-uppercase text-center">Vytvořit Knihu</h2>
                 <form method="POST" th:action="${book.id == 0 ?'/book':'/book/' + book.id}" th:object="${book}" class="row g-3">
@@ -139,7 +145,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-3 mt-4">
-                            <input class="form-control btn btn-primary" type="submit" value="Odeslat"/>
+                            <input class="form-control btn btn-primary" type="submit" value="Vytvořit"/>
                         </div>
                     </div>
                 </form>

@@ -58,10 +58,15 @@ public class BookController {
     }
 
     @PostMapping("/book/{id}")
-    public String bookUpdate(@ModelAttribute(value = "book") Book book, @PathVariable("id") int bookId, ModelMap modelMap) {
+    public String bookUpdate(@ModelAttribute(value = "book") Book book, @PathVariable("id") int bookId, Authentication authentication, ModelMap modelMap) {
         modelMap.put("libraries", libraryService.findAll());
         modelMap.put("chosen_library", libraryService.findLibraryById(book.getLibraryId()));
         modelMap.put("possible_authors", authorService.findAll());
+        if (authentication != null && ((UserDetails)authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
+            String username = ((UserDetails)authentication.getPrincipal()).getUsername();
+            Person user = personService.findPersonByUsername(username).get();
+            modelMap.put("librarian_lib", user.getLibraryId());
+        }
         ArrayList<String> chosen_authors = new ArrayList<>();
         for (Integer id : book.getAuthors()) {
             chosen_authors.add(String.valueOf(authorService.findAuthorById(id).get().getId()));
@@ -117,11 +122,16 @@ public class BookController {
         modelMap.put("possible_authors", authorService.findAll());
         modelMap.put("chosen_authors", new ArrayList<String>());
         modelMap.put("book", book);
+        if (authentication != null && ((UserDetails)authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
+            String username = ((UserDetails)authentication.getPrincipal()).getUsername();
+            Person user = personService.findPersonByUsername(username).get();
+            modelMap.put("librarian_lib", user.getLibraryId());
+        }
         return "book_creation";
     }
 
     @GetMapping("/book/{id}")
-    public String bookCreation(@PathVariable("id") int bookId, ModelMap modelMap) {
+    public String bookCreation(@PathVariable("id") int bookId, Authentication authentication, ModelMap modelMap) {
         Book found_book = bookService.findById(bookId);
         found_book.setAuthors(new ArrayList<>());
         authorshipService.findAuthorshipByBookId(bookId).forEach(a -> found_book.getAuthors().add(authorService.findAuthorById(a.getAuthorId()).get().getId()));
@@ -129,6 +139,12 @@ public class BookController {
         modelMap.put("chosen_library", libraryService.findLibraryById(found_book.getLibraryId()));
         modelMap.put("libraries", libraryService.findAll());
         modelMap.put("possible_authors", authorService.findAll());
+        if (authentication != null && ((UserDetails)authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
+            String username = ((UserDetails)authentication.getPrincipal()).getUsername();
+            Person user = personService.findPersonByUsername(username).get();
+            modelMap.put("librarian_lib", user.getLibraryId());
+        }
+
         ArrayList<String> chosen_authors = new ArrayList<>();
         for (Integer id : found_book.getAuthors()) {
             chosen_authors.add(String.valueOf(authorService.findAuthorById(id).get().getId()));
