@@ -114,9 +114,9 @@
                     <input type="date" class="form-control" id="release" th:name="release" th:value="${book.release}" th:max="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" required/>
                     <label for="isbn" class="form-label mt-2">ISBN</label>
                     <input type="text" class="form-control" id="isbn" th:name="isbn" th:value="${book.isbn}" maxlength="13" required/>
-                    <label for="publisher" class="form-label mt-2">vydavatel</label>
+                    <label for="publisher" class="form-label mt-2">Vydavatel</label>
                     <input type="text" class="form-control" id="publisher" th:name="publisher" th:value="${book.publisher}" maxlength="50" required/>
-                    <label class="form-check-label mt-2" for="rate">hodnocení</label>
+                    <label class="form-check-label mt-2" for="rate">Hodnocení</label>
                     <input type="number" class="form-control" min="1" max="10" id="rate" th:name="rate" th:value="${book.rate}" required/>
                     <input class="form-control btn btn-primary my-3" type="submit" value="Vytvořit"/>
                 </form>

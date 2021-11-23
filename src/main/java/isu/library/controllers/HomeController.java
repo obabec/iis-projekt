@@ -4,10 +4,12 @@ import isu.library.model.entity.Author;
 import isu.library.model.entity.Authorship;
 import isu.library.model.entity.Book;
 import isu.library.model.entity.Person;
+import isu.library.model.entity.library.Library;
 import isu.library.model.query.BookQueryBuilder;
 import isu.library.model.service.AuthorService;
 import isu.library.model.service.AuthorshipService;
 import isu.library.model.service.BookService;
+import isu.library.model.service.library.LibraryService;
 import isu.library.model.service.user.PersonService;
 import isu.library.model.service.vote.VoteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +40,7 @@ public class HomeController {
     private AuthorshipService authorshipService;
 
     @Autowired
-    private VoteService voteService;
+    private LibraryService libraryService;
 
     @GetMapping("/")
     public String home(@RequestParam(name = "book_name", required = false, defaultValue = "") String bookName,
@@ -106,6 +108,12 @@ public class HomeController {
         builder.filterBooks();
         modelMap.put("message", message);
         TitleController.filterBooks(modelMap, builder, bookService, authorshipService, authorService);
+        Iterable<Book> books = (Iterable<Book>) modelMap.get("books");
+
+        for (Book b : books) {
+            b.setLibraryName(libraryService.findLibraryById(b.getLibraryId()).getName());
+        }
+        modelMap.put("books", books);
         return "home";
     }
 

@@ -131,7 +131,7 @@ public class TitleController {
         for (Integer author_id : book.getAuthors()) {
             authorshipService.addNewAuthorship(author_id, id);
         }
-        return "redirect:/title/" + id;
+        return "redirect:/title";
     }
 
     @GetMapping("/title/{id}")

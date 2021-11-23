@@ -54,7 +54,7 @@ public class BookController {
         for (Integer author_id : book.getAuthors()) {
             authorshipService.addNewAuthorship(author_id, id);
         }
-        return "redirect:/book/" + id;
+        return "redirect:/book";
     }
 
     @PostMapping("/book/{id}")

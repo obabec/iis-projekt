@@ -170,6 +170,7 @@
                         <th>ISBN</th>
                         <th>Vydavatel</th>
                         <th>Hodnocení</th>
+                        <th>Knihovna</th>
                         <th sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN')">Akce</th>
                         <th sec:authorize="hasRole('READER') or isAnonymous()">Rezervace</th>
                     </tr>
@@ -185,6 +186,7 @@
                         <td th:text="${book.isbn}"> AC12</td>
                         <td th:text="${book.publisher}">Franz Josef</td>
                         <td th:text="${book.rate}">Franz Josef</td>
+                        <td th:text="${book.libraryName}">Franz Josef</td>
                         <td sec:authorize="hasRole('ADMIN')">
                             <a th:href="${'/book/' + book.id}">
                                 <button class="btn btn-info">
@@ -209,12 +211,6 @@
                                 </button>
                             </a>
                         </td>
-                        <!--                        <td sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN')">
-                                                    th:href="@{/reservations(reservation_id=${book.id}, library_id=${library}, action=1)}"
-                                                    <a >
-                                                        <button class="btn btn-warning">Smazat</button>
-                                                    </a>
-                                                </td> -->
                         <td sec:authorize="hasRole('READER')">
                             <a th:href="@{/reservations/create(book_id=${book.id})}">
                                 <button class="btn btn-primary">Rezervovat</button>

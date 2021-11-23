@@ -33,6 +33,10 @@ public class Book {
     private String publisher;
     private String genre;
     private Short rate;
+
+    @Transient
+    private String libraryName;
+
     @Transient
     private ArrayList<Integer> authors;
     @Transient
@@ -55,5 +59,9 @@ public class Book {
         this.publisher = publisher;
         this.genre = genre;
         this.rate = rate;
+    }
+
+    public void setLibraryName(String libraryName) {
+        this.libraryName = libraryName;
     }
 }
