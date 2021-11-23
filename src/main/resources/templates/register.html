@@ -66,7 +66,7 @@
                     <label for="registerLogin" class="form-label">Uživatelské jméno</label>
                     <input type="text" id="registerLogin" class="form-control" th:name="username" required/>
                     <label for="registerPassword" class="form-label">Heslo</label>
-                    <input type="password" id="registerPassword" class="form-control" th:name="password" required>
+                    <input type="password" id="registerPassword" class="form-control" minlength="8" th:name="password" required>
                     <label for="confirmPassword" class="form-label">Heslo znovu</label>
                     <input type="password" id="confirmPassword" class="form-control" th:name="password2" required>
                     <input type="submit" class="form-control btn btn-primary my-3" value="Registrovat" />
