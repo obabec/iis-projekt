@@ -57,8 +57,4 @@ public class Security extends WebSecurityConfigurerAdapter {
                 .and().formLogin().loginPage("/login").permitAll().failureUrl("/login?error=1")
                 .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET")).logoutSuccessUrl("/").invalidateHttpSession(true).deleteCookies("JSESSIONID").permitAll();
     }
-
-    public BCryptPasswordEncoder getPasswordEncoder() {
-        return passwordEncoder;
-    }
 }
