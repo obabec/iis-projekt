@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html><head>
+    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-2">
+    <title>Projekt IIS</title>
+    <style type="text/css">
+    	table { border-collapse: collapse; }
+    	td, th { border: 1px solid black; padding: 0.3em 0.5em; text-align: left; }
+    	dt { font-weight: bold; margin-top: 0.5em; }
+		img {width: 500px; height: 500px;}
+    </style>
+<body>
+
+<!-- Zkontrolujte prosím nastavení kódování v hlavičce dokumentu 
+     podle použitého editoru -->
+
+<h1>2. Knihovna: vyhledávání, rezervace, půjčování a objednávání knih</h1>
+
+<dl>
+	<dt>Autoři</dt>
+	<dd>Ondřej Babec
+	    <a href="mailto:xbabec00@stud.fit.vutbr.cz">xbabec00@stud.fit.vutbr.cz</a> -
+		popis činnosti v týmu
+	</dd>
+	<dd>Tomáš Korbař
+	    <a href="mailto:xkorba02@stud.fit.vutbr.cz">xkorba02@stud.fit.vutbr.cz</a> -
+		popis činnosti v týmu
+	</dd>
+  <dd>Ladislav Dokoupil
+	    <a href="mailto:xdokou14@stud.fit.vutbr.cz">xdokou14@stud.fit.vutbr.cz</a> -
+		Tvorba a stylování HTML stránek
+	</dd>
+	<dt>URL aplikace</dt>
+	<dd><a href="http://37.205.11.180:9000/">http://37.205.11.180:9000/</a></dd>
+</dl>
+
+<h2>Uživatelé systému pro testování</h2>
+<table>
+<tbody><tr><th>Login</th><th>Heslo</th><th>Role</th></tr>
+<tr><td>korbonaut</td><td>12345678</td><td>Administrátor</td></tr>
+<tr><td>distributor</td><td>12345678</td><td>Distributor</td></tr>
+<tr><td>libr</td><td>12345678</td><td>Knihovník</td></tr>
+<tr><td>reader</td><td>12345678</td><td>Čtenář</td></tr>
+</tbody></table>
+
+<h2>Implementace</h2>
+<p>
+Informační systém knihovny Využívá návrhového vzoru MVC.
+	Model je uložen v Postgres databázi běžící v odděleném docker kontejneru.
+	Pohledy jsou vytvořeny jako ThymeLeaf HTML šablony a pří požadavky jsou naplněny daty kontrolerem.
+	Kontroler je implementován v Javě s využitím frameworku Spring.
+
+<dl>
+	<dt>Kontrolery</dt>
+	<dd>AuthorController - správa autorů knih distributory</dd>
+	<dd>LibraryController - správá knihoven administrátorem</dd>
+	<dd>OrderController - tvorba objednávek titulů knihovníky a jejich výřízení distributory</dd>
+	<dd>TitleController - tvorba titulů distributory a jejich objednání knihovníky</dd>
+	<dd>BookController - přídání/správa knih vlastní knihovny pro knihovníky</dd>
+	<dd>LoanController - manuální správá výpujček knihovníkem</dd>
+	<dd>RegisterController - registrace do systému</dd>
+	<dd>UserController - správa uživatelů a jejich oprávnění administrátorem</dd>
+	<dd>HomeController - vyhledáváni knih k objednání čtenáři</dd>
+	<dd>LoginController - autentizace do systému</dd>
+	<dd>ReservationController - tvorba rezervací čtenáři a jejich správá knihovníkem</dd>
+	<dd>VoteController - hlasování k dokoupení knih čtenáři a jejich odstranění (po vyřízení) knihovníkem</dd>
+	<dd>Security - definuje přistupová práva rolí k daným stránkám/akcím</dd>
+</dl>
+
+
+</p>
+
+<h3>Databáze</h3>
+<img src="db.png" alt="database scheme">
+
+
+<h2>Použítí</h2>
+<h3>Prerekvizity:</h3>
+<ul>
+	<li>docker</li>
+	<li>docker-compose</li>
+	<li>java-11</li>
+	<li>maven >=3.6</li>
+</ul>
+<h3>Konfigurace a instalace</h3>
+<p>Počáteční konfigurace databáze lze nastavit v souboru "/docker/db/db_dump.sql".
+	Následně je IS včetně databáze spustěn skriptem "/docker/start_docker.sh -a".
+	Skript lze alternativně spustit s parametrem "-d" pro běh na pozadí.
+	Stejnojmenný skript s parametrem "-k" slouži k vypnutí aplikace a uvolnění zdrojů disku.
+</p>
+</body></html>
