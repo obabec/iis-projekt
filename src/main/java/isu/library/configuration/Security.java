@@ -18,16 +18,14 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class Security extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    BCryptPasswordEncoder bCryptPasswordEncoder;
+    BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     MyUserDetailsService userDetailsService;
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        //Person korbi = new Person("Tomas", "Korbar", new Date(0), "ADMIN", "korbonaut", bCryptPasswordEncoder.encode("12345678"));
-        //userDetailsService.registerNewUserAccount(korbi);
-        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
     }
 
     @Override
@@ -60,8 +58,7 @@ public class Security extends WebSecurityConfigurerAdapter {
                 .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET")).logoutSuccessUrl("/").invalidateHttpSession(true).deleteCookies("JSESSIONID").permitAll();
     }
 
-    @Bean
-    public BCryptPasswordEncoder getEncoder() {
-        return new BCryptPasswordEncoder();
+    public BCryptPasswordEncoder getPasswordEncoder() {
+        return passwordEncoder;
     }
 }
