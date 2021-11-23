@@ -1,3 +1,8 @@
+/*
+    IIS - projekt 2021
+    Zadani: Knihovna
+    Autori: Tomas Korbar <xkorba02>, Ondrej Babec <xbabec00>
+ */
 package isu.library.components;
 
 import isu.library.model.entity.Book;

@@ -1,3 +1,8 @@
+/*
+    IIS - projekt 2021
+    Zadani: Knihovna
+    Autori: Tomas Korbar <xkorba02>, Ondrej Babec <xbabec00>
+ */
 package isu.library.model.repository;
 
 
@@ -7,7 +12,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository("libraryRepository")
 public interface LibraryRepository extends CrudRepository<Library, Integer> {
-    void deleteLibraryByName(String name);
-
     void deleteLibraryById(Integer id);
 }
