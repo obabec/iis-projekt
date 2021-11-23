@@ -1,23 +1,23 @@
 version: '2'
 
 services:
-# app:
-#  image: 'library-iis:latest'
-#  networks:
-#   - app_net
-#  build:
-#    context: ./app
-#  container_name: app
-#  depends_on:
-#    db:
-#      condition: service_healthy
-#  ports:
-#  - "9000:8080"
-#  environment:
-#    - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/compose-postgres
-#    - SPRING_DATASOURCE_USERNAME=compose-postgres
-#    - SPRING_DATASOURCE_PASSWORD=compose-postgres
-#    - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+ app:
+  image: 'library-iis:latest'
+  networks:
+   - app_net
+  build:
+    context: ./app
+  container_name: app
+  depends_on:
+    db:
+      condition: service_healthy
+  ports:
+  - "8080:8080"
+  environment:
+    - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/compose-postgres
+    - SPRING_DATASOURCE_USERNAME=compose-postgres
+    - SPRING_DATASOURCE_PASSWORD=compose-postgres
+    - SPRING_JPA_HIBERNATE_DDL_AUTO=none
  db:
     image: 'db-iis:latest'
     networks:
