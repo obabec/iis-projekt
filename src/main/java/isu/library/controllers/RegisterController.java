@@ -25,7 +25,7 @@ public class RegisterController {
     ReservationService reservationService;
 
     @Autowired
-    BCryptPasswordEncoder bCryptPasswordEncoder;
+    BCryptPasswordEncoder passwordEncoder;
 
     @GetMapping("/register")
     public String register(@RequestParam(name = "book_id", required = false, defaultValue = "-1") Integer bookId,
@@ -58,7 +58,7 @@ public class RegisterController {
         }
 
         if (password.equals(password2)) {
-            Person newUser = new Person(name, surname, Date.valueOf(birthdate), "READER", username, bCryptPasswordEncoder.encode(password), null);
+            Person newUser = new Person(name, surname, Date.valueOf(birthdate), "READER", username, passwordEncoder.encode(password), null);
             try {
                 userDetailsService.registerNewUserAccount(newUser);
             } catch (Exception e) {
