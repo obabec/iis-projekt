@@ -130,7 +130,7 @@ Autori: Ladislav Dokoupil <xdokou14>
                             <a th:href="@{/userUpdate(user_id=${user.id})}">
                                 <button class="btn btn-secondary">Upravit</button>
                             </a>
-                            <a th:href="@{/userDelete(user_id=${user.id})}">
+                            <a th:if="${user.id != my_id}" th:href="@{/userDelete(user_id=${user.id})}">
                                 <button class="btn btn-danger">Smazat</button>
                             </a>
                         </td>

@@ -40,6 +40,7 @@ public class UserController {
     @GetMapping("/users")
     public String userManagement(Authentication authentication, ModelMap modelMap) {
         modelMap.put("users", personService.findPersonByUsernameNotNull());
+        modelMap.put("my_id", personService.findPersonByUsername(authentication.getName()).get().getId());
         if (authentication != null && ((UserDetails) authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
             String username = ((UserDetails) authentication.getPrincipal()).getUsername();
             Person user = personService.findPersonByUsername(username).get();
@@ -50,10 +51,12 @@ public class UserController {
 
     @GetMapping("/userDelete")
     public String deleteUser(@RequestParam(name = "user_id", required = true, defaultValue = "") Integer userId,
+                             Authentication authentication,
                              ModelMap modelMap) {
-        personService.deleteById(userId);
-        modelMap.put("users", personService.findPersonByUsernameNotNull());
-        return "users";
+        if (userId != personService.findPersonByUsername(authentication.getName()).get().getId()) {
+            personService.deleteById(userId);
+        }
+        return "redirect:/users";
     }
 
     @GetMapping("/userUpdate")
@@ -84,7 +87,9 @@ public class UserController {
 
     @PostMapping("/userUpdate")
     public String update(@ModelAttribute(value = "user") Person person,
+                         Authentication authentication,
                          ModelMap modelMap) {
+        modelMap.put("my_id", personService.findPersonByUsername(authentication.getName()).get().getId());
         if (person.getPassword().isEmpty()) {
             person.setPassword(personService.findPersonById(person.getId()).get().getPassword());
         } else {
