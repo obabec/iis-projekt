@@ -6,6 +6,7 @@
 package isu.library.controllers;
 
 import isu.library.model.entity.Person;
+import isu.library.model.entity.library.Library;
 import isu.library.model.entity.vote.Vote;
 import isu.library.model.service.library.LibraryService;
 import isu.library.model.service.user.PersonService;
@@ -19,6 +20,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.ArrayList;
 
 @Controller
 public class VoteController {
@@ -50,7 +53,7 @@ public class VoteController {
             Iterable<Vote> uv = voteService.findVotes(person.getId(), libraryId);
             boolean cont = true;
             for (Vote v : uv) {
-                if (!v.isEnabled()) {
+                if (v.getId() == voteId && !v.isEnabled()) {
                     cont = false;
                     break;
                 }
@@ -71,7 +74,13 @@ public class VoteController {
             }
             modelMap.put("library_id", libraryId);
         }
-        modelMap.put("libraries", libraryService.findAll());
+        if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
+            modelMap.put("libraries", new Library[]{libraryService.findLibraryById(person.getLibraryId())});
+        } else {
+            modelMap.put("libraries", libraryService.findAll());
+        }
+
+
         return "votes";
     }
 
@@ -81,7 +90,8 @@ public class VoteController {
                              Authentication authentication,
                              ModelMap modelMap) {
         if (voteId != -1) {
-            voteService.deleteVote(voteId);
+            userVoteService.deleteByVoteId(voteId);
+            voteService.clearVote(voteId);
         }
         return "redirect:/votes?library_id=" + libraryId;
     }

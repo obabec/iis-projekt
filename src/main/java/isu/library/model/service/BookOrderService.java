@@ -19,6 +19,8 @@ public interface BookOrderService {
 
     Iterable<BookOrder> findByTitleId(int title_id);
 
+    Iterable<BookOrder> findByTitleIdAndLibraryId(int title_id, int library_id);
+
     Optional<BookOrder> findById(int id);
 
     void removeById(int id);

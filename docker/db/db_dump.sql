@@ -517,7 +517,7 @@ COPY public.library (id, name, tag, street, city, street_number, from_time, to_t
 COPY public.person (id, name, surname, birth_date, role, username, password, library_id) FROM stdin;
 1	Admin	Admin	1970-01-01	ADMIN	admin	$2a$10$rVaZ2vVT9C9uaTleRgaEmuZ385dd/VRiPiWie2gfu4dO0AwC1rHbe	\N
 2	Libr	Libr1	1970-01-01	LIBRARIAN	libr	$2a$10$Fjj/JiTCnyBK1xtjudjfJO/2Es9rJQo5JQx418QDZj8j3dQVIHWSO	1
-3	Libr	Libr2	1970-01-01	LIBRARIAN	libr2	$2a$10$YLAv7ZhUmvVsE5fchMYXG.9w04OIishTllRwKZ9sck3X0vhOEs3Wq	1
+3	Libr	Libr2	1970-01-01	LIBRARIAN	libr2	$2a$10$YLAv7ZhUmvVsE5fchMYXG.9w04OIishTllRwKZ9sck3X0vhOEs3Wq	2
 4	Pepa	Novak	1990-01-01	READER	reader	$2a$10$cH8EGOhWooZ/6Gn/I8nhzOEMe.mTrto9mTbZBbco6iGNZHtka8KJK	1
 5	Distrib	Distrib	1970-01-01	DISTRIBUTOR	distributor	$2a$10$VIO/SQEnniUYdDlTjMX4WOE/iZcrHxszN11yerbLErhvdQTbOlwYm	1
 \.

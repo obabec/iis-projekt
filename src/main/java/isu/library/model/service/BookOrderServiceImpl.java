@@ -43,6 +43,11 @@ public class BookOrderServiceImpl implements BookOrderService {
     }
 
     @Override
+    public Iterable<BookOrder> findByTitleIdAndLibraryId(int title_id, int library_id) {
+        return repository.findByTitleIdAndLibraryId(title_id, library_id);
+    }
+
+    @Override
     public Optional<BookOrder> findById(int id) {
         return repository.findById(id);
     }

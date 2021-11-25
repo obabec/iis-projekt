@@ -108,6 +108,25 @@ Autori: Ladislav Dokoupil <xdokou14>
         </div>
         <div class="col-auto col-md-10 ">
             <h2 class="fw-bold mb-4 text-uppercase text-center">Objednávky</h2>
+            <div class="bg-light rounded mb-3 mt-3">
+            <form th:action="@{/orders}">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <select class="book_search" th:name="title">
+                            <option th:each="title : ${possible_titles}" th:value="${title.id}" th:text="${title.name}"/>
+                        </select>
+                    </div>
+                    <div class="col-sm-4">
+                        <select class="library_search" th:name="library">
+                            <option th:each="lib : ${possible_libraries}" th:value="${lib.id}" th:text="${lib.name}"/>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <input class="form-control" type="submit" value="Filtrovat"/>
+                </div>
+            </form>
+                </div>
             <div class="table-responsive">
                 <table id="bookListing" class="table table-hover">
                     <thead>
@@ -115,7 +134,7 @@ Autori: Ladislav Dokoupil <xdokou14>
                         <th>Kniha</th>
                         <th>Knihovna</th>
                         <th>Počet</th>
-                        <th sec:authorize="hasRole('DISTRIBUTOR')">Akce</th>
+                        <th sec:authorize="hasAnyRole('ADMIN', 'DISTRIBUTOR', 'LIBRARIAN')">Akce</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -130,6 +149,13 @@ Autori: Ladislav Dokoupil <xdokou14>
                             </button>
                             </a>
                         </td>
+                        <td sec:authorize="hasAnyRole('ADMIN', 'LIBRARIAN')">
+                            <a th:href="${'/order/' + order.id + '/delete'}">
+                                <button class="btn btn-danger">
+                                    Smazat
+                                </button>
+                            </a>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
@@ -140,12 +166,16 @@ Autori: Ladislav Dokoupil <xdokou14>
 </body>
 <script>
 /*<![CDATA[*/
-        $(document).ready(function() {
+    $(document).ready(function() {
         $('#bookListing').DataTable({searching: false});
     });
     $(document).ready(function() {
         $('.library_search').select2();
+        $('.library_search').val('[[${choosen_library}]]');
+        $('.library_search').trigger('change');
         $('.book_search').select2();
+        $('.book_search').val('[[${choosen_title}]]');
+        $('.book_search').trigger('change');
     });
 /*]]>*/
 </script>

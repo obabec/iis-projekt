@@ -63,4 +63,10 @@ public class VoteServiceImpl implements VoteService {
         voteRepository.deleteById(voteId);
     }
 
+    @Override
+    public void clearVote(Integer voteId) {
+        voteRepository.clearVote(voteId);
+    }
+
+
 }
