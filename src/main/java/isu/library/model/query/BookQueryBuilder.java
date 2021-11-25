@@ -8,7 +8,9 @@ package isu.library.model.query;
 import java.sql.Date;
 import java.time.LocalDate;
 
-
+/*
+ * Builder of queries which filter books.
+ */
 public class BookQueryBuilder {
     private String query;
     private boolean whereComplete = false;

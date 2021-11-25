@@ -29,6 +29,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 
+/*
+ * Controller for endpoints managing book titles.
+ */
 @Controller
 public class TitleController {
 

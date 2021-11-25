@@ -20,6 +20,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+/*
+ * Controller for endpoints managing author manipulation.
+ */
 @Controller
 public class AuthorController {
 

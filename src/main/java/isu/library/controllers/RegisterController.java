@@ -20,6 +20,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.sql.Date;
 import java.util.Optional;
 
+/*
+ * Controller for endpoint managing users registration.
+ */
 @Controller
 public class RegisterController {
 

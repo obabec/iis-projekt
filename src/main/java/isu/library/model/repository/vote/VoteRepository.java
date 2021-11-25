@@ -6,6 +6,7 @@
 package isu.library.model.repository.vote;
 
 import isu.library.model.entity.vote.Vote;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -22,4 +23,8 @@ public interface VoteRepository extends CrudRepository<Vote, Integer> {
     Iterable<Vote> findVotesByLibraryId(Integer libraryId);
 
     Optional<Vote> findVoteById(Integer id);
+
+    @Modifying
+    @Query(value = "UPDATE votes SET vote_amount = 0 WHERE id = :vote_id", nativeQuery = true)
+    void clearVote(@Param("vote_id") Integer voteId);
 }

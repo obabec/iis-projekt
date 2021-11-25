@@ -19,4 +19,5 @@ public interface VoteService {
     Iterable<Vote> findVotesInLibrary(Integer libraryId);
 
     void deleteVote(Integer voteId);
+    void clearVote(Integer voteId);
 }

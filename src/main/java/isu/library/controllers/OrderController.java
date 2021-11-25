@@ -26,6 +26,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 
+/*
+ * Controller for endpoint managing orders of books.
+ */
 @Controller
 public class OrderController {
 
@@ -48,24 +51,44 @@ public class OrderController {
     private PersonService personService;
 
     @GetMapping("/orders")
-    public String getOrders(@RequestParam(name = "library", required = false, defaultValue = "") String libraryId,
-                            @RequestParam(name = "title", required = false, defaultValue = "") String titleId,
+    public String getOrders(@RequestParam(name = "library", required = false, defaultValue = "") Integer libraryId,
+                            @RequestParam(name = "title", required = false, defaultValue = "") Integer titleId,
                             Authentication authentication,
                             ModelMap model) {
-        ArrayList<BookOrder> orders = new ArrayList<>();
 
-        if (authentication != null && ((UserDetails) authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
-            String username = ((UserDetails) authentication.getPrincipal()).getUsername();
-            Person user = personService.findPersonByUsername(username).get();
+        String username = ((UserDetails) authentication.getPrincipal()).getUsername();
+        Person user = personService.findPersonByUsername(username).get();
+        if (((UserDetails) authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_LIBRARIAN"))) {
             model.put("librarian_lib", user.getLibraryId());
         }
-
-        if (libraryId.isEmpty() && titleId.isEmpty()) {
-            bookOrderService.findAll().forEach(ord -> orders.add(ord));
-        } else if (!titleId.isEmpty()) {
-            bookOrderService.findByTitleId(Integer.valueOf(titleId)).forEach(ord -> orders.add(ord));
+        model.put("choosen_title", 0);
+        model.put("choosen_library", 0);
+        Iterable<BookOrder> orders = null;
+        if (user.getLibraryId() != null) {
+            model.put("possible_libraries", libraryService.findLibraryById(user.getLibraryId()));
+            model.put("choosen_library", user.getLibraryId());
+            if (titleId != null) {
+                model.put("choosen_title", titleId);
+                orders = bookOrderService.findByTitleIdAndLibraryId(titleId, user.getLibraryId());
+            } else {
+                orders = bookOrderService.findByLibraryId(user.getLibraryId());
+            }
         } else {
-            bookOrderService.findByLibraryId(Integer.valueOf(libraryId)).forEach(ord -> orders.add(ord));
+            model.put("possible_libraries", libraryService.findAll());
+            if (titleId != null) {
+                model.put("choosen_title", titleId);
+                if (libraryId != null) {
+                    model.put("choosen_library", libraryId);
+                    orders = bookOrderService.findByTitleIdAndLibraryId(titleId, libraryId);
+                } else {
+                    orders = bookOrderService.findByTitleId(titleId);
+                }
+            } else if (libraryId != null) {
+                model.put("choosen_library", libraryId);
+                orders = bookOrderService.findByLibraryId(libraryId);
+            } else {
+                orders = bookOrderService.findAll();
+            }
         }
 
         for (BookOrder ord : orders) {
@@ -73,8 +96,8 @@ public class OrderController {
             ord.setLibraryName(libraryService.findLibraryById(ord.getLibraryId()).getName());
         }
         model.put("possible_titles", bookService.findAllTitles());
-        model.put("possible_libraries", libraryService.findAll());
-        model.put("orders", bookOrderService.findAll());
+        model.put("orders", orders);
+
         return "orders";
     }
 
@@ -103,7 +126,12 @@ public class OrderController {
 
         }
 
-        voteService.saveNewVote(template, libraryService.findLibraryById(order.getLibraryId()));
+        bookOrderService.removeById(orderId);
+        return "redirect:/orders";
+    }
+
+    @GetMapping("/order/{id}/delete")
+    public String deleteOrder(@PathVariable("id") int orderId) {
         bookOrderService.removeById(orderId);
         return "redirect:/orders";
     }

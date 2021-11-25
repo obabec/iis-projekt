@@ -23,6 +23,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.sql.Time;
 
+/*
+ * Controller for endpoints managing libraries.
+ */
 @Controller
 public class LibraryController {
 

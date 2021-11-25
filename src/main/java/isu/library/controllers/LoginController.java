@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+/*
+ * Controller for endpoint managing login of user into the system.
+ */
 @Controller
 public class LoginController {
 

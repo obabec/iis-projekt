@@ -24,4 +24,9 @@ public class UserVoteServiceImpl implements UserVoteService {
     public void saveNewUserVote(Integer voteId, Integer userId) {
         userVoteRepository.save(new UserVote(voteId, userId));
     }
+
+    @Override
+    public void deleteByVoteId(Integer voteId) {
+        userVoteRepository.deleteByVoteId(voteId);
+    }
 }
