@@ -23,6 +23,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 
+/*
+ * Controller for endpoints managing voting for titles.
+ */
 @Controller
 public class VoteController {
 

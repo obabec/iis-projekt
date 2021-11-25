@@ -24,6 +24,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+/*
+ * Controller for endpoints managing user accounts.
+ */
 @Controller
 public class UserController {
 

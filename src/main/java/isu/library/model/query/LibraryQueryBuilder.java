@@ -5,6 +5,9 @@
  */
 package isu.library.model.query;
 
+/*
+ * Builder of queries which filter libraries.
+ */
 public class LibraryQueryBuilder {
     private String guery;
     private boolean whereComplete = false;

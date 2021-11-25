@@ -15,6 +15,9 @@ import org.springframework.stereotype.Component;
 import java.sql.Date;
 import java.time.LocalDate;
 
+/*
+ * Clean old expired reservations
+ */
 @Component
 public class ReservationCleaner {
     private static final Logger LOG = LoggerFactory.getLogger(ReservationCleaner.class);

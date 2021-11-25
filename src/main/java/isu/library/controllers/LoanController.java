@@ -22,6 +22,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.time.LocalDate;
 
+/*
+ * Controller for endpoints managing loaning of books.
+ */
 @Controller
 public class LoanController {
 

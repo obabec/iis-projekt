@@ -16,7 +16,6 @@ import isu.library.model.service.AuthorshipService;
 import isu.library.model.service.BookService;
 import isu.library.model.service.library.LibraryService;
 import isu.library.model.service.user.PersonService;
-import isu.library.model.service.vote.VoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -28,8 +27,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 
+/*
+ * Controller for home endpoint listing all books.
+ */
 @Controller
 public class HomeController {
     @Autowired

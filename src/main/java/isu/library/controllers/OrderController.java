@@ -26,6 +26,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 
+/*
+ * Controller for endpoint managing orders of books.
+ */
 @Controller
 public class OrderController {
 

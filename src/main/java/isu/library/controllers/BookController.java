@@ -30,6 +30,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/*
+ * Controller for endpoints managing books.
+ */
 @Controller
 public class BookController {
     @Autowired
